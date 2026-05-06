@@ -32,6 +32,13 @@
 			{#if item === 'flags'}
 				<span class="fi fi-{value}"></span>
 				<span>{value}</span>
+			{:else if item === 'avatarURLs'}
+				<img
+					src={value}
+					alt=""
+					class="size-12 object-cover object-center {selected ? '' : 'opacity-35'}"
+					draggable="false"
+				/>
 			{:else}
 				{value}
 			{/if}

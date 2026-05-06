@@ -67,6 +67,16 @@
 			<PlayerItemList {sideKey} key="name" item="names" />
 		{/if}
 
+		<!-- avatars -->
+		{#if settings.current.enableAvatars}
+			<span>avatar</span>
+			{#if items.current.avatarURLs.length === 0}
+				<span class="text-ctp-text/50">no avatars..</span>
+			{:else}
+				<PlayerItemList {sideKey} key="avatarURL" item="avatarURLs" />
+			{/if}
+		{/if}
+
 		<!-- tags -->
 		{#if settings.current.enableTags}
 			<span>tag</span>

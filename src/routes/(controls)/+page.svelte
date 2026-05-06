@@ -62,7 +62,8 @@
 	<Checkbox desc="use single POV" setting="enableSinglePOV" />
 	<Checkbox desc="use team colors" setting="enableTeamColors" />
 	<Checkbox desc="use player PRs" setting="enablePRs" />
-	<Checkbox desc="use player tags" setting="enableTags" />
+	<Checkbox desc="use avatars" setting="enableAvatars" />
+	<Checkbox desc="use tags" setting="enableTags" />
 </Accordion>
 
 <!-- overlay -->
@@ -86,7 +87,7 @@
 <!-- players -->
 <div class="flex w-full justify-evenly">
 	<Player side="left" />
-	<hr class="mx-2 h-32 w-1 self-center border-none bg-obs-padding" />
+	<hr class="mx-2 mb-2 h-32 w-1 self-end border-none bg-obs-padding" />
 	<Player side="right" />
 </div>
 
