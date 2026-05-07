@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { settings, type Settings } from '$lib/storage.svelte';
+	import { slide } from 'svelte/transition';
 
 	type Props = {
 		desc: string;
@@ -9,11 +10,11 @@
 	let { desc, setting }: Props = $props();
 </script>
 
-<label>
+<label transition:slide|global>
 	<input
-		class="size-4 accent-ctp-lavender"
+		class="peer size-4 accent-ctp-lavender"
 		type="checkbox"
 		bind:checked={settings.current[setting] as boolean}
 	/>
-	<span>{desc}</span>
+	<span class="peer-not-checked:text-ctp-text/50">{desc}</span>
 </label>

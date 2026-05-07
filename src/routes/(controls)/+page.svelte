@@ -1,4 +1,5 @@
 <script lang="ts">
+	import kofi_symbol from '$lib/assets/kofi_symbol.svg';
 	import Accordion from '$lib/components/controls/Accordion.svelte';
 	import Button from '$lib/components/controls/Button.svelte';
 	import Checkbox from '$lib/components/controls/Checkbox.svelte';
@@ -6,12 +7,36 @@
 	import Player from '$lib/components/controls/Player.svelte';
 	import RangeInput from '$lib/components/controls/RangeInput.svelte';
 	import { getFiltersStyle } from '$lib/filters.svelte';
-	import { settings, overlay, items, type Settings, defaultStages } from '$lib/storage.svelte';
+	import {
+		settings,
+		overlay,
+		items,
+		type Settings,
+		defaultStages,
+		defaultSettings
+	} from '$lib/storage.svelte';
 
-	const fonts: Settings['font'][] = ['sans-serif', 'courier-prime'];
+	const fonts: Settings['font'][] = ['cause', 'comic-relief', 'courier-prime', 'fredoka', 'inter'];
+	/* font safelist
+font-cause
+font-comic-relief
+font-courier-prime
+font-fredoka
+font-inter
+*/
 </script>
 
 <span class="self-center">sooft controls</span>
+<!-- links -->
+<div class="absolute right-4 flex flex-row-reverse gap-1">
+	<a class="opacity-50 hover:opacity-100" href="https://ko-fi.com/mkgzr" target="_blank">
+		<img class="size-8" src={kofi_symbol} alt="" />
+	</a>
+	<!-- svelte-ignore a11y_consider_explicit_label -->
+	<a class="opacity-50 hover:opacity-100" href="https://github.com/spiritov" target="_blank">
+		<span class="icon-[mdi--github] size-8 text-white"></span>
+	</a>
+</div>
 
 <!-- items -->
 <Accordion title="items">
@@ -23,7 +48,7 @@
 		<ItemInput placeholder="add tag" item="tags" />
 	{/if}
 	{#if settings.current.enableFlags}
-		<ItemInput placeholder="add flag" item="flags" />
+		<ItemInput placeholder="add flag (alpha-2 code)" item="flags" />
 	{/if}
 	<ItemInput placeholder="add map" item="maps" />
 	<ItemInput placeholder="add stage" item="stages" />
@@ -31,6 +56,12 @@
 
 <!-- settings -->
 <Accordion title="settings">
+	<button
+		class="button-remove absolute top-0 right-0"
+		onclick={() => {
+			settings.current = defaultSettings;
+		}}>reset to default</button
+	>
 	<span>font</span>
 	<div class="flex gap-1">
 		{#each fonts as font, i (i)}
@@ -47,6 +78,10 @@
 	</div>
 
 	<!-- color -->
+	<span
+		>theme <span class="text-ctp-text/50">(arrow keys can be used for small adjustments)</span
+		></span
+	>
 	<div class="flex gap-2">
 		<div
 			class="size-12 border-4 border-ctp-text bg-ctp-lavender"
@@ -58,16 +93,24 @@
 		</div>
 	</div>
 
-	<Checkbox desc="show POV guide" setting="enablePOVGuide" />
+	<hr class="mb-0.5 h-0.5 w-full border-none bg-obs-padding" />
+
+	<Checkbox desc="use moving background" setting="enableMovingBG" />
 	<Checkbox desc="use single POV" setting="enableSinglePOV" />
-	<Checkbox desc="use team colors" setting="enableTeamColors" />
+	{#if !settings.current.enableSinglePOV}
+		<Checkbox desc="show POV guide" setting="enablePOVGuide" />
+		<Checkbox desc="use gradient" setting="enableGradient" />
+		{#if settings.current.enableGradient}
+			<Checkbox desc="use red & blue team colors" setting="enableTeamColors" />
+		{/if}
+	{/if}
 	<Checkbox desc="use player PRs" setting="enablePRs" />
 	<Checkbox desc="use avatars" setting="enableAvatars" />
 	<Checkbox desc="use tags" setting="enableTags" />
 </Accordion>
 
 <!-- overlay -->
-<div class="relative flex w-full max-w-lg justify-center gap-1 self-center">
+<div class="relative mb-2 flex w-full max-w-lg justify-center gap-1 self-center">
 	<span class="absolute left-0">best of</span>
 	{#key overlay.current.bestOf}
 		{#each { length: 5 }, bestOf}

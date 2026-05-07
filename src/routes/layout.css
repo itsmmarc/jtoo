@@ -15,9 +15,27 @@
 	src: url('$lib/fonts/courier-prime/CourierPrime-Regular.ttf') format('truetype');
 }
 
+@font-face {
+	font-family: 'cause';
+	src: url('$lib/fonts/cause/Cause-Regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'fredoka';
+	src: url('$lib/fonts/fredoka/Fredoka-Regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'inter';
+	src: url('$lib/fonts/inter/Inter_18pt-Regular.ttf') format('truetype');
+}
+
 @theme {
+	--font-cause: 'cause', 'sans-serif';
 	--font-comic-relief: 'comic-relief', 'sans-serif';
 	--font-courier-prime: 'courier-prime', 'font-mono';
+	--font-fredoka: 'fredoka', 'sans-serif';
+	--font-inter: 'inter', 'sans-serif';
 
 	--color-obs-background: #1d1f26;
 	--color-obs-content: #272a33;
@@ -61,5 +79,14 @@
 
 	.input {
 		@apply rounded-sm border-b-2 border-ctp-lavender-950 bg-obs-padding/75 px-1 outline-none focus:border-ctp-lavender focus:bg-obs-padding;
+	}
+}
+
+@keyframes movingMaskBG {
+	from {
+		mask-position: 0px 0px;
+	}
+	to {
+		mask-position: -192px -96px;
 	}
 }

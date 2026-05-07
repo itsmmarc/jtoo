@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { items, type Items } from '$lib/storage.svelte';
+	import { slide } from 'svelte/transition';
 
 	type Props = {
 		placeholder: string;
@@ -9,7 +10,7 @@
 	let { placeholder, item }: Props = $props();
 </script>
 
-<div>
+<div transition:slide>
 	<input
 		class="input"
 		{placeholder}
@@ -30,4 +31,10 @@
 			items.current[item] = [];
 		}}>remove all</button
 	>
+	{#if item === 'flags'}
+		<!-- svelte-ignore a11y_consider_explicit_label -->
+		<a href="https://flagicons.lipis.dev/" target="_blank"
+			><span class="icon-[mdi--question-mark]"></span></a
+		>
+	{/if}
 </div>

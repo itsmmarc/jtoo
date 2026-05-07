@@ -12,7 +12,7 @@
 	let show: boolean = $state(true);
 </script>
 
-<div class="w-full max-w-lg self-center">
+<div class="relative w-full max-w-lg self-center">
 	<button
 		class="w-full text-left"
 		onclick={() => {

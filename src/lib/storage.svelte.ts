@@ -1,13 +1,15 @@
 import { PersistentState } from '@friendofsvelte/state';
 
 export type Settings = {
-	font: 'sans-serif' | 'courier-prime';
+	font: 'cause' | 'comic-relief' | 'courier-prime' | 'fredoka' | 'inter';
 	hue: number;
 	saturation: number;
+	enableMovingBG: boolean;
 	enablePRs: boolean;
 	enableAvatars: boolean;
 	enableTags: boolean;
 	enableFlags: boolean;
+	enableGradient: boolean;
 	enableTeamColors: boolean;
 	enableSinglePOV: boolean;
 	enablePOVGuide: boolean;
@@ -39,7 +41,7 @@ export type Items = {
 	stages: Array<string>;
 };
 
-export const defaultStages = [
+export const defaultStages: Array<string> = [
 	'Round 1',
 	'Round 2',
 	'Quarterfinals',
@@ -51,19 +53,23 @@ export const defaultStages = [
 	"Loser's Finals"
 ];
 
-// overlay settings
-export const settings = new PersistentState('settings', {
-	font: 'sans-serif',
+export const defaultSettings: Settings = {
+	font: 'cause',
 	hue: 0,
 	saturation: 100,
+	enableMovingBG: true,
 	enablePRs: false,
-	enableAvatars: false,
+	enableAvatars: true,
 	enableTags: false,
 	enableFlags: true,
+	enableGradient: true,
 	enableTeamColors: false,
 	enableSinglePOV: false,
 	enablePOVGuide: false
-} as Settings);
+};
+
+// overlay settings
+export const settings = new PersistentState('settings', defaultSettings);
 
 // overlay state
 export const overlay = new PersistentState('overlay', {
