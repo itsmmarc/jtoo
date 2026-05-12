@@ -42,6 +42,7 @@ export type Items = {
 };
 
 export const defaultStages: Array<string> = [
+	'',
 	'Round 1',
 	'Round 2',
 	'Quarterfinals',

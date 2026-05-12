@@ -136,24 +136,27 @@ font-inter
 
 <!-- maps -->
 <span>map</span>
-	<div class="button-container">
-		{#each items.current.maps as map, i (i)}
-			{@const selected = (overlay.current.map ?? items.current.maps.at(0)) === map}
-			<Button
-				{selected}
-				onclick={() => {
-					overlay.current.map = map;
-				}}
-				oncontextmenu={() => {
-					// reset if deleting selected
-					if (overlay.current.map === map) {
-						overlay.current.map = items.current.maps.at(0) ?? '';
-					}
-					items.current.maps.splice(items.current.maps.indexOf(map), 1);
-				}}>{map == '' ? '✖' : map}</Button
-			>
-		{/each}
-	</div>
+<div class="button-container">
+	{#each items.current.maps as map, i (i)}
+		{@const selected = (overlay.current.map ?? items.current.maps.at(0)) === map}
+		<Button
+			{selected}
+			onclick={() => {
+				overlay.current.map = map;
+			}}
+			oncontextmenu={() => {
+				if (map == '') {
+					return;
+				}
+				// reset if deleting selected
+				if (overlay.current.map === map) {
+					overlay.current.map = items.current.maps.at(0) ?? '';
+				}
+				items.current.maps.splice(items.current.maps.indexOf(map), 1);
+			}}>{map == '' ? '✖' : map}</Button
+		>
+	{/each}
+</div>
 <!-- {#if items.current.maps.length === 1}
 	<span class="text-ctp-text/50">no maps..</span>
 {/if} -->
@@ -168,24 +171,27 @@ font-inter
 		}}>reset to default</button
 	>
 </div>
-	<div class="button-container">
-		{#each items.current.stages as stage, i (i)}
-			{@const selected = (overlay.current.stage ?? items.current.stages.at(0)) === stage}
-			<Button
-				{selected}
-				onclick={() => {
-					overlay.current.stage = stage;
-				}}
-				oncontextmenu={() => {
-					// reset if deleting selected
-					if (overlay.current.stage === stage) {
-						overlay.current.stage = items.current.stages.at(0) ?? '';
-					}
-					items.current.stages.splice(items.current.stages.indexOf(stage), 1);
-				}}>{stage == '' ? '✖' : stage}</Button
-			>
-		{/each}
-	</div>
+<div class="button-container">
+	{#each items.current.stages as stage, i (i)}
+		{@const selected = (overlay.current.stage ?? items.current.stages.at(0)) === stage}
+		<Button
+			{selected}
+			onclick={() => {
+				overlay.current.stage = stage;
+			}}
+			oncontextmenu={() => {
+				if (stage == '') {
+					return;
+				}
+				// reset if deleting selected
+				if (overlay.current.stage === stage) {
+					overlay.current.stage = items.current.stages.at(0) ?? '';
+				}
+				items.current.stages.splice(items.current.stages.indexOf(stage), 1);
+			}}>{stage == '' ? '✖' : stage}</Button
+		>
+	{/each}
+</div>
 <!-- {#if items.current.stages.length === 1}
 	<span class="text-ctp-text/50">no stages..</span>
 {/if} -->
