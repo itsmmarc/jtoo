@@ -136,9 +136,6 @@ font-inter
 
 <!-- maps -->
 <span>map</span>
-{#if items.current.maps.length === 0}
-	<span class="text-ctp-text/50">no maps..</span>
-{:else}
 	<div class="button-container">
 		{#each items.current.maps as map, i (i)}
 			{@const selected = (overlay.current.map ?? items.current.maps.at(0)) === map}
@@ -153,11 +150,13 @@ font-inter
 						overlay.current.map = items.current.maps.at(0) ?? '';
 					}
 					items.current.maps.splice(items.current.maps.indexOf(map), 1);
-				}}>{map}</Button
+				}}>{map == '' ? '✖' : map}</Button
 			>
 		{/each}
 	</div>
-{/if}
+<!-- {#if items.current.maps.length === 1}
+	<span class="text-ctp-text/50">no maps..</span>
+{/if} -->
 
 <!-- stages -->
 <div class="flex justify-between">
@@ -169,9 +168,6 @@ font-inter
 		}}>reset to default</button
 	>
 </div>
-{#if items.current.stages.length === 0}
-	<span class="text-ctp-text/50">no stages..</span>
-{:else}
 	<div class="button-container">
 		{#each items.current.stages as stage, i (i)}
 			{@const selected = (overlay.current.stage ?? items.current.stages.at(0)) === stage}
@@ -186,8 +182,10 @@ font-inter
 						overlay.current.stage = items.current.stages.at(0) ?? '';
 					}
 					items.current.stages.splice(items.current.stages.indexOf(stage), 1);
-				}}>{stage}</Button
+				}}>{stage == '' ? '✖' : stage}</Button
 			>
 		{/each}
 	</div>
-{/if}
+<!-- {#if items.current.stages.length === 1}
+	<span class="text-ctp-text/50">no stages..</span>
+{/if} -->

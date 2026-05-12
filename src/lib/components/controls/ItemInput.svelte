@@ -28,7 +28,7 @@
 	<button
 		class="button-remove"
 		onclick={() => {
-			items.current[item] = [];
+			items.current[item] = [''];
 		}}>remove all</button
 	>
 	{#if item === 'flags'}
