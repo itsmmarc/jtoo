@@ -19,7 +19,6 @@
 
 	const fonts: Settings['font'][] = ['cause', 'comic-relief', 'courier-prime', 'fredoka', 'inter'];
 
-	let openPlayerInput = false;
 	/* font safelist
 font-cause
 font-comic-relief
