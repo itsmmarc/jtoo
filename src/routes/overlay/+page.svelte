@@ -68,11 +68,11 @@
 	<!-- map -->
 	<div
 		class="relative -right-6 flex h-full skew-x-30 items-center justify-end rounded-bl-xl border-b-4 border-l-4 border-ctp-lavender/50 bg-ctp-lavender/25
-    {overlay.current.map === '' ? 'opacity-0' : ''}"
+    {overlay.current.map.shortName === '' ? 'opacity-0' : ''}"
 	>
 		{#key overlay.current.stage}
 			<span in:fade class="relative right-2 -skew-x-30 px-8 text-3xl text-ctp-text/75"
-				>{overlay.current.map}</span
+				>{overlay.current.map.shortName}</span
 			>
 		{/key}
 	</div>

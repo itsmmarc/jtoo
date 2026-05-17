@@ -11,8 +11,7 @@
 
 <div class="button-container">
 	{#each items.current.players as player, i (i)}
-		{@const selected =
-			(overlay.current[sideKey].name ?? items.current.players.at(0)!.name) === player.name}
+		{@const selected = overlay.current[sideKey].name === player.name}
 		<Button
 			{selected}
 			onclick={() => {
@@ -23,11 +22,14 @@
 					return;
 				}
 				// reset if deleting selected
-				if (overlay.current[sideKey] === player) {
-					// @ts-expect-error can index
-					overlay.current[sideKey][key] = items.current[item].at(0) ?? '';
+				if (overlay.current[sideKey].name === player.name) {
+					overlay.current[sideKey] = items.current.players.at(0) ?? { name: '', score: 0 };
 				}
-				items.current.players.splice(items.current.players.indexOf(player), 1);
+
+				items.current.players.splice(
+					items.current.players.map((p) => p.name).indexOf(player.name),
+					1
+				);
 			}}
 		>
 			{#if player.name == ''}

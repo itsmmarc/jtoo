@@ -168,12 +168,12 @@
 			class="button col-span-6 border-ctp-lavender-950/50 bg-ctp-lavender/35 px-2 hover:bg-ctp-lavender/85"
 			// value=""
 			onclick={() => {
-				if (player.name != '') {
-					addPlayer();
-					isOpen = false;
-				} else {
+				if (player.name === '') {
 					error.noName = true;
+					return;
 				}
+				addPlayer();
+				isOpen = false;
 			}}>add player</button
 		>
 		{#if error.noName}

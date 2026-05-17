@@ -6,6 +6,7 @@
 	import ItemInput from '$lib/components/controls/ItemInput.svelte';
 	import Player from '$lib/components/controls/Player.svelte';
 	import PlayerInput from '$lib/components/controls/PlayerInput.svelte';
+	import MapInput from '$lib/components/controls/MapInput.svelte';
 	import RangeInput from '$lib/components/controls/RangeInput.svelte';
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import {
@@ -14,8 +15,11 @@
 		items,
 		type Settings,
 		defaultStages,
-		defaultSettings
+		defaultSettings,
+		fullReset,
+		loadSoldierPlayoffs2026
 	} from '$lib/storage.svelte';
+	import * as _ from 'underscore';
 
 	const fonts: Settings['font'][] = ['cause', 'comic-relief', 'courier-prime', 'fredoka', 'inter'];
 
@@ -26,6 +30,7 @@ font-courier-prime
 font-fredoka
 font-inter
 */
+	fullReset();
 </script>
 
 <span class="self-center">sooft controls</span>
@@ -41,20 +46,18 @@ font-inter
 	</a>
 </div>
 
+<button class="absolute top-4 left-4 hover:text-red-500" onclick={() => fullReset()}
+	>FULL RESET</button
+>
+<button
+	class="absolute top-12 left-4 w-1 hover:text-red-500"
+	onclick={() => loadSoldierPlayoffs2026()}>LOAD SOLDIER PLAYOFFS 2026</button
+>
+
 <!-- items -->
 <Accordion title="items">
-	<!-- <ItemInput placeholder="add name" item="names" />
-	{#if settings.current.enableAvatars}
-		<ItemInput placeholder="add avatar URL" item="avatarURLs" />
-	{/if}
-	{#if settings.current.enableTags}
-		<ItemInput placeholder="add tag" item="tags" />
-	{/if}
-	{#if settings.current.enableFlags}
-		<ItemInput placeholder="add flag (alpha-2 code)" item="flags" />
-	{/if} -->
 	<PlayerInput />
-	<ItemInput placeholder="add map" item="maps" />
+	<MapInput />
 	<ItemInput placeholder="add stage" item="stages" />
 </Accordion>
 
@@ -141,23 +144,23 @@ font-inter
 <!-- maps -->
 <span>map</span>
 <div class="button-container">
-	{#each items.current.maps as map, i (i)}
-		{@const selected = (overlay.current.map ?? items.current.maps.at(0)) === map}
+	{#each Object.entries(items.current.maps) as [key, map], i (i)}
+		{@const selected = overlay.current.map.shortName === map.shortName}
 		<Button
 			{selected}
 			onclick={() => {
 				overlay.current.map = map;
 			}}
 			oncontextmenu={() => {
-				if (map == '') {
+				if (map.fileName == '') {
 					return;
 				}
 				// reset if deleting selected
-				if (overlay.current.map === map) {
-					overlay.current.map = items.current.maps.at(0) ?? '';
+				if (overlay.current.map.fileName === map.fileName) {
+					overlay.current.map = items.current.maps['null'];
 				}
-				items.current.maps.splice(items.current.maps.indexOf(map), 1);
-			}}>{map == '' ? '✖' : map}</Button
+				items.current.maps = _.omit(items.current.maps, key);
+			}}>{map.shortName === '' ? '✖' : map.shortName}</Button
 		>
 	{/each}
 </div>

@@ -41,6 +41,8 @@
 	},
 	"dependencies": {
 		"@friendofsvelte/state": "^0.2.0",
-		"flag-icons": "^7.5.0"
+		"@types/underscore": "^1.13.0",
+		"flag-icons": "^7.5.0",
+		"underscore": "^1.13.8"
 	}
 }

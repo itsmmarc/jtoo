@@ -15,6 +15,36 @@ export type Settings = {
 	enablePOVGuide: boolean;
 };
 
+export type Vector = {
+	x: number;
+	y: number;
+	z: number;
+};
+export type Zone = {
+	p1: Vector;
+	p2: Vector;
+};
+export type Zones = {
+	start: Zone;
+	end: Zone;
+	cp?: Zone[];
+};
+export type Map = {
+	fileName: string;
+	shortName: string;
+	imageURL?: string;
+	zones?: Zones;
+	minimap?: { graphic: string; bounds: Zone };
+};
+
+export type MapPRs<T> = {
+	[K in keyof T]: string;
+};
+
+export type MapsInfo<SoldierMapList> = {
+	[K in keyof SoldierMapList]: Map;
+};
+
 export type Rank = {
 	soldier: number;
 	demo: number;
@@ -23,28 +53,214 @@ export type Rank = {
 
 export type Player = {
 	name: string;
+	score: number;
+	tempusID?: string;
+	steamURL?: string;
 	avatarURL?: string;
 	tag?: string;
 	flag?: string;
-	pr?: string;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	pr?: MapPRs<any>;
 	rank?: Rank;
 	numWRs?: number;
 	bestRun?: string;
-	score: number;
+	note?: string;
+	favouriteMap?: string;
 };
 
 export type Overlay = {
 	bestOf: number;
 	leftPlayer: Player;
 	rightPlayer: Player;
-	map: string;
+	map: Map;
 	stage: string;
 };
 
 export type Items = {
 	players: Player[];
-	maps: Array<string>;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	maps: MapsInfo<any>;
 	stages: Array<string>;
+};
+
+export type Playoffs2026SoldierMapList = {
+	pokus?: unknown;
+	marigold?: unknown;
+	phobos?: unknown;
+	oddie?: unknown;
+	ahh?: unknown;
+	soar?: unknown;
+	above?: unknown;
+};
+export type Playoffs2026DemoMapList = {
+	tissue?: unknown;
+	carbon?: unknown;
+	tbd?: unknown; // replace me
+	greenguy2?: unknown;
+	legocroc?: unknown;
+};
+
+export const soldierPlayoffs2026 = {
+	players: [
+		{ name: '', score: 0 },
+		{
+			name: 'vice',
+			tempusID: '10736',
+			steamURL: 'vicetfz',
+			avatarURL:
+				'https://avatars.akamai.steamstatic.com/75f84c1f8d7956ad4521718c53c6a7b381e3acee_full.jpg',
+			tag: 'fuck vice',
+			flag: 'sg',
+			rank: { overall: 1, soldier: 2, demo: 1 },
+			pr: '',
+			numWRs: 91,
+			bestRun: 'jump_phobos',
+			note: '',
+			favouriteMap: '',
+			score: 0
+		},
+		{
+			name: 'Nikita',
+			tempusID: '602086',
+			steamURL: '76561199514776310',
+			avatarURL:
+				'https://avatars.akamai.steamstatic.com/7e66f539d7f62409db0a6b9a39f5d7334d549a7a_full.jpg',
+			tag: '',
+			flag: 'se',
+			rank: { overall: 2, soldier: 1, demo: 2579 },
+			pr: '',
+			numWRs: 421,
+			bestRun: '?',
+			note: '',
+			favouriteMap: '',
+			score: 0
+		},
+		{
+			name: 'Garf',
+			tempusID: '579826',
+			steamURL: '76561199243400809',
+			avatarURL:
+				'https://avatars.akamai.steamstatic.com/45005e86d752dcb1439be9c937ee1ce6e2b4d0ab_full.jpg',
+			tag: '',
+			flag: 'pl',
+			rank: { overall: 8, soldier: 6, demo: 390 },
+			pr: '',
+			numWRs: 90,
+			bestRun: 'jump_yona',
+			note: 'hello',
+			favouriteMap: '',
+			score: 0
+		},
+		{
+			name: 'Helmi',
+			tempusID: '357942',
+			steamURL: 'HelmiBunny',
+			avatarURL:
+				'https://avatars.akamai.steamstatic.com/5f84395a8424e7d4828f6b18c9cb90a12fa24ed4_full.jpg',
+			tag: '',
+			flag: 'fi',
+			rank: { overall: 4, soldier: 4, demo: 42 },
+			pr: '',
+			numWRs: 148,
+			bestRun: 'jump_destination_v2',
+			note: 'buh (replace with image if possible)',
+			favouriteMap: 'jump_atrial',
+			score: 0
+		},
+		{
+			name: 'Sammy',
+			tempusID: '503501',
+			steamURL: 'samuelmiamuel',
+			avatarURL:
+				'https://avatars.akamai.steamstatic.com/a5104f8172127271e4762fc0aa1112fc2b0a0f9f_full.jpg',
+			tag: '',
+			flag: 'ca',
+			rank: { overall: 3, soldier: 3, demo: 45 },
+			pr: '',
+			numWRs: 132,
+			bestRun: 'jump_junk_solly',
+			note: '',
+			favouriteMap: '',
+			score: 0
+		},
+		{
+			name: 'Hass',
+			tempusID: '31339',
+			steamURL: '76561198152719870',
+			avatarURL:
+				'https://shared.akamai.steamstatic.com/community_assets/images/items/1913420/1a5409eff27cdf6c32706526a68316820ca66835.gif',
+			tag: '',
+			flag: 'gb',
+			rank: { overall: 21, soldier: 9, demo: 727 },
+			pr: '',
+			numWRs: 2,
+			bestRun: 'jump_pharaoh',
+			note: 'never ask speedy a question',
+			favouriteMap: 'jump_lion',
+			score: 0
+		},
+		{
+			name: 'Spidda',
+			tempusID: '24856',
+			steamURL: 'sleepyiscute',
+			avatarURL:
+				'https://avatars.akamai.steamstatic.com/31f788519863b79f24b1604e090596ba6961a3ab_full.jpg',
+			tag: '',
+			flag: 'us',
+			rank: { overall: 23, soldier: 11, demo: 795 },
+			pr: '',
+			numWRs: 6,
+			bestRun: 'jump_descent',
+			note: '',
+			favouriteMap: '',
+			score: 0
+		}
+	] as Player[],
+	maps: {
+		null: { filename: '', shortName: '' },
+		pokus: {
+			fileName: 'jump_pokus_rc4',
+			shortName: 'pokus',
+			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_pokus_rc4.webp'
+			// zones:
+		},
+		marigold: {
+			fileName: 'jump_marigold',
+			shortName: 'marigold',
+			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_marigold.webp'
+			// zones:
+		},
+		phobos: {
+			fileName: 'jump_phobos_zip',
+			shortName: 'phobos',
+			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_phobos_zip.webp'
+			// zones:
+		},
+		oddie: {
+			fileName: 'jump_oddie_a4',
+			shortName: 'oddie',
+			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_oddie_a4.webp'
+			// zones:
+		},
+		ahh: {
+			fileName: 'jump_ahh_c',
+			shortName: 'ahh',
+			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_ahh_c.webp'
+			// zones:
+		},
+		soar: {
+			fileName: 'jump_soar_a4',
+			shortName: 'soar',
+			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_soar_a4.webp'
+			// zones:
+		},
+		above: {
+			fileName: 'jump_above_rc1',
+			shortName: 'above',
+			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_above_rc1.webp'
+			// zones:
+		}
+	} as MapsInfo<Playoffs2026SoldierMapList>
 };
 
 export const defaultStages: Array<string> = [
@@ -75,21 +291,36 @@ export const defaultSettings: Settings = {
 	enablePOVGuide: false
 };
 
+export const defaultOverlay: Overlay = {
+	bestOf: 3,
+	leftPlayer: { name: '', avatarURL: '', tag: '', flag: '', score: 0, pr: {} },
+	rightPlayer: { name: '', avatarURL: '', tag: '', flag: '', score: 0, pr: {} },
+	map: { fileName: '', shortName: '' },
+	stage: ''
+};
+
+export const defaultItems: Items = {
+	players: [{ name: '', score: 0 }],
+	maps: { null: { fileName: '', shortName: '' } },
+	stages: defaultStages
+};
+
 // overlay settings
 export const settings = new PersistentState('settings', defaultSettings);
 
 // overlay state
-export const overlay = new PersistentState('overlay', {
-	bestOf: 3,
-	leftPlayer: { name: '', avatarURL: '', tag: '', flag: '', score: 0, pr: '' },
-	rightPlayer: { name: '', avatarURL: '', tag: '', flag: '', score: 0, pr: '' },
-	map: '',
-	stage: ''
-} as Overlay);
+export const overlay = new PersistentState('overlay', defaultOverlay);
 
 // overlay items
-export const items = new PersistentState('items', {
-	players: [],
-	maps: [],
-	stages: defaultStages
-} as Items);
+export const items = new PersistentState('items', defaultItems);
+
+export function fullReset() {
+	settings.current = defaultSettings;
+	overlay.current = defaultOverlay;
+	items.current = defaultItems;
+}
+
+export function loadSoldierPlayoffs2026() {
+	items.current.players = soldierPlayoffs2026.players;
+	items.current.maps = soldierPlayoffs2026.maps;
+}
