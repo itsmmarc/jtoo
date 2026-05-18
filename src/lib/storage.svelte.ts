@@ -38,7 +38,7 @@ export type Map = {
 };
 
 export type MapPRs<T> = {
-	[K in keyof T]: string;
+	[K in keyof T]: { rank: number; time: string };
 };
 
 export type MapsInfo<SoldierMapList> = {
@@ -112,7 +112,15 @@ export const soldierPlayoffs2026 = {
 			tag: 'fuck vice',
 			flag: 'sg',
 			rank: { overall: 1, soldier: 2, demo: 1 },
-			pr: '',
+			pr: {
+				pokus: { rank: 1, time: '03:10.935' },
+				marigold: { rank: 3, time: '01:18.629' },
+				phobos: { rank: 1, time: '01:07.965' },
+				oddie: { rank: 4, time: '01:51.855' },
+				ahh: { rank: 1, time: '00:59.895' },
+				soar: { rank: 3, time: '04:04.995' },
+				above: { rank: 5, time: '01:13.305' }
+			},
 			numWRs: 91,
 			bestRun: 'jump_phobos',
 			note: '',
@@ -128,7 +136,15 @@ export const soldierPlayoffs2026 = {
 			tag: '',
 			flag: 'se',
 			rank: { overall: 2, soldier: 1, demo: 2579 },
-			pr: '',
+			pr: {
+				pokus: { rank: 2, time: '03:13.034' },
+				marigold: { rank: 6, time: '01:20.549' },
+				phobos: { rank: 7, time: '01:16.215' },
+				oddie: { rank: 2, time: '01:48.510' },
+				ahh: { rank: 395, time: '01:57.015' },
+				soar: { rank: 5, time: '04:14.580' },
+				above: { rank: 297, time: '01:49.724' }
+			},
 			numWRs: 421,
 			bestRun: '?',
 			note: '',

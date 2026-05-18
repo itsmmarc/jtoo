@@ -176,18 +176,31 @@
 		<hr class="col-span-12 h-0.5 w-full border-none bg-obs-padding" />
 
 		{#each Object.entries(items.current.maps) as [map], i (i)}
-			<label class="col-span-6" for="pr-{map}">pr {map}</label>
-			<input
-				class="input col-span-4"
-				type="text"
-				id="pr-{map}"
-				placeholder="0:00.00"
-				value={player.pr![map] ?? ''}
-				onkeyup={(e) => {
-					const value = (e.target as HTMLInputElement).value;
-					player.pr![map] = value;
-				}}
-			/>
+			{#if map !== 'null'}
+				<label class="col-span-6" for="pr-{map}-rank">pr {map}</label>
+				<input
+					class="input col-span-3 mr-1"
+					type="text"
+					id="pr-{map}-rank"
+					placeholder="0:00.00"
+					value={player.pr![map].time ?? ''}
+					onkeyup={(e) => {
+						const value = (e.target as HTMLInputElement).value;
+						player.pr![map].rank = parseInt(value);
+					}}
+				/>
+				<input
+					class="input col-span-1"
+					type="text"
+					id="pr-{map}-time"
+					placeholder="rank"
+					value={player.pr![map].rank ?? ''}
+					onkeyup={(e) => {
+						const value = (e.target as HTMLInputElement).value;
+						player.pr![map].time = value;
+					}}
+				/>
+			{/if}
 		{/each}
 
 		<hr class="col-span-12 h-0.5 w-full border-none bg-obs-padding" />
