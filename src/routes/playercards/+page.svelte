@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getFiltersStyle } from '$lib/filters.svelte';
-	import { items, overlay } from '$lib/storage.svelte';
+	import { overlay } from '$lib/storage.svelte';
 	import { settings } from '$lib/storage.svelte';
 	import { fade } from 'svelte/transition';
 	import PRDisplay from '$lib/components/controls/PRDisplay.svelte';
