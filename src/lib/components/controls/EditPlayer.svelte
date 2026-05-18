@@ -1,45 +1,32 @@
 <script lang="ts">
 	import { type Player, items } from '$lib/storage.svelte';
-	import { slide } from 'svelte/transition';
-	import EditPlayer from './EditPlayer.svelte';
+	import * as _ from 'underscore';
+	type Props = {
+		p: Player;
+	};
 
-	function addPlayer() {
-		items.current.players.push(player);
+	function replacePlayer() {
+		let index: number = _.findIndex(items.current.players, (p) => _.isEqual(p, oldPlayer));
+		items.current.players[index] = player;
+		items.current.players = [...items.current.players];
 		error = { noName: false };
 	}
-	function clearPlayer() {
-		player = { name: '', score: 0, rank: { soldier: 0, demo: 0, overall: 0 } };
-	}
-	let openAddPlayers = false;
-	let openManagePlayers = false;
-	let error = { noName: false };
-	let player: Player = { name: '', score: 0, rank: { soldier: 0, demo: 0, overall: 0 } };
+
+	let { p }: Props = $props();
+	const oldPlayer = $derived(p);
+	let player = $derived({ ...$state.snapshot(p) });
+	let isOpen = $state(false);
+	let error = $state({ noName: false });
 </script>
 
-<div transition:slide>
-	<button
-		class="button w-2/5 border-ctp-lavender-950/50 bg-ctp-lavender/35 px-2 hover:bg-ctp-lavender/85"
-		onclick={() => {
-			clearPlayer();
-			openAddPlayers = true;
-		}}>add player</button
-	>
-	<button
-		class="button w-2/5 border-ctp-lavender-950/50 bg-ctp-lavender/35 px-2 hover:bg-ctp-lavender/85"
-		onclick={() => {
-			openManagePlayers = true;
-		}}>manage players</button
-	>
-	<button
-		class="button-remove"
-		onclick={() => {
-			items.current.players = [{ name: '', score: 0 } as Player];
-		}}>remove all</button
-	>
-</div>
-{#if openAddPlayers}
+<button
+	class="button w-7/8 border-ctp-lavender-950/50 bg-ctp-lavender/35 px-2 hover:bg-ctp-lavender/85"
+	onclick={() => (isOpen = true)}>edit player</button
+>
+
+{#if isOpen}
 	<section
-		class="absolute z-50 grid w-full grid-cols-12 gap-y-1 self-center border-2 bg-obs-content p-2"
+		class="absolute top-0 left-0 z-50 grid w-full grid-cols-12 gap-y-1 self-center border-2 bg-obs-content p-2"
 	>
 		<label for="name" class="col-span-6">name</label>
 		<input
@@ -47,6 +34,7 @@
 			type="text"
 			id="name"
 			placeholder="*name"
+			value={player.name}
 			onkeyup={(e) => {
 				const value = (e.target as HTMLInputElement).value;
 				player.name = value;
@@ -68,9 +56,11 @@
 			type="text"
 			id="avatarURL"
 			placeholder="avatar URL"
+			value={player.avatarURL}
 			onkeyup={(e) => {
 				const value = (e.target as HTMLInputElement).value;
 				player.avatarURL = value;
+				player = { ...player };
 			}}
 		/>
 
@@ -80,6 +70,7 @@
 			type="text"
 			id="tag"
 			placeholder="tag"
+			value={player.tag}
 			onkeyup={(e) => {
 				const value = (e.target as HTMLInputElement).value;
 				player.tag = value;
@@ -100,9 +91,11 @@
 			type="text"
 			id="flag"
 			placeholder="flag"
+			value={player.flag}
 			onkeyup={(e) => {
 				const value = (e.target as HTMLInputElement).value;
 				player.flag = value;
+				player = { ...player };
 			}}
 		/>
 		<span class="fi fi-{player.flag} col-span-1 ml-4 rounded text-[1.5rem]"></span>
@@ -116,6 +109,7 @@
 			pattern="[0-9]"
 			id="rank-overall"
 			placeholder="overall"
+			value={player.rank?.overall}
 			onkeyup={(e) => {
 				const value = (e.target as HTMLInputElement).value;
 				player.rank!.overall = parseInt(value);
@@ -129,6 +123,7 @@
 			pattern="[0-9]"
 			id="rank-soldier"
 			placeholder="soldier"
+			value={player.rank?.soldier}
 			onkeyup={(e) => {
 				const value = (e.target as HTMLInputElement).value;
 				player.rank!.soldier = parseInt(value);
@@ -142,6 +137,7 @@
 			pattern="[0-9]"
 			id="rank-demo"
 			placeholder="demo"
+			value={player.rank?.demo}
 			onkeyup={(e) => {
 				const value = (e.target as HTMLInputElement).value;
 				player.rank!.demo = parseInt(value);
@@ -157,6 +153,7 @@
 			pattern="[0-9]"
 			id="numWRs"
 			placeholder="numWRs"
+			value={player.numWRs}
 			onkeyup={(e) => {
 				const value = (e.target as HTMLInputElement).value;
 				player.numWRs = parseInt(value);
@@ -169,6 +166,7 @@
 			type="text"
 			id="bestRun"
 			placeholder="best run"
+			value={player.bestRun}
 			onkeyup={(e) => {
 				const value = (e.target as HTMLInputElement).value;
 				player.bestRun = value;
@@ -184,6 +182,7 @@
 				type="text"
 				id="pr-{map}"
 				placeholder="0:00.00"
+				value={player.pr![map] ?? ''}
 				onkeyup={(e) => {
 					const value = (e.target as HTMLInputElement).value;
 					player.pr![map] = value;
@@ -192,6 +191,7 @@
 		{/each}
 
 		<hr class="col-span-12 h-0.5 w-full border-none bg-obs-padding" />
+
 		<button
 			class="button col-span-6 border-ctp-lavender-950/50 bg-ctp-lavender/35 px-2 hover:bg-ctp-lavender/85"
 			// value=""
@@ -200,9 +200,9 @@
 					error.noName = true;
 					return;
 				}
-				addPlayer();
-				openAddPlayers = false;
-			}}>add player</button
+				replacePlayer();
+				isOpen = false;
+			}}>update player</button
 		>
 		{#if error.noName}
 			<div class="col-span-6">error: no name entered</div>
@@ -210,39 +210,7 @@
 		<button
 			class="button-remove absolute top-0 right-2"
 			onclick={() => {
-				openAddPlayers = false;
-			}}>✖</button
-		>
-	</section>
-{/if}
-
-{#if openManagePlayers}
-	<section
-		class="absolute z-50 grid w-full grid-cols-12 gap-y-1 self-center border-2 bg-obs-content p-2 pt-6"
-	>
-		{#if items.current.players.length <= 1}
-			<div class="col-span-12">no players</div>
-		{:else}
-			{#each items.current.players as player, i (i)}
-				{#if player.name != ''}
-					<div class="col-span-12 grid grid-cols-3">
-						<div>{player.name}</div>
-						<EditPlayer p={player} />
-						<button
-							class="button-remove"
-							onclick={() => {
-								items.current.players = items.current.players.filter((p) => p.name !== player.name);
-							}}>delete player</button
-						>
-					</div>
-				{/if}
-			{/each}
-		{/if}
-
-		<button
-			class="button-remove absolute top-0 right-2"
-			onclick={() => {
-				openManagePlayers = false;
+				isOpen = false;
 			}}>✖</button
 		>
 	</section>

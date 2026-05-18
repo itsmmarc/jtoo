@@ -26,10 +26,7 @@
 					overlay.current[sideKey] = items.current.players.at(0) ?? { name: '', score: 0 };
 				}
 
-				items.current.players.splice(
-					items.current.players.map((p) => p.name).indexOf(player.name),
-					1
-				);
+				items.current.players = items.current.players.filter((p) => p.name !== player.name);
 			}}
 		>
 			{#if player.name == ''}
