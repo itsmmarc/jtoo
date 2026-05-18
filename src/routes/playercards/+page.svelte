@@ -85,14 +85,16 @@
 			</div>
 
 			<div class="flex justify-end gap-3 {sideKey === 'rightPlayer' ? 'flex-row-reverse' : ''}">
-				<div class="row-span-full h-0"></div>
-
-				<dl class="text-xl">
-					<dt>best run</dt>
-					<dd>{player.bestRun}</dd>
-					<dt>number of world records</dt>
-					<dd>{player.numWRs}</dd>
-				</dl>
+				<div class="h-fit text-center">
+					<h1 class="text-5xl font-bold">achievments</h1>
+					<hr class="mb-0.5 h-0.5 w-full border-none bg-obs-padding" />
+					<dl class="grid grid-cols-2 gap-2 text-3xl">
+						<dt>best run</dt>
+						<dd class="order-3">{player.bestRun}</dd>
+						<dt class="order-2">WRs</dt>
+						<dd class="order-4">{player.numWRs}</dd>
+					</dl>
+				</div>
 
 				<!-- ranks -->
 				<div class="h-fit w-80 text-center">
@@ -106,6 +108,14 @@
 						<dt class="order-3">demo</dt>
 						<dd class="order-6">{player.rank?.demo}</dd>
 					</dl>
+				</div>
+			</div>
+
+			<div class="flex justify-end gap-3 {sideKey === 'rightPlayer' ? 'flex-row-reverse' : ''}">
+				<div class="h-fit">
+					<h1 class="text-center text-5xl">notes</h1>
+					<hr class="mb-0.5 h-0.5 w-full border-none bg-obs-padding" />
+					<div class="text-3xl">{player.note}</div>
 				</div>
 			</div>
 		</section>
