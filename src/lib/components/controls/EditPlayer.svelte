@@ -173,6 +173,32 @@
 			}}
 		/>
 
+		<label class="col-span-6" for="favouriteMap">favourite map</label>
+		<input
+			class="input col-span-4"
+			type="text"
+			id="favouriteMap"
+			placeholder="favourite map"
+			value={player.favouriteMap}
+			onkeyup={(e) => {
+				const value = (e.target as HTMLInputElement).value;
+				player.favouriteMap = value;
+			}}
+		/>
+
+		<label class="col-span-6" for="note">note</label>
+		<input
+			class="input col-span-4"
+			type="text"
+			id="note"
+			placeholder="note"
+			value={player.note}
+			onkeyup={(e) => {
+				const value = (e.target as HTMLInputElement).value;
+				player.note = value;
+			}}
+		/>
+
 		<hr class="col-span-12 h-0.5 w-full border-none bg-obs-padding" />
 
 		{#each Object.entries(items.current.maps) as [map], i (i)}
