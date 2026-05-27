@@ -176,7 +176,7 @@ export const soldierPlayoffs2026 = {
 			score: 0
 		},
 		{
-			name: 'Helmi',
+			name: 'bunny.',
 			tempusID: '357942',
 			steamURL: 'HelmiBunny',
 			avatarURL:
