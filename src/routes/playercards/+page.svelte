@@ -88,37 +88,20 @@
 				<!-- info -->
 				<div>
 					<div class=" h-fit">
-						<h1 class="text-center text-3xl">achievements</h1>
 						<hr class="mb-0.5 h-0.5 w-full border-none bg-obs-padding" />
-
-						<dl class="grid grid-cols-[10vw_10vw] gap-2 text-4xl">
-							<dt>best run</dt>
-							<dd>{player.bestRun}</dd>
-							<dt>WRs</dt>
-							<dd>{player.numWRs}</dd>
-						</dl>
-					</div>
-
-					<div class="mt-10 h-fit">
-						<h1 class="text-center text-3xl">notes</h1>
-						<hr class="mb-0.5 h-0.5 w-full border-none bg-obs-padding" />
-
-						<!-- okay for now since the app is client-side only, probably want to rework when (if) tempus api is implemented -->
-						<div class="text-4xl">{@html player.note}</div>
+						<ul>
+							<li>{player.numWRs} world records</li>
+							<li>{player.topTimes} top times</li>
+							<!-- okay for now since the app is client-side only, probably want to rework when (if) tempus api is implemented -->
+							<li><div class="text-4xl">{@html player.note}</div></li>
+						</ul>
 					</div>
 				</div>
 
 				<!-- ranks -->
 				<div class="h-fit w-80 {sideKey === 'rightPlayer' ? 'text-left' : 'text-right'}">
-					<h1 class="text-5xl">ranks</h1>
-					<dl class="flex flex-col gap-2">
-						<dt class="text-4xl">soldier</dt>
-						<dd class="text-6xl font-bold">{player.rank?.soldier}</dd>
-						<dt class="text-4xl">demo</dt>
-						<dd class="text-4xl">{player.rank?.demo}</dd>
-						<dt class="text-4xl">overall</dt>
-						<dd class="text-4xl">{player.rank?.overall}</dd>
-					</dl>
+					<h1 class="text-5xl">{overlay.current.class} rank</h1>
+					<div>#{player.rank![overlay.current.class}</div>
 				</div>
 			</div>
 		</section>
