@@ -168,6 +168,20 @@ font-inter
 	<span class="text-ctp-text/50">no maps..</span>
 {/if} -->
 
+<!-- classes -->
+<div class="button-container">
+	{#each ['soldier', 'demo'] as class, i (i)}
+		{@const selected = overlay.current.class === class}
+		<Button
+			{selected}
+			onclick={() => {
+				overlay.current.class = class;
+			}}
+			</Button
+		>
+	{/each}
+</div>
+
 <!-- stages -->
 <div class="flex justify-between">
 	<span>stage</span>
