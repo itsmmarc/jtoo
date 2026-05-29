@@ -8,7 +8,7 @@
 		{#if key !== 'null'}
 			{@const left = overlay.current.leftPlayer.pr![key] ?? { rank: 0, time: '' }}
 			{@const right = overlay.current.rightPlayer.pr![key] ?? { rank: 0, time: '' }}
-			{@const leftWinner = left!.rank > right!.rank}
+			{@const leftWinner = left!.rank < right!.rank}
 			<div class="@container relative mb-2 h-37 w-95 text-4xl">
 				<h1 class="absolute top-0 right-0 w-full p-2 text-center">{key}</h1>
 				<div

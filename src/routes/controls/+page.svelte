@@ -18,12 +18,17 @@
 		defaultSettings,
 		fullReset,
 		loadSoldierPlayoffs2026,
+		loadDemoPlayoffs2026,
 		type TFClass,
-		TFClasses
+		TFClasses,
+		Fonts,
+		type Font
 	} from '$lib/storage.svelte';
 	import * as _ from 'underscore';
+	import icon_soldier from '$lib/assets/icon_soldier.png';
+	import icon_demo from '$lib/assets/icon_demo.png';
 
-	const fonts: Settings['font'][] = ['cause', 'comic-relief', 'courier-prime', 'fredoka', 'inter'];
+	const fonts: Settings['font'][] = [...Fonts];
 
 	/* font safelist
 font-cause
@@ -48,13 +53,26 @@ font-inter
 	</a>
 </div>
 
-<button class="absolute top-4 left-4 hover:text-red-500" onclick={() => fullReset()}
-	>FULL RESET</button
->
-<button
-	class="absolute top-12 left-4 w-1 hover:text-red-500"
-	onclick={() => loadSoldierPlayoffs2026()}>LOAD SOLDIER PLAYOFFS 2026</button
->
+<!-- presets -->
+<div class="absolute top-4 left-4 flex flex-col gap-2">
+	<button class="hover:text-red-500" onclick={() => fullReset()}>FULL<br />RESET</button>
+	<button class="hover:mix-blend-soft-light" onclick={() => loadSoldierPlayoffs2026()}>
+		<img
+			src={icon_soldier}
+			class="size-12"
+			aria-label="load soldier playoffs 2026"
+			alt="load soldier playoffs 2026"
+		/>
+	</button>
+	<button class="hover:mix-blend-soft-light" onclick={() => loadDemoPlayoffs2026()}>
+		<img
+			src={icon_demo}
+			class="size-12"
+			aria-label="load soldier playoffs 2026"
+			alt="load soldier playoffs 2026"
+		/>
+	</button>
+</div>
 
 <!-- items -->
 <Accordion title="items">
@@ -75,12 +93,12 @@ font-inter
 	<div class="flex gap-1">
 		{#each fonts as font, i (i)}
 			{@const selected = font === settings.current.font}
-			<div class="font-{font}">
+			<div class={font}>
 				<Button
 					{selected}
 					onclick={() => {
-						settings.current.font = font as Settings['font'];
-					}}>{font}</Button
+						settings.current.font = font as Font;
+					}}>{font.replace('font-', '')}</Button
 				>
 			</div>
 		{/each}
@@ -122,15 +140,16 @@ font-inter
 <div class="relative mb-2 flex w-full max-w-lg justify-center gap-1 self-center">
 	<span class="absolute left-0">best of</span>
 	{#key overlay.current.bestOf}
-		{#each { length: 5 }, bestOf}
+		{@const bestOfOptions = [1, 3, 5, 7, 9]}
+		{#each bestOfOptions as bestOf, i (i)}
 			<!-- default bo3 -->
-			{@const selected = ((overlay.current.bestOf ?? 1) - 1) / 2 === bestOf}
+			{@const selected = overlay.current.bestOf === bestOf}
 			<button
 				class="button w-6
-    {selected ? 'button-selected' : 'button-unselected'}"
+                                        {selected ? 'button-selected' : 'button-unselected'}"
 				onclick={() => {
-					overlay.current.bestOf = bestOf * 2 + 1;
-				}}>{bestOf * 2 + 1}</button
+					overlay.current.bestOf = bestOf;
+				}}>{bestOf}</button
 			>
 		{/each}
 	{/key}
@@ -178,7 +197,7 @@ font-inter
 		<Button
 			{selected}
 			onclick={() => {
-				overlay.current.class = tfClass;
+				overlay.current.class = tfClass as TFClass;
 			}}
 			oncontextmenu={() => {
 				return;

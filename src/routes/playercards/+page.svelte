@@ -90,13 +90,17 @@
 				<div class="h-fit grow text-4xl {sideKey === 'rightPlayer' ? 'text-right' : 'text-left'}">
 					<hr class="mb-0.5 h-0.5 w-full border-none bg-obs-padding" />
 					<ul class="w-full">
-						<li class="m-10">{player.numWRs} world records</li>
+						<li class="m-10">{player.WRs} world records</li>
+						<li class="m-10">{player.TTs} top times</li>
 						<!-- <li>{player.topTimes} top times</li> -->
-						<!-- okay for now since the app is client-side only, probably want to rework when (if) tempus api is implemented -->
-						<li>
-							<div class="ml-auto">
-								{@html player.note}
-							</div>
+						<li
+							class="m-10 flex justify-end
+                                                                {sideKey === 'rightPlayer'
+								? 'flex-row'
+								: 'flex-row-reverse'}"
+						>
+							<!-- okay for now since the app is client-side only, probably want to rework when (if) tempus api is implemented -->
+							{@html player.note}
 						</li>
 					</ul>
 				</div>

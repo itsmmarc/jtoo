@@ -1,7 +1,20 @@
 import { PersistentState } from '@friendofsvelte/state';
 
+export const Fonts = [
+	'font-cause',
+	'font-comic-relief',
+	'font-courier-prime',
+	'font-fredoka',
+	'font-inter',
+	'font-bebas',
+	'font-montserrat',
+	'font-roboto',
+	'font-space-grotesk'
+] as const;
+export type Font = (typeof Fonts)[number];
+
 export type Settings = {
-	font: 'cause' | 'comic-relief' | 'courier-prime' | 'fredoka' | 'inter';
+	font: Font;
 	hue: number;
 	saturation: number;
 	enableMovingBG: boolean;
@@ -63,7 +76,8 @@ export type Player = {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	pr?: MapPRs<any>;
 	rank?: Rank;
-	numWRs?: number;
+	WRs?: number;
+	TTs?: number;
 	bestRun?: string;
 	note?: string;
 	favouriteMap?: string;
@@ -75,7 +89,7 @@ export type Overlay = {
 	rightPlayer: Player;
 	map: Map;
 	stage: string;
-	class: TFClasses;
+	class: TFClass;
 };
 
 export type Items = {
@@ -97,9 +111,10 @@ export type Playoffs2026SoldierMapList = {
 export type Playoffs2026DemoMapList = {
 	tissue?: unknown;
 	carbon?: unknown;
-	tbd?: unknown; // replace me
+	data?: unknown;
 	greenguy2?: unknown;
 	legocroc?: unknown;
+	nbn?: unknown;
 };
 
 export const soldierPlayoffs2026 = {
@@ -123,7 +138,8 @@ export const soldierPlayoffs2026 = {
 				soar: { rank: 3, time: '04:04.995' },
 				above: { rank: 5, time: '01:13.305' }
 			},
-			numWRs: 91,
+			WRs: 320,
+			TTs: 2167,
 			bestRun: 'jump_phobos',
 			note: '',
 			favouriteMap: '',
@@ -147,7 +163,8 @@ export const soldierPlayoffs2026 = {
 				soar: { rank: 5, time: '04:14.580' },
 				above: { rank: 297, time: '01:49.724' }
 			},
-			numWRs: 421,
+			WRs: 423,
+			TTs: 535,
 			bestRun: '?',
 			note: '',
 			favouriteMap: '',
@@ -163,15 +180,16 @@ export const soldierPlayoffs2026 = {
 			flag: 'pl',
 			rank: { overall: 8, soldier: 6, demo: 390 },
 			pr: {
-				pokus: { rank: 0, time: '' },
-				marigold: { rank: 0, time: '' },
-				phobos: { rank: 0, time: '' },
-				oddie: { rank: 0, time: '' },
-				ahh: { rank: 0, time: '' },
-				soar: { rank: 0, time: '' },
-				above: { rank: 0, time: '' }
+				pokus: { rank: 57, time: '04:20.640' },
+				marigold: { rank: 7, time: '01:22.125' },
+				phobos: { rank: 2, time: '01:10.245' },
+				oddie: { rank: 3, time: '01:49.770' },
+				ahh: { rank: 2, time: '01:01.230' },
+				soar: { rank: 4, time: '04:09.945' },
+				above: { rank: 2, time: '01:12.945' }
 			},
-			numWRs: 90,
+			WRs: 93,
+			TTs: 915,
 			bestRun: 'jump_yona',
 			note: 'hello',
 			favouriteMap: '',
@@ -187,17 +205,18 @@ export const soldierPlayoffs2026 = {
 			flag: 'fi',
 			rank: { overall: 4, soldier: 4, demo: 42 },
 			pr: {
-				pokus: { rank: 0, time: '' },
-				marigold: { rank: 0, time: '' },
-				phobos: { rank: 0, time: '' },
-				oddie: { rank: 0, time: '' },
-				ahh: { rank: 0, time: '' },
-				soar: { rank: 0, time: '' },
-				above: { rank: 0, time: '' }
+				pokus: { rank: 3, time: '03:16.125' },
+				marigold: { rank: 1, time: '01:15.420' },
+				phobos: { rank: 4, time: '01:14.070' },
+				oddie: { rank: 1, time: '01:47.640' },
+				ahh: { rank: 4, time: '01:02.265' },
+				soar: { rank: 12, time: '04:30.240' },
+				above: { rank: 6, time: '01:14.355' }
 			},
-			numWRs: 148,
+			WRs: 149,
+			TTs: 615,
 			bestRun: 'jump_destination_v2',
-			note: '<img src="https://cdn.7tv.app/emote/01J4YTP1E0000FXZ59PB5ZJ8KW/4x.avif" class="rounded-xl object-cover w-full" />', // find better quality if possible
+			note: '<img src="https://cdn.7tv.app/emote/01J4YTP1E0000FXZ59PB5ZJ8KW/4x.avif" class="rounded-xl object-cover" />', // find better quality if possible
 			favouriteMap: 'jump_atrial',
 			score: 0
 		},
@@ -219,7 +238,8 @@ export const soldierPlayoffs2026 = {
 				soar: { rank: 0, time: '' },
 				above: { rank: 0, time: '' }
 			},
-			numWRs: 132,
+			WRs: 133,
+			TTs: 924,
 			bestRun: 'jump_junk_solly',
 			note: '',
 			favouriteMap: '',
@@ -243,7 +263,8 @@ export const soldierPlayoffs2026 = {
 				soar: { rank: 0, time: '' },
 				above: { rank: 0, time: '' }
 			},
-			numWRs: 2,
+			WRs: 2,
+			TTs: 225,
 			bestRun: 'jump_pharaoh',
 			note: 'never ask speedy a question',
 			favouriteMap: 'jump_lion',
@@ -267,7 +288,8 @@ export const soldierPlayoffs2026 = {
 				soar: { rank: 0, time: '' },
 				above: { rank: 0, time: '' }
 			},
-			numWRs: 6,
+			WRs: 6,
+			TTs: 177,
 			bestRun: 'jump_descent',
 			note: '',
 			favouriteMap: '',
@@ -319,6 +341,124 @@ export const soldierPlayoffs2026 = {
 			// zones:
 		}
 	} as MapsInfo<Playoffs2026SoldierMapList>
+};
+
+export const demoPlayoffs2026 = {
+	players: [
+		{ name: '', score: 0 },
+		soldierPlayoffs2026.players.filter((p) => p.name == 'vice')[0],
+		{
+			name: 'newjuls',
+			tempusID: '281915',
+			steamURL: 'newjuls',
+			avatarURL:
+				'https://avatars.akamai.steamstatic.com/97c996f978b84083afc12e7713f9626cda82ff83_full.jpg',
+			tag: '',
+			flag: 'nz',
+			rank: { overall: 6, soldier: 16, demo: 2 },
+			pr: {
+				tissue: { rank: 1, time: '03:10.935' },
+				carbon: { rank: 3, time: '01:18.629' },
+				data: { rank: 1, time: '01:07.965' },
+				greenguy2: { rank: 4, time: '01:51.855' },
+				legocroc: { rank: 1, time: '00:59.895' },
+				nbn: { rank: 3, time: '04:04.995' }
+			},
+			WRs: 99,
+			TTs: 462,
+			bestRun: '',
+			note: '',
+			favouriteMap: '',
+			score: 0
+		},
+		{
+			name: 'cander',
+			tempusID: '243670',
+			steamURL: 'vicebot',
+			avatarURL:
+				'https://avatars.akamai.steamstatic.com/132bdddaf081fe2548a3503ed7058980cb189715_full.jpg',
+			tag: 'real vice',
+			flag: 'id',
+			rank: { overall: 7, soldier: 58, demo: 3 },
+			pr: {
+				tissue: { rank: 1, time: '03:10.935' },
+				carbon: { rank: 3, time: '01:18.629' },
+				data: { rank: 1, time: '01:07.965' },
+				greenguy2: { rank: 4, time: '01:51.855' },
+				legocroc: { rank: 1, time: '00:59.895' },
+				nbn: { rank: 3, time: '04:04.995' }
+			},
+			WRs: 498,
+			TTs: 1156,
+			bestRun: '',
+			note: '',
+			favouriteMap: '',
+			score: 0
+		},
+		{
+			name: 'namee',
+			tempusID: '35454',
+			steamURL: 'NameeeX3',
+			avatarURL:
+				'https://avatars.akamai.steamstatic.com/265eb8e845c99da4e5cae4563163cb974c3d482e_full.jpg',
+			tag: '',
+			flag: 'th',
+			rank: { overall: 15, soldier: 268, demo: 9 },
+			pr: {
+				tissue: { rank: 1, time: '03:10.935' },
+				carbon: { rank: 3, time: '01:18.629' },
+				data: { rank: 1, time: '01:07.965' },
+				greenguy2: { rank: 4, time: '01:51.855' },
+				legocroc: { rank: 1, time: '00:59.895' },
+				nbn: { rank: 3, time: '04:04.995' }
+			},
+			WRs: 14,
+			TTs: 446,
+			bestRun: '',
+			note: '',
+			favouriteMap: '',
+			score: 0
+		}
+	] as Player[],
+	maps: {
+		null: { filename: '', shortName: '' },
+		tissue: {
+			fileName: 'jump_tissue',
+			shortName: 'tissue',
+			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_tissue.webp'
+			// zones:
+		},
+		carbon: {
+			fileName: 'jump_carbon_b1',
+			shortName: 'carbon',
+			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_carbon_b1.webp'
+			// zones:
+		},
+		data: {
+			fileName: 'jump_data_final',
+			shortName: 'data',
+			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_data_final.webp'
+			// zones:
+		},
+		greenguy2: {
+			fileName: 'jump_greenguy2_b2',
+			shortName: 'greenguy2',
+			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_greenguy2_b2.webp'
+			// zones:
+		},
+		legocroc: {
+			fileName: 'jump_legocroc_rc1',
+			shortName: 'legocroc',
+			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_legocroc_rc1.webp'
+			// zones:
+		},
+		nbn: {
+			fileName: 'jump_nbn_b4b_redo_a1',
+			shortName: 'nbn',
+			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_nbn_b4b_redo_a1.webp'
+			// zones:
+		}
+	} as MapsInfo<Playoffs2026DemoMapList>
 };
 
 export const defaultStages: Array<string> = [
@@ -384,4 +524,11 @@ export function loadSoldierPlayoffs2026() {
 	items.current.maps = soldierPlayoffs2026.maps;
 	overlay.current = defaultOverlay;
 	overlay.current.class = 'soldier';
+}
+
+export function loadDemoPlayoffs2026() {
+	items.current.players = demoPlayoffs2026.players;
+	items.current.maps = demoPlayoffs2026.maps;
+	overlay.current = defaultOverlay;
+	overlay.current.class = 'demo';
 }

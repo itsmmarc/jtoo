@@ -159,7 +159,7 @@
 			placeholder="numWRs"
 			onkeyup={(e) => {
 				const value = (e.target as HTMLInputElement).value;
-				player.numWRs = parseInt(value);
+				player.WRs = parseInt(value);
 			}}
 		/>
 

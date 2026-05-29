@@ -153,10 +153,10 @@
 			pattern="[0-9]"
 			id="numWRs"
 			placeholder="numWRs"
-			value={player.numWRs}
+			value={player.WRs}
 			onkeyup={(e) => {
 				const value = (e.target as HTMLInputElement).value;
-				player.numWRs = parseInt(value);
+				player.WRs = parseInt(value);
 			}}
 		/>
 

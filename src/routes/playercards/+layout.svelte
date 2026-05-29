@@ -9,7 +9,7 @@
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
-<div class="flex h-screen w-full flex-col overflow-hidden font-{settings.current.font}">
+<div class="flex h-screen w-full flex-col overflow-hidden {settings.current.font}">
 	{@render children()}
 
 	{#if settings.current.enableMovingBG}
