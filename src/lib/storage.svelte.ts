@@ -74,6 +74,7 @@ export type Overlay = {
 	rightPlayer: Player;
 	map: Map;
 	stage: string;
+	class: 'soldier' | 'demo';
 };
 
 export type Items = {
@@ -352,7 +353,8 @@ export const defaultOverlay: Overlay = {
 	leftPlayer: { name: '', avatarURL: '', tag: '', flag: '', score: 0, pr: {} },
 	rightPlayer: { name: '', avatarURL: '', tag: '', flag: '', score: 0, pr: {} },
 	map: { fileName: '', shortName: '' },
-	stage: ''
+	stage: '',
+	class: 'soldier'
 };
 
 export const defaultItems: Items = {
