@@ -119,7 +119,7 @@ export type Playoffs2026DemoMapList = {
 
 export const soldierPlayoffs2026 = {
 	players: [
-		{ name: '', score: 0 },
+		{ name: '', score: 0, pr: {} },
 		{
 			name: 'vice',
 			tempusID: '10736',
@@ -345,8 +345,18 @@ export const soldierPlayoffs2026 = {
 
 export const demoPlayoffs2026 = {
 	players: [
-		{ name: '', score: 0 },
-		soldierPlayoffs2026.players.filter((p) => p.name == 'vice')[0],
+		{ name: '', score: 0, pr: {} },
+		{
+			...soldierPlayoffs2026.players.filter((p) => p.name == 'vice')[0],
+			pr: {
+				tissue: { rank: 1, time: '01:09.240' },
+				carbon: { rank: 1, time: '01:05.610' },
+				data: { rank: 2, time: '01:06.675' },
+				greenguy2: { rank: 1, time: '00:44.760' },
+				legocroc: { rank: 1, time: '00:35.085' },
+				nbn: { rank: 1, time: '04:06.900' }
+			}
+		},
 		{
 			name: 'newjuls',
 			tempusID: '281915',
@@ -381,12 +391,12 @@ export const demoPlayoffs2026 = {
 			flag: 'id',
 			rank: { overall: 7, soldier: 58, demo: 3 },
 			pr: {
-				tissue: { rank: 1, time: '03:10.935' },
-				carbon: { rank: 3, time: '01:18.629' },
-				data: { rank: 1, time: '01:07.965' },
-				greenguy2: { rank: 4, time: '01:51.855' },
-				legocroc: { rank: 1, time: '00:59.895' },
-				nbn: { rank: 3, time: '04:04.995' }
+				tissue: { rank: 4, time: '01:12.825' },
+				carbon: { rank: 3, time: '01:08.250' },
+				data: { rank: 4, time: '01:14.535' },
+				greenguy2: { rank: 3, time: '00:48.885' },
+				legocroc: { rank: 2, time: '00:36.885' },
+				nbn: { rank: 201, time: '25:52.065' }
 			},
 			WRs: 498,
 			TTs: 1156,

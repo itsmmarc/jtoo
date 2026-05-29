@@ -38,9 +38,7 @@
 {#snippet PlayerCard(sideKey: 'leftPlayer' | 'rightPlayer')}
 	{@const player = overlay.current[sideKey]}
 
-	{#if player.name === '' || player == null}
-		<div>no player</div>
-	{:else}
+	{#if player.name !== '' && player != null}
 		<section class="relative z-10 flex h-full w-2/5 flex-col flex-wrap gap-4">
 			<div class="flex justify-end gap-3 {sideKey === 'rightPlayer' ? 'flex-row-reverse' : ''}">
 				<!-- name -->
