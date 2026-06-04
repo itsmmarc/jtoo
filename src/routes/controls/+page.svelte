@@ -27,6 +27,7 @@
 	import * as _ from 'underscore';
 	import icon_soldier from '$lib/assets/icon_soldier.png';
 	import icon_demo from '$lib/assets/icon_demo.png';
+	import { initializeWebSocket } from '$lib/websocket';
 
 	const fonts: Settings['font'][] = [...Fonts];
 
@@ -132,6 +133,21 @@ font-inter
 		{/if}
 	{/if}
 	<Checkbox desc="use player PRs" setting="enablePRs" />
+	{#if settings.current.enablePRs}
+		<div class="flex gap-2">
+			<label for="input-websocket">WebSocket Token</label>
+			<input
+				class="input"
+				id="input-websocket"
+				value={settings.current.webSocketToken}
+				onchange={(e) => {
+					let target = e.target as HTMLInputElement;
+					settings.current.webSocketToken = target.value;
+					initializeWebSocket();
+				}}
+			/>
+		</div>
+	{/if}
 	<Checkbox desc="use avatars" setting="enableAvatars" />
 	<Checkbox desc="use tags" setting="enableTags" />
 </Accordion>

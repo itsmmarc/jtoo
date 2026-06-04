@@ -26,6 +26,7 @@ export type Settings = {
 	enableTeamColors: boolean;
 	enableSinglePOV: boolean;
 	enablePOVGuide: boolean;
+	webSocketToken: string;
 };
 
 export type Vector = {
@@ -496,7 +497,8 @@ export const defaultSettings: Settings = {
 	enableGradient: true,
 	enableTeamColors: false,
 	enableSinglePOV: false,
-	enablePOVGuide: false
+	enablePOVGuide: false,
+	webSocketToken: ''
 };
 
 export const defaultOverlay: Overlay = {
