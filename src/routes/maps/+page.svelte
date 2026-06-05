@@ -71,9 +71,8 @@
 									transition:fade|global
 									class="absolute top-0 right-0 -z-1 h-full w-full rounded-xl bg-linear-to-tr
                                                                 {step.action == 'pick'
-										? 'from-[#00ff0878]'
-										: 'from-[#ff000078]'}
-                                                                to-transparent"
+										? 'from-[#07de44a0] via-[#9be39f38] to-[#bfefc110]'
+										: 'from-[#bb2204c8] via-[#3f020286] to-[#110000af]'}"
 								></div>
 								<img
 									transition:slide|global={{ axis: 'x' }}
