@@ -2,6 +2,7 @@
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { settings, items } from '$lib/storage.svelte';
 	import { fade } from 'svelte/transition';
+	import { messages } from '$lib/websocket';
 </script>
 
 <!-- isolated border filter -->
@@ -10,6 +11,9 @@
 <!-- <PlayerInput sideKey="leftPlayer" />
 <hr class="mx-2 mb-2 h-32 w-1 self-end border-none bg-obs-padding" />
 <PlayerInput side="right" /> -->
+
+<p>{messages.current}</p>
+{console.log(messages.current)}
 
 <section class="relative z-20 m-auto flex w-full justify-center gap-10 p-4">
 	{#if settings.current.enableGradient}
