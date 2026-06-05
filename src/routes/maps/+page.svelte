@@ -4,6 +4,35 @@
 	import { fade, slide } from 'svelte/transition';
 	import { messages } from '$lib/websocket';
 	import { type PickBansSessionStateEvent } from '$lib/websocket-types';
+	import type { Attachment } from 'svelte/attachments';
+
+	let progress = 0;
+	let increment = 0;
+	let timeout: NodeJS.Timeout;
+
+	const turnTimer: Attachment = () => {
+		console.log('turnTimer()');
+		clearTimeout(timeout);
+		progress = 0;
+		let m: PickBansSessionStateEvent = messages.current[messages.current.length - 1];
+
+		if (m && m.session?.config.turnTimeLimitSeconds) {
+			console.log('conditions approved');
+			let timelimit = (m.session.config.turnTimeLimitSeconds + 2) * 1000;
+			let fps = 30;
+			let interval = 1000 / fps;
+			increment = (interval / timelimit) * 100;
+
+			timeout = setInterval(timer, interval);
+		}
+	};
+	function timer() {
+		progress += increment;
+		console.log(`incremented: ${increment} to ${progress}`);
+		if (progress > 100) {
+			progress = 0;
+		}
+	}
 </script>
 
 <!-- isolated border filter -->
@@ -13,7 +42,7 @@
 <hr class="mx-2 mb-2 h-32 w-1 self-end border-none bg-obs-padding" />
 <PlayerInput side="right" /> -->
 
-<section class="relative z-20 m-auto flex w-full justify-center gap-10 p-4">
+<section class="relative z-20 m-auto flex w-full flex-col justify-center gap-10 p-4">
 	{#if settings.current.enableGradient}
 		<!-- gradients -->
 		{#if settings.current.enableTeamColors}
@@ -34,7 +63,6 @@
 		{#each Object.entries(items.current.maps) as [key, map], i (i)}
 			{#if key !== 'null'}
 				{@const m: PickBansSessionStateEvent = messages.current[messages.current.length - 1]}
-
 				<div class="@container relative mb-2 h-80 w-160 text-4xl">
 					{#if m && 'session' in m && m.session}
 						{#each m.session.history as step, i (i)}
@@ -80,5 +108,26 @@
 				</div>
 			{/if}
 		{/each}
+	</section>
+	<section class="m-auto flex w-[90%] flex-col gap-3 self-center pb-3">
+		{#if messages.current[messages.current.length - 1]}
+			{@const m: PickBansSessionStateEvent = messages.current[messages.current.length - 1]}
+			{#if m && 'session' in m && m.session}
+				{@const step = m.session.steps[m.session.currentStepIndex]}
+				{#if step}
+					<div class="text-4xl">
+						{step.actor == 'A' ? m.session.playerA.displayName : m.session.playerB.displayName} is {step.action ==
+						'pick'
+							? 'picking'
+							: 'banning'}
+					</div>
+					<div
+						{@attach turnTimer}
+						class="h-5 rounded-xl bg-ctp-lavender"
+						style="width: {progress}%; {getFiltersStyle()}"
+					></div>
+				{/if}
+			{/if}
+		{/if}
 	</section>
 </section>
