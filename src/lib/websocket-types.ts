@@ -79,7 +79,7 @@ interface PickBansSessionState {
 	history: StepResult[];
 }
 
-interface PickBansSessionStateEvent {
+export interface PickBansSessionStateEvent {
 	type: 'pickbans_session_state';
 	session: PickBansSessionState | null; // null when a session is cancelled
 }
