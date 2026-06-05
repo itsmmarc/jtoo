@@ -46,6 +46,7 @@ export type Zones = {
 export type Map = {
 	fileName: string;
 	shortName: string;
+	ID: string;
 	imageURL?: string;
 	zones?: Zones;
 	minimap?: { graphic: string; bounds: Zone };
@@ -302,42 +303,49 @@ export const soldierPlayoffs2026 = {
 		pokus: {
 			fileName: 'jump_pokus_rc4',
 			shortName: 'pokus',
+			ID: 'jump-pokus',
 			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_pokus_rc4.webp'
 			// zones:
 		},
 		marigold: {
 			fileName: 'jump_marigold',
 			shortName: 'marigold',
+			ID: 'jump-marigold',
 			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_marigold.webp'
 			// zones:
 		},
 		phobos: {
 			fileName: 'jump_phobos_zip',
 			shortName: 'phobos',
+			ID: 'jump-phobos',
 			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_phobos_zip.webp'
 			// zones:
 		},
 		oddie: {
 			fileName: 'jump_oddie_a4',
 			shortName: 'oddie',
+			ID: 'jump-oddie',
 			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_oddie_a4.webp'
 			// zones:
 		},
 		ahh: {
 			fileName: 'jump_ahh_c',
 			shortName: 'ahh',
+			ID: 'jump-ahh',
 			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_ahh_c.webp'
 			// zones:
 		},
 		soar: {
 			fileName: 'jump_soar_a4',
 			shortName: 'soar',
+			ID: 'jump-soar',
 			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_soar_a4.webp'
 			// zones:
 		},
 		above: {
 			fileName: 'jump_above_rc1',
 			shortName: 'above',
+			ID: 'jump-above',
 			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_above_rc1.webp'
 			// zones:
 		}
@@ -436,36 +444,42 @@ export const demoPlayoffs2026 = {
 		tissue: {
 			fileName: 'jump_tissue',
 			shortName: 'tissue',
+			ID: 'jump-tissue',
 			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_tissue.webp'
 			// zones:
 		},
 		carbon: {
 			fileName: 'jump_carbon_b1',
 			shortName: 'carbon',
+			ID: 'jump-carbon',
 			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_carbon_b1.webp'
 			// zones:
 		},
 		data: {
 			fileName: 'jump_data_final',
 			shortName: 'data',
+			ID: 'jump-data',
 			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_data_final.webp'
 			// zones:
 		},
 		greenguy2: {
 			fileName: 'jump_greenguy2_b2',
 			shortName: 'greenguy2',
+			ID: 'jump-greenguy2',
 			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_greenguy2_b2.webp'
 			// zones:
 		},
 		legocroc: {
 			fileName: 'jump_legocroc_rc1',
 			shortName: 'legocroc',
+			ID: 'jump-legocroc',
 			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_legocroc_rc1.webp'
 			// zones:
 		},
 		nbn: {
 			fileName: 'jump_nbn_b4b_redo_a1',
 			shortName: 'nbn',
+			ID: 'jump-nbn',
 			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_nbn_b4b_redo_a1.webp'
 			// zones:
 		}

@@ -9,10 +9,10 @@
 
 	let isOpen = false;
 	let error = { noFileName: false };
-	let map: Map = { fileName: '', shortName: '' };
+	let map: Map = { fileName: '', shortName: '', ID: '' };
 
 	function clearMap() {
-		map = { fileName: '', shortName: '' };
+		map = { fileName: '', shortName: '', ID: '' };
 	}
 </script>
 
@@ -56,6 +56,18 @@
 			onkeyup={(e) => {
 				const value = (e.target as HTMLInputElement).value;
 				map.shortName = value;
+			}}
+		/>
+
+		<label for="ID" class="col-span-6">ID</label>
+		<input
+			class="input col-span-4"
+			type="text"
+			id="ID"
+			placeholder="*ID"
+			onkeyup={(e) => {
+				const value = (e.target as HTMLInputElement).value;
+				map.ID = value;
 			}}
 		/>
 
