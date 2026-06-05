@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { settings, items } from '$lib/storage.svelte';
-	import { fade } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 	import { messages } from '$lib/websocket';
 	import { type PickBansSessionStateEvent } from '$lib/websocket-types';
 </script>
@@ -40,6 +40,7 @@
 						{#each m.session.history as step, i (i)}
 							{#if step.mapId == map.ID}
 								<div
+									transition:fade|global
 									class="absolute top-0 right-0 -z-1 h-full w-full rounded-xl bg-linear-to-tr
                                                                 {step.action == 'pick'
 										? 'from-[#00ff0878]'
@@ -47,6 +48,7 @@
                                                                 to-transparent"
 								></div>
 								<img
+									transition:slide|global={{ axis: 'x' }}
 									src={step.actor == 'A'
 										? m.session.playerA.avatarUrl
 										: m.session.playerB.avatarUrl}
@@ -64,14 +66,14 @@
 						{key}
 					</h1>
 					<div
-						class="absolute top-0 right-0 -z-1 h-full w-full rounded-xl bg-linear-to-t from-transparent via-transparent to-[#000000aa]"
+						class="absolute top-0 right-0 -z-1 h-full w-full rounded-xl bg-linear-to-t from-transparent via-transparent to-[#000000d0]"
 					></div>
 					{#if map.imageURL}
 						<img
 							in:fade
 							src={map.imageURL}
 							alt=""
-							class="absolute -z-10 h-full w-full rounded-xl object-cover blur-[2px]"
+							class="absolute -z-10 h-full w-full rounded-xl object-cover"
 							draggable="false"
 						/>
 					{/if}
