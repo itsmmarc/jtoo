@@ -3,6 +3,7 @@
 	import { settings, items } from '$lib/storage.svelte';
 	import { fade } from 'svelte/transition';
 	import { messages } from '$lib/websocket';
+	import { type PickBansSessionStateEvent } from '$lib/websocket-types';
 </script>
 
 <!-- isolated border filter -->
@@ -11,9 +12,6 @@
 <!-- <PlayerInput sideKey="leftPlayer" />
 <hr class="mx-2 mb-2 h-32 w-1 self-end border-none bg-obs-padding" />
 <PlayerInput side="right" /> -->
-
-<p>{messages.current}</p>
-{console.log(messages.current)}
 
 <section class="relative z-20 m-auto flex w-full justify-center gap-10 p-4">
 	{#if settings.current.enableGradient}
@@ -35,7 +33,30 @@
 	<section class="flex flex-wrap justify-around gap-5 p-10">
 		{#each Object.entries(items.current.maps) as [key, map], i (i)}
 			{#if key !== 'null'}
+				{@const m: PickBansSessionStateEvent = messages.current[messages.current.length - 1]}
+
 				<div class="@container relative mb-2 h-80 w-160 text-4xl">
+					{#if m && 'session' in m && m.session}
+						{#each m.session.history as step, i (i)}
+							{#if step.mapId == map.ID}
+								<div
+									class="absolute top-0 right-0 -z-1 h-full w-full rounded-xl bg-linear-to-tr
+                                                                {step.action == 'pick'
+										? 'from-[#00ff0878]'
+										: 'from-[#ff000078]'}
+                                                                to-transparent"
+								></div>
+								<img
+									src={step.actor == 'A'
+										? m.session.playerA.avatarUrl
+										: m.session.playerB.avatarUrl}
+									alt=""
+									class="absolute bottom-4 left-4 size-24 rounded-xl object-cover object-center"
+									draggable="false"
+								/>
+							{/if}
+						{/each}
+					{/if}
 					<h1
 						class="absolute top-0 right-0 w-full p-2 text-center"
 						style:filter={getFiltersStyle()}
