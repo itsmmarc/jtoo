@@ -11,8 +11,12 @@ export const messages = new PersistentState(
 
 export function initializeWebSocket() {
 	messages.current = [];
-	console.log('initializing');
-	console.log(`token: ${settings.current.webSocketToken}`);
+	if (!settings.current.useWebSocket) {
+		ws.close();
+		return;
+	}
+	console.log('initializing websocket');
+	// console.log(`token: ${settings.current.webSocketToken}`);
 	ws = new WebSocket(`https://console.jumpfortress.tf/?token=${settings.current.webSocketToken}`);
 	ws.onmessage = function (event) {
 		const data = JSON.parse(event.data);

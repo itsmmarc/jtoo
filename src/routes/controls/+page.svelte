@@ -24,6 +24,7 @@
 		Fonts,
 		type Font
 	} from '$lib/storage.svelte';
+	import { slide } from 'svelte/transition';
 	import * as _ from 'underscore';
 	import icon_soldier from '$lib/assets/icon_soldier.png';
 	import icon_demo from '$lib/assets/icon_demo.png';
@@ -31,14 +32,9 @@
 
 	const fonts: Settings['font'][] = [...Fonts];
 
-	/* font safelist
-font-cause
-font-comic-relief
-font-courier-prime
-font-fredoka
-font-inter
-*/
-	fullReset();
+	if (settings.current.useWebSocket) {
+		initializeWebSocket();
+	}
 </script>
 
 <span class="self-center">sooft controls</span>
@@ -123,19 +119,18 @@ font-inter
 
 	<hr class="mb-0.5 h-0.5 w-full border-none bg-obs-padding" />
 
-	<Checkbox desc="use moving background" setting="enableMovingBG" />
-	<Checkbox desc="use single POV" setting="enableSinglePOV" />
-	{#if !settings.current.enableSinglePOV}
-		<Checkbox desc="show POV guide" setting="enablePOVGuide" />
-		<Checkbox desc="use gradient" setting="enableGradient" />
-		{#if settings.current.enableGradient}
-			<Checkbox desc="use red & blue team colors" setting="enableTeamColors" />
-		{/if}
-	{/if}
-	<Checkbox desc="use player PRs" setting="enablePRs" />
-	{#if settings.current.enablePRs}
+	<label transition:slide|global>
+		<input
+			class="peer size-4 accent-ctp-lavender"
+			type="checkbox"
+			bind:checked={settings.current.useWebSocket}
+			onchange={() => initializeWebSocket()}
+		/>
+		<span class="peer-not-checked:text-ctp-text/50">use WebSocket</span>
+	</label>
+	{#if settings.current.useWebSocket}
 		<div class="flex gap-2">
-			<label for="input-websocket">WebSocket Token</label>
+			<label for="input-websocket">enter WebSocket token: </label>
 			<input
 				class="input"
 				id="input-websocket"
@@ -148,6 +143,16 @@ font-inter
 			/>
 		</div>
 	{/if}
+	<Checkbox desc="use moving background" setting="enableMovingBG" />
+	<Checkbox desc="use single POV" setting="enableSinglePOV" />
+	{#if !settings.current.enableSinglePOV}
+		<Checkbox desc="show POV guide" setting="enablePOVGuide" />
+		<Checkbox desc="use gradient" setting="enableGradient" />
+		{#if settings.current.enableGradient}
+			<Checkbox desc="use red & blue team colors" setting="enableTeamColors" />
+		{/if}
+	{/if}
+	<Checkbox desc="use player PRs" setting="enablePRs" />
 	<Checkbox desc="use avatars" setting="enableAvatars" />
 	<Checkbox desc="use tags" setting="enableTags" />
 </Accordion>

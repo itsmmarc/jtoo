@@ -10,8 +10,6 @@
 	let increment = 0;
 	let timeout: NodeJS.Timeout;
 
-	let picked = false;
-
 	const turnTimer: Attachment = () => {
 		console.log('turnTimer()');
 		clearTimeout(timeout);

@@ -26,6 +26,7 @@ export type Settings = {
 	enableTeamColors: boolean;
 	enableSinglePOV: boolean;
 	enablePOVGuide: boolean;
+	useWebSocket: boolean;
 	webSocketToken: string;
 };
 
@@ -512,6 +513,7 @@ export const defaultSettings: Settings = {
 	enableTeamColors: false,
 	enableSinglePOV: false,
 	enablePOVGuide: false,
+	useWebSocket: false,
 	webSocketToken: ''
 };
 
@@ -519,14 +521,14 @@ export const defaultOverlay: Overlay = {
 	bestOf: 3,
 	leftPlayer: { name: '', avatarURL: '', tag: '', flag: '', score: 0, pr: {} },
 	rightPlayer: { name: '', avatarURL: '', tag: '', flag: '', score: 0, pr: {} },
-	map: { fileName: '', shortName: '' },
+	map: { fileName: '', shortName: '', ID: '' },
 	stage: '',
 	class: 'soldier'
 };
 
 export const defaultItems: Items = {
 	players: [{ name: '', score: 0 }],
-	maps: { null: { fileName: '', shortName: '' } },
+	maps: { null: { fileName: '', shortName: '', ID: '' } },
 	stages: defaultStages
 };
 
