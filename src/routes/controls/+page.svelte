@@ -28,7 +28,7 @@
 	import * as _ from 'underscore';
 	import icon_soldier from '$lib/assets/icon_soldier.png';
 	import icon_demo from '$lib/assets/icon_demo.png';
-	import { initializeWebSocket } from '$lib/websocket';
+	import { initializeWebSocket } from '$lib/websocket.svelte';
 
 	const fonts: Settings['font'][] = [...Fonts];
 

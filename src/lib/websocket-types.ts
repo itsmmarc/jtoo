@@ -86,7 +86,6 @@ export interface PickBansSessionStateEvent {
 }
 
 // MARK: Timer
-
 interface WelcomeEvent {
 	type: 'welcome';
 	message: string; // "Connected to WebSocket server"
@@ -131,3 +130,19 @@ interface TimerFinishEvent extends BaseTimerEvent {
 	avgvel: number; // average abs velocity float32
 	maxvel: number; // max abs velocity float32
 }
+
+// MARK: Messages
+export type Messages = {
+	mapPicks: PickBansSessionStateEvent[];
+	timer: BaseTimerEvent[];
+};
+
+export const defaultMessages = {
+	mapPicks: [
+		{
+			type: 'pickbans_session_state',
+			session: null
+		}
+	],
+	timer: []
+} as Messages;

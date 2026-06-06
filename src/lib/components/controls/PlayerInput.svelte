@@ -211,7 +211,7 @@
 					placeholder="0:00.00"
 					onkeyup={(e) => {
 						const value = (e.target as HTMLInputElement).value;
-						player.pr![map].rank = parseInt(value);
+						player.tempusPrs![map].rank = parseInt(value);
 					}}
 				/>
 				<input
@@ -221,7 +221,7 @@
 					placeholder="rank"
 					onkeyup={(e) => {
 						const value = (e.target as HTMLInputElement).value;
-						player.pr![map].time = value;
+						player.tempusPrs![map].time = value;
 					}}
 				/>
 			{/if}

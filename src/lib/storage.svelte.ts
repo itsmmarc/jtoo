@@ -72,12 +72,13 @@ export type Player = {
 	name: string;
 	score: number;
 	tempusID?: string;
-	steamID64?: string;
+	steamID3?: string;
 	avatarURL?: string;
 	tag?: string;
 	flag?: string;
+	pr?: string;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	pr?: MapPRs<any>;
+	tempusPrs?: MapPRs<any>;
 	rank?: Rank;
 	WRs?: number;
 	TTs?: number;
@@ -122,17 +123,17 @@ export type Playoffs2026DemoMapList = {
 
 export const soldierPlayoffs2026 = {
 	players: [
-		{ name: '', score: 0, pr: {} },
+		{ name: '', score: 0, tempusPrs: {} },
 		{
 			name: 'vice',
 			tempusID: '10736',
-			steamID64: '76561198366368448',
+			steamID3: '[U:1:406102720]',
 			avatarURL:
 				'https://avatars.akamai.steamstatic.com/75f84c1f8d7956ad4521718c53c6a7b381e3acee_full.jpg',
 			tag: 'fuck vice',
 			flag: 'sg',
 			rank: { overall: 1, soldier: 2, demo: 1 },
-			pr: {
+			tempusPrs: {
 				pokus: { rank: 1, time: '03:10.935' },
 				marigold: { rank: 3, time: '01:18.629' },
 				phobos: { rank: 1, time: '01:07.965' },
@@ -151,13 +152,13 @@ export const soldierPlayoffs2026 = {
 		{
 			name: 'Nikita',
 			tempusID: '602086',
-			steamID64: '76561199514776310',
+			steamID3: '[U:1:1554510582]',
 			avatarURL:
 				'https://avatars.akamai.steamstatic.com/7e66f539d7f62409db0a6b9a39f5d7334d549a7a_full.jpg',
 			tag: '',
 			flag: 'se',
 			rank: { overall: 2, soldier: 1, demo: 2579 },
-			pr: {
+			tempusPrs: {
 				pokus: { rank: 2, time: '03:13.034' },
 				marigold: { rank: 6, time: '01:20.549' },
 				phobos: { rank: 7, time: '01:16.215' },
@@ -176,13 +177,13 @@ export const soldierPlayoffs2026 = {
 		{
 			name: 'Garf',
 			tempusID: '579826',
-			steamID64: '76561199243400809',
+			steamID3: '[U:1:1283135081]',
 			avatarURL:
 				'https://avatars.akamai.steamstatic.com/45005e86d752dcb1439be9c937ee1ce6e2b4d0ab_full.jpg',
 			tag: '',
 			flag: 'pl',
 			rank: { overall: 8, soldier: 6, demo: 390 },
-			pr: {
+			tempusPrs: {
 				pokus: { rank: 57, time: '04:20.640' },
 				marigold: { rank: 7, time: '01:22.125' },
 				phobos: { rank: 2, time: '01:10.245' },
@@ -201,13 +202,13 @@ export const soldierPlayoffs2026 = {
 		{
 			name: 'bunny.',
 			tempusID: '357942',
-			steamID64: '76561198201985399',
+			steamID3: '[U:1:241719671]',
 			avatarURL:
 				'https://avatars.akamai.steamstatic.com/5f84395a8424e7d4828f6b18c9cb90a12fa24ed4_full.jpg',
 			tag: '',
 			flag: 'fi',
 			rank: { overall: 4, soldier: 4, demo: 42 },
-			pr: {
+			tempusPrs: {
 				pokus: { rank: 3, time: '03:16.125' },
 				marigold: { rank: 1, time: '01:15.420' },
 				phobos: { rank: 4, time: '01:14.070' },
@@ -226,13 +227,13 @@ export const soldierPlayoffs2026 = {
 		{
 			name: 'Sammy',
 			tempusID: '503501',
-			steamID64: '76561199001307670',
+			steamID3: '[U:1:1041041942]',
 			avatarURL:
 				'https://avatars.akamai.steamstatic.com/a5104f8172127271e4762fc0aa1112fc2b0a0f9f_full.jpg',
 			tag: '',
 			flag: 'ca',
 			rank: { overall: 3, soldier: 3, demo: 45 },
-			pr: {
+			tempusPrs: {
 				pokus: { rank: 0, time: '' },
 				marigold: { rank: 0, time: '' },
 				phobos: { rank: 0, time: '' },
@@ -251,13 +252,13 @@ export const soldierPlayoffs2026 = {
 		{
 			name: 'Hass',
 			tempusID: '31339',
-			steamID64: '76561198152719870',
+			steamID3: '[U:1:192454142]',
 			avatarURL:
 				'https://shared.akamai.steamstatic.com/community_assets/images/items/1913420/1a5409eff27cdf6c32706526a68316820ca66835.gif',
 			tag: '',
 			flag: 'gb',
 			rank: { overall: 21, soldier: 9, demo: 727 },
-			pr: {
+			tempusPrs: {
 				pokus: { rank: 0, time: '' },
 				marigold: { rank: 0, time: '' },
 				phobos: { rank: 0, time: '' },
@@ -276,13 +277,13 @@ export const soldierPlayoffs2026 = {
 		{
 			name: 'Spidda',
 			tempusID: '24856',
-			steamID64: '76561198057436685',
+			steamID3: '[U:1:97170957]',
 			avatarURL:
 				'https://avatars.akamai.steamstatic.com/31f788519863b79f24b1604e090596ba6961a3ab_full.jpg',
 			tag: '',
 			flag: 'us',
 			rank: { overall: 23, soldier: 11, demo: 795 },
-			pr: {
+			tempusPrs: {
 				pokus: { rank: 0, time: '' },
 				marigold: { rank: 0, time: '' },
 				phobos: { rank: 0, time: '' },
@@ -355,10 +356,10 @@ export const soldierPlayoffs2026 = {
 
 export const demoPlayoffs2026 = {
 	players: [
-		{ name: '', score: 0, pr: {} },
+		{ name: '', score: 0, tempusPrs: {} },
 		{
 			...soldierPlayoffs2026.players.filter((p) => p.name == 'vice')[0],
-			pr: {
+			tempusPrs: {
 				tissue: { rank: 1, time: '01:09.240' },
 				carbon: { rank: 1, time: '01:05.610' },
 				data: { rank: 2, time: '01:06.675' },
@@ -370,13 +371,13 @@ export const demoPlayoffs2026 = {
 		{
 			name: 'newjuls',
 			tempusID: '281915',
-			steamID64: '76561198396018338',
+			steamID3: '[U:1:435752610]',
 			avatarURL:
 				'https://avatars.akamai.steamstatic.com/97c996f978b84083afc12e7713f9626cda82ff83_full.jpg',
 			tag: '',
 			flag: 'nz',
 			rank: { overall: 6, soldier: 16, demo: 2 },
-			pr: {
+			tempusPrs: {
 				tissue: { rank: 1, time: '03:10.935' },
 				carbon: { rank: 3, time: '01:18.629' },
 				data: { rank: 1, time: '01:07.965' },
@@ -394,13 +395,13 @@ export const demoPlayoffs2026 = {
 		{
 			name: 'cander',
 			tempusID: '243670',
-			steamID64: '76561198318722879',
+			steamID3: '[U:1:358457151]',
 			avatarURL:
 				'https://avatars.akamai.steamstatic.com/132bdddaf081fe2548a3503ed7058980cb189715_full.jpg',
 			tag: 'real vice',
 			flag: 'id',
 			rank: { overall: 7, soldier: 58, demo: 3 },
-			pr: {
+			tempusPrs: {
 				tissue: { rank: 4, time: '01:12.825' },
 				carbon: { rank: 3, time: '01:08.250' },
 				data: { rank: 4, time: '01:14.535' },
@@ -418,13 +419,13 @@ export const demoPlayoffs2026 = {
 		{
 			name: 'namee',
 			tempusID: '35454',
-			steamID64: '76561198096062185',
+			steamID3: '[U:1:135796457]',
 			avatarURL:
 				'https://avatars.akamai.steamstatic.com/265eb8e845c99da4e5cae4563163cb974c3d482e_full.jpg',
 			tag: '',
 			flag: 'th',
 			rank: { overall: 15, soldier: 268, demo: 9 },
-			pr: {
+			tempusPrs: {
 				tissue: { rank: 1, time: '03:10.935' },
 				carbon: { rank: 3, time: '01:18.629' },
 				data: { rank: 1, time: '01:07.965' },
@@ -519,8 +520,8 @@ export const defaultSettings: Settings = {
 
 export const defaultOverlay: Overlay = {
 	bestOf: 3,
-	leftPlayer: { name: '', avatarURL: '', tag: '', flag: '', score: 0, pr: {} },
-	rightPlayer: { name: '', avatarURL: '', tag: '', flag: '', score: 0, pr: {} },
+	leftPlayer: { name: '', avatarURL: '', tag: '', flag: '', score: 0, tempusPrs: {} },
+	rightPlayer: { name: '', avatarURL: '', tag: '', flag: '', score: 0, tempusPrs: {} },
 	map: { fileName: '', shortName: '', ID: '' },
 	stage: '',
 	class: 'soldier'

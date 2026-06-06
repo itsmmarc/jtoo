@@ -3,7 +3,7 @@
 	import { overlay } from '$lib/storage.svelte';
 	import { settings } from '$lib/storage.svelte';
 	import { fade } from 'svelte/transition';
-	import PRDisplay from '$lib/components/controls/PRDisplay.svelte';
+	import PRDisplay from '$lib/components/maps/PRDisplay.svelte';
 </script>
 
 <!-- isolated border filter -->
@@ -100,6 +100,7 @@
 								: 'flex-row-reverse'}"
 						>
 							<!-- okay for now since the app is client-side only, probably want to rework when (if) tempus api is implemented -->
+							<!-- eslint-disable-->
 							{@html player.note}
 						</li>
 					</ul>

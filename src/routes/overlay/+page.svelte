@@ -2,10 +2,15 @@
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { settings, overlay } from '$lib/storage.svelte';
 	import { fade, slide } from 'svelte/transition';
+	import WebSocketCheckpoints from '$lib/components/overlay/WebSocketCheckpoints.svelte';
+	import WebSocketTimer from '$lib/components/overlay/WebSocketTimer.svelte';
 </script>
 
-<!-- top bar -->
+<!-- MARK: top bar -->
 <div class="relative z-20 flex h-32 w-full justify-between p-4">
+	{#if settings.current.useWebSocket && settings.current.webSocketToken !== '' && overlay.current.leftPlayer.steamID3 && overlay.current.rightPlayer.steamID3}
+		<WebSocketTimer />
+	{/if}
 	{#if settings.current.enableGradient}
 		<!-- gradients -->
 		{#if settings.current.enableTeamColors}
@@ -29,7 +34,7 @@
 <!-- isolated border filter -->
 <div class="border-b-4 border-ctp-lavender/50" style:filter={getFiltersStyle()}></div>
 
-<!-- POVs -->
+<!-- MARK: POVs -->
 {#if !settings.current.enableSinglePOV}
 	<div
 		transition:slide
@@ -51,12 +56,12 @@
 	</div>
 {/if}
 
-<!-- bottom bar -->
+<!-- MARK: bottom bar -->
 <div class="flex h-16 w-full justify-between" style:filter={getFiltersStyle()}>
 	<!-- stage -->
 	<div
 		class="relative -left-6 flex h-full -skew-x-30 items-center justify-end rounded-br-xl border-r-4 border-b-4 border-ctp-lavender/50 bg-ctp-lavender/25
-    {overlay.current.stage === '' ? 'opacity-0' : ''}"
+                {overlay.current.stage === '' ? 'opacity-0' : ''}"
 	>
 		{#key overlay.current.stage}
 			<span in:fade class="relative left-2 skew-x-30 px-8 text-3xl text-ctp-text/75"
@@ -68,7 +73,7 @@
 	<!-- map -->
 	<div
 		class="relative -right-6 flex h-full skew-x-30 items-center justify-end rounded-bl-xl border-b-4 border-l-4 border-ctp-lavender/50 bg-ctp-lavender/25
-    {overlay.current.map.shortName === '' ? 'opacity-0' : ''}"
+                {overlay.current.map.shortName === '' ? 'opacity-0' : ''}"
 	>
 		{#key overlay.current.stage}
 			<span in:fade class="relative right-2 -skew-x-30 px-8 text-3xl text-ctp-text/75"
@@ -76,8 +81,12 @@
 			>
 		{/key}
 	</div>
+	{#if settings.current.useWebSocket && settings.current.webSocketToken !== '' && overlay.current.leftPlayer.steamID3 && overlay.current.rightPlayer.steamID3}
+		<WebSocketCheckpoints />
+	{/if}
 </div>
 
+<!-- MARK: OverlayPlayer -->
 {#snippet OverlayPlayer(sideKey: 'leftPlayer' | 'rightPlayer')}
 	{@const flag = overlay.current[sideKey].flag}
 	{@const avatarURL = overlay.current[sideKey].avatarURL}
@@ -122,7 +131,7 @@
 			<!-- score -->
 			<div
 				class="flex gap-2 text-ctp-text/75
-      {sideKey === 'rightPlayer' ? 'flex-row-reverse' : ''}"
+                                {sideKey === 'rightPlayer' ? 'flex-row-reverse' : ''}"
 			>
 				{#each { length: overlay.current[sideKey].score }}
 					<span
