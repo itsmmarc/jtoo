@@ -49,7 +49,7 @@
 
 @layer base {
 	:root {
-		@apply font-comic-relief text-ctp-text selection:bg-ctp-lavender/50;
+		@apply font-space-grotesk font-medium text-ctp-text selection:bg-ctp-lavender/50;
 	}
 
 	body {

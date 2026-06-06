@@ -11,12 +11,29 @@
 		<h1 class="text-center text-8xl">Jump Fortress Playoffs 2026 Overlay</h1>
 	</div>
 	<div>
+		<h2 class="mb-2 text-center text-3xl">Docks</h2>
+		<hr class="mb-0.5 h-0.5 w-full border-none bg-obs-padding" />
+		<ul class="mb-5 list-decimal italic">
+			<li>in OBS, navigate to Docks -> Custom Browser Docks</li>
+			<li>add controls url</li>
+		</ul>
 		{@render URLButton('controls', 'controls')}
 	</div>
-	<div class="flex gap-5">
-		{@render URLButton('overlay', 'overlay')}
-		{@render URLButton('maps', 'maps')}
-		{@render URLButton('player cards', 'playercards')}
+	<div>
+		<h2 class="mb-2 text-center text-3xl">Overlays</h2>
+		<hr class="mb-0.5 h-0.5 w-full border-none bg-obs-padding" />
+		<ul class="m-auto mb-5 w-fit list-decimal italic">
+			<li>in OBS, navigate to Sources -> Add Source -> Browser</li>
+			<li>add overlay url</li>
+			<li>set width to 1920 and height to 1080</li>
+			<li>remove Custom CSS</li>
+			<li>repeat steps 2-4 for each overlay</li>
+		</ul>
+		<div class="flex gap-5">
+			{@render URLButton('match', 'overlay')}
+			{@render URLButton('maps', 'maps')}
+			{@render URLButton('player cards', 'playercards')}
+		</div>
 	</div>
 </main>
 
