@@ -17,18 +17,17 @@
 		defaultStages,
 		defaultSettings,
 		fullReset,
-		loadSoldierPlayoffs2026,
-		loadDemoPlayoffs2026,
 		type TFClass,
 		TFClasses,
 		Fonts,
 		type Font
 	} from '$lib/storage.svelte';
+	import { loadSoldierPlayoffs2026, loadDemoPlayoffs2026 } from '$lib/preset-data.svelte';
 	import { slide } from 'svelte/transition';
 	import * as _ from 'underscore';
 	import icon_soldier from '$lib/assets/icon_soldier.png';
 	import icon_demo from '$lib/assets/icon_demo.png';
-	import { initializeWebSocket, timer } from '$lib/websocket.svelte';
+	import { initializeWebSocket } from '$lib/websocket.svelte';
 
 	const fonts: Settings['font'][] = [...Fonts];
 
