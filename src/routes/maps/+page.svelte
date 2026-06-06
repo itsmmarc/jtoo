@@ -10,6 +10,8 @@
 	let increment = 0;
 	let timeout: NodeJS.Timeout;
 
+	let picked = false;
+
 	const turnTimer: Attachment = () => {
 		console.log('turnTimer()');
 		clearTimeout(timeout);
@@ -71,8 +73,8 @@
 									transition:fade|global
 									class="absolute top-0 right-0 -z-1 h-full w-full rounded-xl bg-linear-to-tr
                                                                 {step.action == 'pick'
-										? 'from-[#07de44a0] via-[#9be39f38] to-[#bfefc110]'
-										: 'from-[#bb2204c8] via-[#3f020286] to-[#110000af]'}"
+										? 'from-[#06d641a5] via-[#53c35823] to-[#bfefc10f] mix-blend-hard-light'
+										: 'from-[#cd130acc] via-[#250101b5] to-[#18000065] mix-blend-soft-light'}"
 								></div>
 								<img
 									transition:slide|global={{ axis: 'x' }}
@@ -83,6 +85,11 @@
 									class="absolute bottom-4 left-4 size-24 rounded-xl object-cover object-center"
 									draggable="false"
 								/>
+								{#if step.action == 'ban'}
+									<div
+										class="absolute top-0 right-0 -z-2 h-full w-full rounded-xl bg-[#0e0e0e] opacity-90 mix-blend-hue"
+									></div>
+								{/if}
 							{/if}
 						{/each}
 					{/if}
