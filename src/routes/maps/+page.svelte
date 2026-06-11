@@ -59,7 +59,7 @@
 		{#each Object.entries(items.current.maps) as [key, map], i (i)}
 			{#if key !== 'null'}
 				{@const m: PickBansSessionStateEvent | null = messages.current.mapPicks ? messages.current.mapPicks[messages.current.mapPicks.length - 1] : null}
-				<div class="@container relative mb-2 h-80 w-160 text-4xl">
+				<div class="@container relative mb-2 h-65 w-130 text-4xl">
 					{#if m && 'session' in m && m.session}
 						{#each m.session.history as step, i (i)}
 							{#if step.mapId == map.ID}
