@@ -41,32 +41,34 @@
 	{#if player.name !== '' && player != null}
 		<section class="relative z-10 flex h-full w-2/5 flex-col flex-wrap gap-4">
 			<div class="flex justify-end gap-3 {sideKey === 'rightPlayer' ? 'flex-row-reverse' : ''}">
-				<!-- name -->
-				<div
-					class="flex h-fit flex-col {sideKey === 'rightPlayer' ? 'items-end' : 'items-start'}"
-					style:filter={getFiltersStyle()}
-				>
-					<div class="mb-3 flex gap-2">
-						<!-- tag -->
-						{#if settings.current.enableTags && player.tag}
-							{#key player.tag}
-								<span in:fade class="text-4xl text-ctp-text/75">{player.tag}</span>
+				<div class={sideKey === 'rightPlayer' ? '' : 'text-right'}>
+					<!-- name -->
+					<div
+						class="flex h-fit flex-col {sideKey === 'rightPlayer' ? 'items-end' : 'items-start'}"
+						style:filter={getFiltersStyle()}
+					>
+						<div class="mb-3 flex gap-2">
+							<!-- tag -->
+							{#if settings.current.enableTags && player.tag}
+								{#key player.tag}
+									<span in:fade class="text-4xl text-ctp-text/75">{player.tag}</span>
+								{/key}
+							{/if}
+							<!-- name -->
+							{#key player.name}
+								<span in:fade class="text-8xl font-bold">{player.name}</span>
 							{/key}
-						{/if}
-						<!-- name -->
-						{#key player.name}
-							<span in:fade class="text-8xl font-bold">{player.name}</span>
-						{/key}
+						</div>
 					</div>
-				</div>
 
-				<!-- flag -->
-				{#if settings.current.enableFlags && player.flag}
-					{#key player.flag}
-						<span in:fade class="fi fi-{player.flag} flex h-fit w-fit rounded-xl text-[8rem]"
-						></span>
-					{/key}
-				{/if}
+					<!-- flag -->
+					{#if settings.current.enableFlags && player.flag}
+						{#key player.flag}
+							<span in:fade class="fi fi-{player.flag} flex h-fit w-fit rounded-xl text-[8rem]"
+							></span>
+						{/key}
+					{/if}
+				</div>
 
 				<!-- avatar -->
 				{#if settings.current.enableAvatars && player.avatarURL}
