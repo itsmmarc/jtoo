@@ -1,33 +1,41 @@
 <script lang="ts">
 	import { csToTime, timer } from '$lib/websocket.svelte';
 	import { settings } from '$lib/storage.svelte';
-	// import { SvelteMap } from 'svelte/reactivity';
 	import { slide, fade } from 'svelte/transition';
 	import { getFiltersStyle } from '$lib/filters.svelte';
 
 	let merged = $derived(mergeCheckpoints());
-	let size = $derived(merged.size);
+	let size = $derived(merged.length);
 
 	function mergeCheckpoints() {
-		const merged = {};
+		const merged: number[] = [];
 
-		if (!timer.current.leftcps || !timer.current.rightcps) {
+		if (
+			timer.current.leftcps.length == 0 ||
+			timer.current.rightcps.length == 0 ||
+			timer.current.checkpoints.length == 0
+		) {
 			return merged;
 		}
 
-		for (const [checkpoint, time] of Object.entries(timer.current.leftcps)) {
-			Object.assign(merged, { [checkpoint]: time });
-		}
+		let size = Math.min(
+			timer.current.leftcps.length,
+			timer.current.rightcps.length,
+			timer.current.checkpoints.length
+		);
 
-		for (const [checkpoint, time] of Object.entries(timer.current.rightcps)) {
-			if (checkpoint in merged) {
-				if (merged[checkpoint] > time) {
-					Object.assign(merged, [checkpoint, time]);
-				}
+		for (let i = 0; i < size; i++) {
+			if (timer.current.leftcps[i] > timer.current.rightcps[i]) {
+				merged.push(timer.current.leftcps[i]);
 			} else {
-				Object.assign(merged, [checkpoint, time]);
+				merged.push(timer.current.rightcps[i]);
 			}
 		}
+
+		console.log(timer.current.checkpoints);
+		console.log(timer.current.leftcps);
+		console.log(timer.current.rightcps);
+		console.log(merged);
 		return merged;
 	}
 </script>
@@ -38,43 +46,35 @@
 			? 'gap-y-1 text-2xl'
 			: 'gap-y-3 text-3xl'}"
 	>
-		{#if merged}
-			{#each Object.entries(merged) as [checkpoint, time], i (i)}
-				<div in:slide class="relative flex items-center justify-center">
-					{#if checkpoint.includes('Course')}
-						<span
-							class="border-overlay-orange/70 absolute bottom-1.5 h-full w-90 rounded-lg border-t-3"
-							style={getFiltersStyle()}
-						></span>
-					{/if}
-					<span class="flex">{csToTime(time * 100)}</span>
-					{#if checkpoint in timer.current.leftcps && checkpoint in timer.current.rightcps}
-						{#if timer.current.leftcps[checkpoint] < timer.current.rightcps[checkpoint]}
-							<span
-								transition:fade|global
-								class="bg-tempus-green/60 absolute rounded-lg px-2.5 {size > 14
-									? 'right-32 py-0.5 text-xl'
-									: 'right-40 py-1 text-2xl'}"
-							>
-								{(timer.current.leftcps[checkpoint] - timer.current.rightcps[checkpoint]).toFixed(
-									1
-								)}
-							</span>
-						{:else}
-							<span
-								transition:fade|global
-								class="bg-tempus-green/60 absolute rounded-lg px-2.5 {size > 14
-									? 'left-32 py-0.5 text-xl'
-									: 'left-40 py-1 text-2xl'}"
-							>
-								{(timer.current.rightcps[checkpoint] - timer.current.leftcps[checkpoint]).toFixed(
-									1
-								)}
-							</span>
-						{/if}
-					{/if}
-				</div>
-			{/each}
-		{/if}
+		{#each merged as time, i (i)}
+			<div in:slide class="relative flex items-center justify-center">
+				{#if timer.current.checkpoints[i].includes('Course')}
+					<span
+						class="border-overlay-orange/70 absolute bottom-1.5 h-full w-90 rounded-lg border-t-3"
+						style={getFiltersStyle()}
+					></span>
+				{/if}
+				<span class="flex">{csToTime(time * 100)}</span>
+				{#if timer.current.leftcps[i] < timer.current.rightcps[i]}
+					<span
+						transition:fade|global
+						class="absolute rounded-lg bg-[#25ff75]/50 px-2.5 {size > 14
+							? 'right-32 py-0.5 text-xl'
+							: 'right-40 py-1 text-2xl'}"
+					>
+						{(timer.current.leftcps[i] - timer.current.rightcps[i]).toFixed(1)}
+					</span>
+				{:else}
+					<span
+						transition:fade|global
+						class="absolute rounded-lg bg-[#25ff75]/50 px-2.5 {size > 14
+							? 'left-32 py-0.5 text-xl'
+							: 'left-40 py-1 text-2xl'}"
+					>
+						{(timer.current.rightcps[i] - timer.current.leftcps[i]).toFixed(1)}
+					</span>
+				{/if}
+			</div>
+		{/each}
 	</div>
 </div>

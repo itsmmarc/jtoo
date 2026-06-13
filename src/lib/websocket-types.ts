@@ -139,11 +139,11 @@ interface TimerFinishEvent extends BaseTimerEvent {
 
 /*
 {"type":"timer_checkpoint","steamid":50734103,"track":0,"style":0,"timestamp":10000,"tick":450,"formattedCheckpoint":"Checkpoint 1","time":300}
-{"type":"timer_checkpoint","steamid":99019190,"track":0,"style":0,"timestamp":10000,"tick":500,"formattedCheckpoint":"Checkpoint 1","time":320}
-{"type":"timer_checkpoint","steamid":50734103,"track":0,"style":0,"timestamp":10000,"tick":450,"formattedCheckpoint":"Checkpoint 2","time":400}
-{"type":"timer_checkpoint","steamid":99019190,"track":0,"style":0,"timestamp":10000,"tick":450,"formattedCheckpoint":"Checkpoint 2","time":420}
-{"type":"timer_checkpoint","steamid":50734103,"track":0,"style":0,"timestamp":10000,"tick":450,"formattedCheckpoint":"Checkpoint 3","time":550}
-{"type":"timer_checkpoint","steamid":99019190,"track":0,"style":0,"timestamp":10000,"tick":500,"formattedCheckpoint":"Checkpoint 3","time":551.3}
+{"type":"timer_checkpoint","steamid":99019190,"track":0,"style":0,"timestamp":11000,"tick":500,"formattedCheckpoint":"Checkpoint 1","time":320}
+{"type":"timer_checkpoint","steamid":50734103,"track":0,"style":0,"timestamp":12000,"tick":450,"formattedCheckpoint":"Checkpoint 2","time":400}
+{"type":"timer_checkpoint","steamid":99019190,"track":0,"style":0,"timestamp":13000,"tick":450,"formattedCheckpoint":"Checkpoint 2","time":380}
+{"type":"timer_checkpoint","steamid":50734103,"track":0,"style":0,"timestamp":14000,"tick":450,"formattedCheckpoint":"Checkpoint 3","time":550}
+{"type":"timer_checkpoint","steamid":99019190,"track":0,"style":0,"timestamp":15000,"tick":500,"formattedCheckpoint":"Checkpoint 3","time":551.3}
 */
 interface TimerCheckpointEvent extends BaseTimerEvent {
 	type: 'timer_checkpoint';

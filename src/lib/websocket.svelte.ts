@@ -2,6 +2,7 @@ import { PersistentState } from '@friendofsvelte/state';
 import { settings, overlay } from './storage.svelte';
 import { type BaseTimerEvent, type MessageTypes, defaultMessages } from './websocket-types';
 import { ProxyWebSocket } from './ProxyWebSocket';
+import { indexOf } from 'underscore';
 
 export let ws: ProxyWebSocket = new ProxyWebSocket(`https://console.jumpfortress.tf/?token=0`);
 export const wsState = new PersistentState('wsState', { state: 0 }, 'sessionStorage');
@@ -123,8 +124,9 @@ type TimerStore = {
 	competition: CompetitionTimer;
 	leftPr: number | null;
 	rightPr: number | null;
-	leftcps: any;
-	rightcps: any;
+	leftcps: number[];
+	rightcps: number[];
+	checkpoints: string[];
 };
 
 const defaultTimerStore: TimerStore = {
@@ -133,8 +135,9 @@ const defaultTimerStore: TimerStore = {
 	competition: defaultCompetitionTimer,
 	leftPr: null,
 	rightPr: null,
-	leftcps: {},
-	rightcps: {}
+	leftcps: [],
+	rightcps: [],
+	checkpoints: []
 };
 
 export const timer = new PersistentState('timer', defaultTimerStore);
@@ -162,11 +165,11 @@ function timer_start(side: string) {
 function timer_stop(side: string) {
 	if (side === 'left' && !timer.current.left.timer_finish) {
 		Object.assign(timer.current.left, defaultTimer);
-		timer.current.leftcps = {};
+		timer.current.leftcps = [];
 		timer.current.left.timer_stop = true;
 	} else if (side === 'right' && !timer.current.right.timer_finish) {
 		Object.assign(timer.current.right, defaultTimer);
-		timer.current.leftcps = {};
+		timer.current.leftcps = [];
 		timer.current.right.timer_stop = true;
 	}
 }
@@ -192,25 +195,30 @@ function timer_finish(side: string, finishTime: number) {
 }
 
 function timer_checkpoint(side: string, checkpointName: string, checkpointTime: number) {
+	if (timer.current.checkpoints && !timer.current.checkpoints.includes(checkpointName)) {
+		timer.current.checkpoints.push(checkpointName);
+	}
+	const index = indexOf(timer.current.checkpoints, checkpointName);
+
 	if (side === 'left') {
-		Object.assign(timer.current.leftcps, { [checkpointName]: checkpointTime });
+		timer.current.leftcps[index] = checkpointTime;
 	} else {
-		Object.assign(timer.current.rightcps, { [checkpointName]: checkpointTime });
+		timer.current.rightcps[index] = checkpointTime;
 	}
 }
 
 function resetCheckpoints() {
-	timer.current.leftcps = {};
-	timer.current.rightcps = {};
+	timer.current.leftcps = [];
+	timer.current.rightcps = [];
 }
 
 export function resetTimer(side: string) {
 	if (side === 'left') {
 		Object.assign(timer.current.left, defaultTimer);
-		timer.current.leftcps = {};
+		timer.current.leftcps = [];
 	} else {
 		Object.assign(timer.current.right, defaultTimer);
-		timer.current.rightcps = {};
+		timer.current.rightcps = [];
 	}
 }
 

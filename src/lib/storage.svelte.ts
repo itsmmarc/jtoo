@@ -43,27 +43,27 @@ export type Settings = {
 };
 
 // unused, intended for minimap
-export type Vector = {
-	x: number;
-	y: number;
-	z: number;
-};
-export type Zone = {
-	p1: Vector;
-	p2: Vector;
-};
-export type Zones = {
-	start: Zone;
-	end: Zone;
-	cp?: Zone[];
-};
+// export type Vector = {
+// 	x: number;
+// 	y: number;
+// 	z: number;
+// };
+// export type Zone = {
+// 	p1: Vector;
+// 	p2: Vector;
+// };
+// export type Zones = {
+// 	start: Zone;
+// 	end: Zone;
+// 	cp?: Zone[];
+// };
 export type Map = {
 	fileName: string;
 	shortName: string;
 	ID: string;
 	imageURL?: string;
-	zones?: Zones;
-	minimap?: { graphic: string; bounds: Zone };
+	// zones?: Zones;
+	// minimap?: { graphic: string; bounds: Zone };
 };
 
 export type MapPRs<T> = {
