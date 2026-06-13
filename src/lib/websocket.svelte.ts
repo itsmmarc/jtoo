@@ -30,8 +30,8 @@ export function clearTimer() {
 export function initializeWebSocket() {
 	if (ws && ws.readyState == ProxyWebSocket.OPEN) {
 		console.log('closing web socket connection...');
+		wsState.set(3);
 		ws.close();
-		wsState.set(0);
 	}
 	if (ws && ws.readyState == ProxyWebSocket.OPEN) {
 		return;
@@ -74,7 +74,6 @@ export function initializeWebSocket() {
 				timer_checkpoint(checkTimerSide(data), data.formattedCheckpoint, data.time);
 				break;
 			case 'competition_session_live':
-				console.log('competition session started');
 				competition_timer_start(data.durationSeconds);
 				messages.current.competition.push(data);
 				break;
@@ -220,7 +219,7 @@ export const resetPulse = $state({
 	state: false
 });
 
-export function csToTime(cs: number) {
+export function csToTime(cs: number, precision?: 'centiseconds' | 'seconds' | 'minutes') {
 	const minutes = Math.floor(cs / 6000)
 		.toString()
 		.padStart(2, '0');
@@ -231,7 +230,15 @@ export function csToTime(cs: number) {
 		.toString()
 		.padStart(2, '0');
 
-	return `${minutes}:${seconds}.${centiseconds}`;
+	let s: string;
+	if (!precision) {
+		s = `${minutes}:${seconds}.${centiseconds}`;
+	} else {
+		s = `${minutes}`;
+		s += precision == 'seconds' || precision == 'centiseconds' ? `:${seconds}` : '';
+		s += precision == 'centiseconds' ? `.${centiseconds}` : '';
+	}
+	return s;
 }
 
 // MARK: Competition

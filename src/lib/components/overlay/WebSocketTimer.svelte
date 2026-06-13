@@ -59,7 +59,7 @@
 </script>
 
 <div
-	class="absolute flex h-32 w-full items-center justify-center gap-80 {settings.current.monoFont}"
+	class="absolute flex h-32 w-full items-center justify-center gap-70 {settings.current.monoFont}"
 >
 	<span
 		class="{!timer.current.left.timer_start
@@ -80,7 +80,7 @@
 	<div class="absolute top-5 flex flex-col">
 		{#if timer.current.competition.timeLeftSeconds > 0}
 			<div class="text-palewhite/40 text-center text-5xl">
-				{csToTime(Math.trunc(timer.current.competition.timeLeftSeconds * 100))}
+				{csToTime(Math.trunc(timer.current.competition.timeLeftSeconds * 100), 'seconds')}
 			</div>
 		{/if}
 		{#if timer.current.competition.overtime}

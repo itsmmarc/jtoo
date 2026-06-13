@@ -5,6 +5,7 @@
 	import WebSocketCheckpoints from '$lib/components/overlay/WebSocketCheckpoints.svelte';
 	import WebSocketTimer from '$lib/components/overlay/WebSocketTimer.svelte';
 	import { timer } from '$lib/websocket.svelte';
+	import { csToTime } from '$lib/websocket.svelte';
 </script>
 
 <!-- MARK: top bar -->
@@ -148,9 +149,9 @@
 						<span class="text-2xl">pr</span>
 						<span class="font-courier-prime text-3xl"
 							>{sideKey == 'leftPlayer'
-								? timer.current.leftPr
+								? csToTime(Math.trunc(timer.current.leftPr! * 100))
 								: sideKey == 'rightPlayer'
-									? timer.current.rightPr
+									? csToTime(Math.trunc(timer.current.rightPr! * 100))
 									: ''}</span
 						>
 					</div>
