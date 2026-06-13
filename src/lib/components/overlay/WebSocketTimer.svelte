@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { timer, resetTimer, resetPulse, csToTime } from '$lib/websocket.svelte';
+	import { settings } from '$lib/storage.svelte';
 	let leftCs = $state(0);
 	let rightCs = $state(0);
 	let leftTime = $derived(csToTime(leftCs));
@@ -57,7 +58,9 @@
 	});
 </script>
 
-<div class="absolute flex h-32 w-full items-center justify-center gap-36">
+<div
+	class="absolute flex h-32 w-full items-center justify-center gap-36 {settings.current.monoFont}"
+>
 	<span
 		class="{!timer.current.left.timer_start
 			? 'text-palewhite/40'

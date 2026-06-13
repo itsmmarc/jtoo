@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { csToTime, timer } from '$lib/websocket.svelte';
+	import { settings } from '$lib/storage.svelte';
 	// import { SvelteMap } from 'svelte/reactivity';
 	import { slide, fade } from 'svelte/transition';
 	import { getFiltersStyle } from '$lib/filters.svelte';
@@ -31,7 +32,7 @@
 	}
 </script>
 
-<div class="mt-2 flex w-full justify-center">
+<div class="mt-2 flex w-full justify-center {settings.current.monoFont}">
 	<div
 		class="flex h-83 flex-col flex-wrap items-center gap-x-60 {size > 14
 			? 'gap-y-1 text-2xl'

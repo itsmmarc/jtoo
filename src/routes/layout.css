@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Space+Grotesk:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Azeret+Mono:ital,wght@0,100..900;1,100..900&family=Bebas+Neue&family=Chivo+Mono:ital,wght@0,100..900;1,100..900&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Space+Grotesk:wght@300..700&family=Spline+Sans+Mono:ital,wght@0,300..700;1,300..700&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import 'tailwindcss';
 @import '@catppuccin/tailwindcss/mocha.css';
 @import 'flag-icons/css/flag-icons.min.css';
@@ -41,6 +41,12 @@
 	--font-montserrat: 'Montserrat', sans-serif;
 	--font-roboto: 'Roboto', sans-serif;
 	--font-space-grotesk: 'Space Grotesk', sans-serif;
+	--font-dm-mono: 'DM Mono', monospace;
+	--font-anonymous-pro: 'Anonymous Pro', monospace;
+	--font-ubuntu-mono: 'Ubuntu Mono', monospace;
+	--font-azaret-mono: 'Azaret Mono', monospace;
+	--font-chivo-mono: 'Chivo Mono', monospace;
+	--font-spline-sans-mono: 'Spline Sans Mono', monospace;
 
 	--color-obs-background: #1d1f26;
 	--color-obs-content: #272a33;

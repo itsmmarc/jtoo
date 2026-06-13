@@ -13,8 +13,19 @@ export const Fonts = [
 ] as const;
 export type Font = (typeof Fonts)[number];
 
+export const MonoFonts = [
+	'font-dm-mono',
+	'font-anonymous-pro',
+	'font-ubuntu-mono',
+	'font-azaret-mono',
+	'font-chivo-mono',
+	'font-spline-sans-mono'
+] as const;
+export type MonoFont = (typeof MonoFonts)[number];
+
 export type Settings = {
 	font: Font;
+	monoFont: MonoFont;
 	hue: number;
 	saturation: number;
 	enableMovingBG: boolean;
@@ -119,6 +130,7 @@ export const defaultStages: Array<string> = [
 
 export const defaultSettings: Settings = {
 	font: 'font-space-grotesk',
+	monoFont: 'font-spline-sans-mono',
 	hue: 0,
 	saturation: 100,
 	enableMovingBG: true,

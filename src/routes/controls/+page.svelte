@@ -20,7 +20,9 @@
 		type TFClass,
 		TFClasses,
 		Fonts,
-		type Font
+		type Font,
+		MonoFonts,
+		type MonoFont
 	} from '$lib/storage.svelte';
 	import {
 		loadSoldierPlayoffs2026,
@@ -34,6 +36,7 @@
 	import { initializeWebSocket } from '$lib/websocket.svelte';
 
 	const fonts: Settings['font'][] = [...Fonts];
+	const monoFonts: Settings['monoFont'][] = [...MonoFonts];
 
 	if (settings.current.useWebSocket) {
 		initializeWebSocket();
@@ -104,6 +107,20 @@
 					{selected}
 					onclick={() => {
 						settings.current.font = font as Font;
+					}}>{font.replace('font-', '')}</Button
+				>
+			</div>
+		{/each}
+	</div>
+	<span>mono font</span>
+	<div class="flex gap-1">
+		{#each monoFonts as font, i (i)}
+			{@const selected = font === settings.current.monoFont}
+			<div class={font}>
+				<Button
+					{selected}
+					onclick={() => {
+						settings.current.monoFont = font as MonoFont;
 					}}>{font.replace('font-', '')}</Button
 				>
 			</div>
