@@ -15,7 +15,7 @@
 					class="absolute top-0 right-0 w-full p-2 text-center {settings.current.font}"
 					style:filter={getFiltersStyle()}
 				>
-					{key}
+					{settings.current.useShortMapNames ? key : map.fileName}
 				</h1>
 				<div
 					class="absolute top-0 right-0 h-full w-full rounded-xl {leftWinner

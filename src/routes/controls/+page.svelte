@@ -197,6 +197,7 @@
 	</div>
 
 	<Checkbox desc="use moving background" setting="enableMovingBG" />
+	<Checkbox desc="use short map names" setting="useShortMapNames" />
 	<Checkbox desc="use single POV" setting="enableSinglePOV" />
 	{#if !settings.current.enableSinglePOV}
 		<Checkbox desc="show POV guide" setting="enablePOVGuide" />

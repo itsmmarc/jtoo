@@ -37,6 +37,7 @@ export type Settings = {
 	enableTeamColors: boolean;
 	enableSinglePOV: boolean;
 	enablePOVGuide: boolean;
+	useShortMapNames: boolean;
 	useWebSocket: boolean;
 	webSocketToken: string;
 };
@@ -142,6 +143,7 @@ export const defaultSettings: Settings = {
 	enableTeamColors: true,
 	enableSinglePOV: false,
 	enablePOVGuide: false,
+	useShortMapNames: true,
 	useWebSocket: false,
 	webSocketToken: ''
 };

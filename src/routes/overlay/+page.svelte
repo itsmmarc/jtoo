@@ -82,7 +82,9 @@
 	>
 		{#key overlay.current.stage}
 			<span in:fade class="relative right-2 -skew-x-30 px-8 text-3xl text-ctp-text/75"
-				>{overlay.current.map.shortName}</span
+				>{settings.current.useShortMapNames
+					? overlay.current.map.shortName
+					: overlay.current.map.fileName}</span
 			>
 		{/key}
 	</div>
