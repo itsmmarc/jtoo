@@ -33,7 +33,7 @@
 	import * as _ from 'underscore';
 	import icon_soldier from '$lib/assets/icon_soldier.png';
 	import icon_demo from '$lib/assets/icon_demo.png';
-	import { initializeWebSocket } from '$lib/websocket.svelte';
+	import { clearWebSocketMessages, initializeWebSocket } from '$lib/websocket.svelte';
 
 	const fonts: Settings['font'][] = [...Fonts];
 	const monoFonts: Settings['monoFont'][] = [...MonoFonts];
@@ -62,6 +62,9 @@
 <!-- presets -->
 <div class="absolute top-4 left-4 flex flex-col gap-2">
 	<button class="hover:text-red-500" onclick={() => fullReset()}>FULL<br />RESET</button>
+	<button class="hover:text-red-500" onclick={() => clearWebSocketMessages()}
+		>CLEAR<br />MESSAGES</button
+	>
 	<button class="hover:mix-blend-soft-light" onclick={() => loadSoldierPlayoffs2026()}>
 		<img
 			src={icon_soldier}

@@ -7,6 +7,11 @@ let ws: WebSocket;
 let competitionTimer: NodeJS.Timeout;
 export const messages = new PersistentState('messages', defaultMessages);
 
+export function clearWebSocketMessages() {
+	messages.current = defaultMessages;
+	timer.current = defaultTimerStore;
+}
+
 export function initializeWebSocket() {
 	if (ws) {
 		ws.close();
@@ -100,7 +105,7 @@ type TimerStore = {
 	rightcps: any;
 };
 
-export const timer = new PersistentState('timer', {
+const defaultTimerStore: TimerStore = {
 	left: defaultTimer,
 	right: defaultTimer,
 	competition: defaultCompetitionTimer,
@@ -108,7 +113,9 @@ export const timer = new PersistentState('timer', {
 	rightPr: null,
 	leftcps: {},
 	rightcps: {}
-} as TimerStore);
+};
+
+export const timer = new PersistentState('timer', defaultTimerStore);
 
 function checkTimerSide(data: BaseTimerEvent): string {
 	return data.steamid == overlay.current.leftPlayer.steamID3

@@ -85,12 +85,12 @@ export interface PickBansSessionStateEvent {
 	session: PickBansSessionState | null; // null when a session is cancelled
 }
 
-// MARK: Timer
 interface WelcomeEvent {
 	type: 'welcome';
 	message: string; // "Connected to WebSocket server"
 	timestamp: number; // Unix timestamp
 }
+// MARK: Timer
 
 // modified, added timer_checkpoint
 type TimerEventType = 'timer_start' | 'timer_stop' | 'timer_finish' | 'timer_checkpoint';
@@ -105,6 +105,7 @@ const STYLES = {
 type Style = (typeof STYLES)[keyof typeof STYLES];
 
 // modified
+// test timer object - {"type":"timer_start","steamid":50734103,"track":0,"style":0,"timestamp":10000}
 export interface BaseTimerEvent {
 	type: TimerEventType;
 	steamid: number; // the ID portion of steamID3 format [U:1:50734103]
@@ -185,7 +186,5 @@ export const defaultMessages = {
 	timer: [],
 	competition: []
 } as Messages;
-
-// test timer object - {"type":"timer_start","steamid":50734103,"track":0,"style":0,"timestamp":10000}
 
 // test checkpoint object - {"type": "timer_checkpoint","steamid": 50734103,"track": 0,"style": 1,"formattedCheckpoint": "Checkpoint 1","time": 6.25499963760376,"timestamp": 1780761188,"tick": 2428}
