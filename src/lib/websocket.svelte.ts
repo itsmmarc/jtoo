@@ -1,23 +1,30 @@
 import { PersistentState } from '@friendofsvelte/state';
 import { settings, overlay } from './storage.svelte';
 import { type BaseTimerEvent, type MessageTypes, defaultMessages } from './websocket-types';
-// import { SvelteMap } from 'svelte/reactivity';
+import { ProxyWebSocket } from './ProxyWebSocket';
+import { type Writable } from 'svelte/store';
 
-let ws: WebSocket;
+let ws: ProxyWebSocket = new ProxyWebSocket(`https://console.jumpfortress.tf/?token=0`);
+export let wsState: Writable<number> = ws.state;
 let competitionTimer: NodeJS.Timeout;
 export const messages = new PersistentState('messages', defaultMessages);
 
 export function clearWebSocketMessages() {
 	messages.current = defaultMessages;
+	timer.current.left.timer_stop = true;
+	timer.current.right.timer_stop = true;
 	timer.current = defaultTimerStore;
 }
 
 export function initializeWebSocket() {
-	if (ws) {
+	if (ws && ws.readyState == ProxyWebSocket.OPEN) {
+		console.log('closing web socket connection...');
 		ws.close();
+		wsState.set(0);
 	}
-
-	messages.current = defaultMessages;
+	if (ws && ws.readyState == ProxyWebSocket.OPEN) {
+		return;
+	}
 
 	if (!settings.current.useWebSocket) {
 		return;
@@ -25,7 +32,12 @@ export function initializeWebSocket() {
 
 	console.log('initializing websocket');
 
-	ws = new WebSocket(`https://console.jumpfortress.tf/?token=${settings.current.webSocketToken}`);
+	messages.current = defaultMessages;
+
+	ws = new ProxyWebSocket(
+		`https://console.jumpfortress.tf/?token=${settings.current.webSocketToken}`
+	);
+	wsState = ws.state;
 	ws.onmessage = function (event) {
 		const data: MessageTypes = JSON.parse(event.data);
 		console.log(data);
@@ -51,6 +63,7 @@ export function initializeWebSocket() {
 				timer_checkpoint(checkTimerSide(data), data.formattedCheckpoint, data.time);
 				break;
 			case 'competition_session_live':
+				console.log('competition session started');
 				competition_timer_start(data.durationSeconds);
 				messages.current.competition.push(data);
 				break;

@@ -33,7 +33,7 @@
 	import * as _ from 'underscore';
 	import icon_soldier from '$lib/assets/icon_soldier.png';
 	import icon_demo from '$lib/assets/icon_demo.png';
-	import { clearWebSocketMessages, initializeWebSocket } from '$lib/websocket.svelte';
+	import { clearWebSocketMessages, initializeWebSocket, wsState } from '$lib/websocket.svelte';
 
 	const fonts: Settings['font'][] = [...Fonts];
 	const monoFonts: Settings['monoFont'][] = [...MonoFonts];
@@ -159,17 +159,44 @@
 	</label>
 	{#if settings.current.useWebSocket}
 		<div class="flex gap-2">
-			<label for="input-websocket">enter WebSocket token: </label>
+			<label for="input-websocket">token: </label>
 			<input
-				class="input"
+				class="input grow"
 				id="input-websocket"
 				value={settings.current.webSocketToken}
 				onchange={(e) => {
 					let target = e.target as HTMLInputElement;
 					settings.current.webSocketToken = target.value;
-					initializeWebSocket();
 				}}
 			/>
+			<button
+				class="button button-unselected hover:button-selected"
+				onclick={() => initializeWebSocket()}>connect</button
+			>
+		</div>
+		<div class="flex gap-2">
+			<p>status:</p>
+			<p
+				class={$wsState === 0
+					? 'text-yellow-200'
+					: $wsState === 1
+						? 'text-green-300'
+						: $wsState === 2
+							? 'text-red-200'
+							: $wsState === 3
+								? 'text-black'
+								: ''}
+			>
+				{$wsState === 0
+					? 'opening...'
+					: $wsState === 1
+						? 'open'
+						: $wsState === 2
+							? 'closing...'
+							: $wsState === 3
+								? 'closed'
+								: ''}
+			</p>
 		</div>
 	{/if}
 	<Checkbox desc="use moving background" setting="enableMovingBG" />
