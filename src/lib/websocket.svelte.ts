@@ -14,6 +14,17 @@ export function clearWebSocketMessages() {
 	timer.current.left.timer_stop = true;
 	timer.current.right.timer_stop = true;
 	timer.current = defaultTimerStore;
+	resetCheckpoints();
+}
+export function clearPicksAndBans() {
+	messages.current.mapPicks = [];
+}
+
+export function clearTimer() {
+	timer.current.left.timer_stop = true;
+	timer.current.right.timer_stop = true;
+	timer.current = defaultTimerStore;
+	resetCheckpoints();
 }
 
 export function initializeWebSocket() {
@@ -188,6 +199,11 @@ function timer_checkpoint(side: string, checkpointName: string, checkpointTime: 
 	} else {
 		Object.assign(timer.current.rightcps, { [checkpointName]: checkpointTime });
 	}
+}
+
+function resetCheckpoints() {
+	timer.current.leftcps = {};
+	timer.current.rightcps = {};
 }
 
 export function resetTimer(side: string) {

@@ -1,11 +1,4 @@
-import {
-	type Player,
-	type MapsInfo,
-	items,
-	overlay,
-	settings,
-	defaultOverlay
-} from './storage.svelte';
+import { type Player, type MapsInfo, items, overlay } from './storage.svelte';
 
 type Playoffs2026SoldierMapList = {
 	pokus?: unknown;
@@ -204,26 +197,76 @@ const soldierPlayoffs2026 = {
 			score: 0
 		},
 		{
-			name: 'kingstripes',
-			tempusID: '24856',
+			name: 'Shanks',
+			tempusID: '457363',
+			steamID3: 89322649,
+			avatarURL:
+				'https://avatars.akamai.steamstatic.com/dfe99eee2427a67ab25226968d122fdc44e2e684_full.jpg',
+			tag: '',
+			flag: 'nl',
+			rank: { overall: 270, soldier: 177, demo: 1516 },
+			tempusPrs: {
+				pokus: { rank: 1, time: '03:10.935' },
+				marigold: { rank: 3, time: '01:18.629' },
+				phobos: { rank: 1, time: '01:07.965' },
+				oddie: { rank: 4, time: '01:51.855' },
+				ahh: { rank: 1, time: '00:59.895' },
+				soar: { rank: 3, time: '04:04.995' },
+				above: { rank: 5, time: '01:13.305' }
+			},
+			WRs: 2,
+			TTs: 15,
+			bestRun: 'owakare',
+			note: '',
+			favouriteMap: 'owakare',
+			score: 0
+		},
+		{
+			name: 'mmarc',
+			tempusID: '94512',
+			steamID3: 99019190,
+			avatarURL:
+				'https://avatars.akamai.steamstatic.com/c855892d665ef9f667d80be7ba0c2971af34bac2_full.jpg',
+			tag: '',
+			flag: 'au',
+			rank: { overall: 573, soldier: 626, demo: 411 },
+			tempusPrs: {
+				pokus: { rank: 1, time: '03:15.935' },
+				marigold: { rank: 3, time: '01:38.629' },
+				phobos: { rank: 1, time: '01:04.965' },
+				oddie: { rank: 4, time: '01:50.855' },
+				ahh: { rank: 1, time: '01:11.895' },
+				soar: { rank: 3, time: '04:20.995' },
+				above: { rank: 5, time: '01:11.305' }
+			},
+			WRs: 0,
+			TTs: 1,
+			bestRun: 'corona',
+			note: 'i love goose',
+			favouriteMap: 'corona',
+			score: 0
+		},
+		{
+			name: 'Kingstripes',
+			tempusID: '364734',
 			steamID3: 50734103,
 			avatarURL:
-				'https://avatars.akamai.steamstatic.com/31f788519863b79f24b1604e090596ba6961a3ab_full.jpg',
+				'https://avatars.akamai.steamstatic.com/452d5c9383da34ce0f9a06ec762f08a6b999a43c_full.jpg',
 			tag: '',
-			flag: 'us',
-			rank: { overall: 23, soldier: 11, demo: 795 },
+			flag: 'au',
+			rank: { overall: 130, soldier: 208, demo: 74 },
 			tempusPrs: {
-				pokus: { rank: 0, time: '' },
-				marigold: { rank: 0, time: '' },
-				phobos: { rank: 0, time: '' },
-				oddie: { rank: 0, time: '' },
-				ahh: { rank: 0, time: '' },
-				soar: { rank: 0, time: '' },
-				above: { rank: 0, time: '' }
+				pokus: { rank: 1, time: '03:12.935' },
+				marigold: { rank: 3, time: '01:11.629' },
+				phobos: { rank: 1, time: '01:06.965' },
+				oddie: { rank: 4, time: '01:55.855' },
+				ahh: { rank: 1, time: '00:51.895' },
+				soar: { rank: 3, time: '04:02.995' },
+				above: { rank: 5, time: '01:19.305' }
 			},
-			WRs: 6,
-			TTs: 177,
-			bestRun: 'jump_descent',
+			WRs: 99,
+			TTs: 462,
+			bestRun: '',
 			note: '',
 			favouriteMap: '',
 			score: 0
@@ -417,87 +460,6 @@ const demoPlayoffs2026 = {
 	} as MapsInfo<Playoffs2026DemoMapList>
 };
 
-const testersPlayoffs2026 = {
-	players: [
-		{
-			name: 'Shanks',
-			tempusID: '457363',
-			steamID3: 89322649,
-			avatarURL:
-				'https://avatars.akamai.steamstatic.com/dfe99eee2427a67ab25226968d122fdc44e2e684_full.jpg',
-			tag: '',
-			flag: 'nl',
-			rank: { overall: 270, soldier: 177, demo: 1516 },
-			tempusPrs: {
-				pokus: { rank: 1, time: '03:10.935' },
-				marigold: { rank: 3, time: '01:18.629' },
-				phobos: { rank: 1, time: '01:07.965' },
-				oddie: { rank: 4, time: '01:51.855' },
-				ahh: { rank: 1, time: '00:59.895' },
-				soar: { rank: 3, time: '04:04.995' },
-				above: { rank: 5, time: '01:13.305' }
-			},
-			WRs: 2,
-			TTs: 15,
-			bestRun: 'owakare',
-			note: '',
-			favouriteMap: 'owakare',
-			score: 0
-		},
-		{
-			name: 'mmarc',
-			tempusID: '94512',
-			steamID3: 99019190,
-			avatarURL:
-				'https://avatars.akamai.steamstatic.com/c855892d665ef9f667d80be7ba0c2971af34bac2_full.jpg',
-			tag: '',
-			flag: 'au',
-			rank: { overall: 573, soldier: 626, demo: 411 },
-			tempusPrs: {
-				pokus: { rank: 1, time: '03:15.935' },
-				marigold: { rank: 3, time: '01:38.629' },
-				phobos: { rank: 1, time: '01:04.965' },
-				oddie: { rank: 4, time: '01:50.855' },
-				ahh: { rank: 1, time: '01:11.895' },
-				soar: { rank: 3, time: '04:20.995' },
-				above: { rank: 5, time: '01:11.305' }
-			},
-			WRs: 0,
-			TTs: 1,
-			bestRun: 'corona',
-			note: 'i love goose',
-			favouriteMap: 'corona',
-			score: 0
-		},
-		{
-			name: 'Kingstripes',
-			tempusID: '364734',
-			steamID3: 50734103,
-			avatarURL:
-				'https://avatars.akamai.steamstatic.com/452d5c9383da34ce0f9a06ec762f08a6b999a43c_full.jpg',
-			tag: '',
-			flag: 'au',
-			rank: { overall: 130, soldier: 208, demo: 74 },
-			tempusPrs: {
-				pokus: { rank: 1, time: '03:12.935' },
-				marigold: { rank: 3, time: '01:11.629' },
-				phobos: { rank: 1, time: '01:06.965' },
-				oddie: { rank: 4, time: '01:55.855' },
-				ahh: { rank: 1, time: '00:51.895' },
-				soar: { rank: 3, time: '04:02.995' },
-				above: { rank: 5, time: '01:19.305' }
-			},
-			WRs: 99,
-			TTs: 462,
-			bestRun: '',
-			note: '',
-			favouriteMap: '',
-			score: 0
-		}
-	] as Player[],
-	maps: { ...soldierPlayoffs2026.maps } as MapsInfo<Playoffs2026SoldierMapList>
-};
-
 export function loadSoldierPlayoffs2026() {
 	items.current.players = soldierPlayoffs2026.players;
 	items.current.maps = soldierPlayoffs2026.maps;
@@ -508,10 +470,4 @@ export function loadDemoPlayoffs2026() {
 	items.current.players = demoPlayoffs2026.players;
 	items.current.maps = demoPlayoffs2026.maps;
 	overlay.current.class = 'demo';
-}
-
-export function loadTestersPlayoffs2026() {
-	items.current.players = testersPlayoffs2026.players;
-	items.current.maps = testersPlayoffs2026.maps;
-	overlay.current.class = 'soldier';
 }

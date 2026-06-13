@@ -24,16 +24,17 @@
 		MonoFonts,
 		type MonoFont
 	} from '$lib/storage.svelte';
-	import {
-		loadSoldierPlayoffs2026,
-		loadDemoPlayoffs2026,
-		loadTestersPlayoffs2026
-	} from '$lib/preset-data.svelte';
+	import { loadSoldierPlayoffs2026, loadDemoPlayoffs2026 } from '$lib/preset-data.svelte';
 	import { slide } from 'svelte/transition';
 	import * as _ from 'underscore';
 	import icon_soldier from '$lib/assets/icon_soldier.png';
 	import icon_demo from '$lib/assets/icon_demo.png';
-	import { clearWebSocketMessages, initializeWebSocket, wsState } from '$lib/websocket.svelte';
+	import {
+		clearPicksAndBans,
+		clearTimer,
+		initializeWebSocket,
+		wsState
+	} from '$lib/websocket.svelte';
 
 	const fonts: Settings['font'][] = [...Fonts];
 	const monoFonts: Settings['monoFont'][] = [...MonoFonts];
@@ -60,11 +61,10 @@
 </div>
 
 <!-- presets -->
-<div class="absolute top-4 left-4 flex flex-col gap-2">
-	<button class="hover:text-red-500" onclick={() => fullReset()}>FULL<br />RESET</button>
-	<button class="hover:text-red-500" onclick={() => clearWebSocketMessages()}
-		>CLEAR<br />MESSAGES</button
-	>
+<div class="relative m-2 flex w-full max-w-lg justify-center gap-4 self-center">
+	<button class="button-remove" onclick={() => fullReset()}>full reset</button>
+	<button class="button-remove" onclick={() => clearTimer()}>clear timer</button>
+	<button class="button-remove" onclick={() => clearPicksAndBans()}>clear map picks</button>
 	<button class="hover:mix-blend-soft-light" onclick={() => loadSoldierPlayoffs2026()}>
 		<img
 			src={icon_soldier}
@@ -80,9 +80,6 @@
 			aria-label="load soldier playoffs 2026"
 			alt="load soldier playoffs 2026"
 		/>
-	</button>
-	<button class="hover:mix-blend-soft-light" onclick={() => loadTestersPlayoffs2026()}>
-		load<br />testers
 	</button>
 </div>
 
@@ -131,10 +128,7 @@
 	</div>
 
 	<!-- color -->
-	<span
-		>theme <span class="text-ctp-text/50">(arrow keys can be used for small adjustments)</span
-		></span
-	>
+	<span>theme</span>
 	<div class="flex gap-2">
 		<div
 			class="size-12 border-4 border-ctp-text bg-ctp-lavender"
@@ -161,7 +155,8 @@
 		<div class="flex gap-2">
 			<label for="input-websocket">token: </label>
 			<input
-				class="input grow"
+				type="password"
+				class="input w-60"
 				id="input-websocket"
 				value={settings.current.webSocketToken}
 				onchange={(e) => {
@@ -174,31 +169,33 @@
 				onclick={() => initializeWebSocket()}>connect</button
 			>
 		</div>
-		<div class="flex gap-2">
-			<p>status:</p>
-			<p
-				class={$wsState === 0
-					? 'text-yellow-200'
-					: $wsState === 1
-						? 'text-green-300'
-						: $wsState === 2
-							? 'text-red-200'
-							: $wsState === 3
-								? 'text-black'
-								: ''}
-			>
-				{$wsState === 0
-					? 'opening...'
-					: $wsState === 1
-						? 'open'
-						: $wsState === 2
-							? 'closing...'
-							: $wsState === 3
-								? 'closed'
-								: ''}
-			</p>
-		</div>
 	{/if}
+	<div class="flex gap-2">
+		<p>status:</p>
+		<p
+			class={$wsState === 0
+				? 'text-yellow-200'
+				: $wsState === 1
+					? 'text-green-300'
+					: $wsState === 2
+						? 'text-red-200'
+						: $wsState === 3
+							? 'text-black'
+							: ''}
+		>
+			{$wsState === 0
+				? 'opening...'
+				: $wsState === 1
+					? 'connected'
+					: $wsState === 2
+						? 'closing...'
+						: $wsState === 3
+							? 'closed'
+							: ''}
+		</p>
+		<p class="italic opacity-50">{$wsState}</p>
+	</div>
+
 	<Checkbox desc="use moving background" setting="enableMovingBG" />
 	<Checkbox desc="use single POV" setting="enableSinglePOV" />
 	{#if !settings.current.enableSinglePOV}

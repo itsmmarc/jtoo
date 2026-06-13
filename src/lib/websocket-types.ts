@@ -105,7 +105,6 @@ const STYLES = {
 type Style = (typeof STYLES)[keyof typeof STYLES];
 
 // modified
-// test timer object - {"type":"timer_start","steamid":50734103,"track":0,"style":0,"timestamp":10000}
 export interface BaseTimerEvent {
 	type: TimerEventType;
 	steamid: number; // the ID portion of steamID3 format [U:1:50734103]
@@ -115,14 +114,17 @@ export interface BaseTimerEvent {
 	tick?: number;
 }
 
+// {"type":"timer_start","steamid":50734103,"track":0,"style":0,"timestamp":10000}
 interface TimerStartEvent extends BaseTimerEvent {
 	type: 'timer_start';
 }
 
+// {"type":"timer_stop","steamid":50734103,"track":0,"style":0,"timestamp":10000}
 interface TimerStopEvent extends BaseTimerEvent {
 	type: 'timer_stop';
 }
 
+// {"type":"timer_finish","steamid":50734103,"track":0,"style":0,"timestamp":10000,"time":600,"jumps":21,"strafes":21,"sync":50,"oldtime":500,"perfs":21,"avgvel":1000,"maxvel":3500}
 interface TimerFinishEvent extends BaseTimerEvent {
 	type: 'timer_finish';
 	time: number; // time in seconds float32
@@ -135,6 +137,14 @@ interface TimerFinishEvent extends BaseTimerEvent {
 	maxvel: number; // max abs velocity float32
 }
 
+/*
+{"type":"timer_checkpoint","steamid":50734103,"track":0,"style":0,"timestamp":10000,"tick":450,"formattedCheckpoint":"Checkpoint 1","time":300}
+{"type":"timer_checkpoint","steamid":99019190,"track":0,"style":0,"timestamp":10000,"tick":500,"formattedCheckpoint":"Checkpoint 1","time":320}
+{"type":"timer_checkpoint","steamid":50734103,"track":0,"style":0,"timestamp":10000,"tick":450,"formattedCheckpoint":"Checkpoint 2","time":400}
+{"type":"timer_checkpoint","steamid":99019190,"track":0,"style":0,"timestamp":10000,"tick":450,"formattedCheckpoint":"Checkpoint 2","time":420}
+{"type":"timer_checkpoint","steamid":50734103,"track":0,"style":0,"timestamp":10000,"tick":450,"formattedCheckpoint":"Checkpoint 3","time":550}
+{"type":"timer_checkpoint","steamid":99019190,"track":0,"style":0,"timestamp":10000,"tick":500,"formattedCheckpoint":"Checkpoint 3","time":551.3}
+*/
 interface TimerCheckpointEvent extends BaseTimerEvent {
 	type: 'timer_checkpoint';
 	tick: number;
@@ -152,17 +162,17 @@ interface BaseCompetitionEvent {
 	durationSeconds: number;
 }
 
+// {"type":"competition_session_live","timestamp":1780753370,"sessionId":49,"startedAt":1780753370,"durationSeconds":60,"expiresAt":1780753430}
 interface CompetitionLiveEvent extends BaseCompetitionEvent {
 	type: 'competition_session_live';
 	expiresAt: number;
 }
-// {"type":"competition_session_live","timestamp":1780753370,"sessionId":49,"startedAt":1780753370,"durationSeconds":60,"expiresAt":1780753430}
 
+// {"type":"competition_session_overtime","timestamp":1780753430,"sessionId":49,"startedAt":1780753370,"durationSeconds":60,"expiredAt":1780753430}
 interface CompetitionOvertimeEvent extends BaseCompetitionEvent {
 	type: 'competition_session_overtime';
 	expiredAt: 1780753430;
 }
-// {"type":"competition_session_overtime","timestamp":1780753430,"sessionId":49,"startedAt":1780753370,"durationSeconds":60,"expiredAt":1780753430}
 
 // MARK: Messages
 
