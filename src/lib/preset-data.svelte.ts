@@ -501,26 +501,17 @@ const testersPlayoffs2026 = {
 export function loadSoldierPlayoffs2026() {
 	items.current.players = soldierPlayoffs2026.players;
 	items.current.maps = soldierPlayoffs2026.maps;
-	overlay.current = defaultOverlay;
 	overlay.current.class = 'soldier';
-	settings.current.hue = 10;
-	settings.current.saturation = 100;
 }
 
 export function loadDemoPlayoffs2026() {
 	items.current.players = demoPlayoffs2026.players;
 	items.current.maps = demoPlayoffs2026.maps;
-	overlay.current = defaultOverlay;
 	overlay.current.class = 'demo';
-	settings.current.hue = 0;
-	settings.current.saturation = 140;
 }
 
 export function loadTestersPlayoffs2026() {
 	items.current.players = testersPlayoffs2026.players;
 	items.current.maps = testersPlayoffs2026.maps;
-	overlay.current = defaultOverlay;
 	overlay.current.class = 'soldier';
-	settings.current.hue = 10;
-	settings.current.saturation = 100;
 }
