@@ -172,28 +172,28 @@
 	{/if}
 	<div class="flex gap-2">
 		<p>status:</p>
-		<p
-			class={$wsState === 0
+		<span
+			class={wsState.current.state === 0
 				? 'text-yellow-200'
-				: $wsState === 1
+				: wsState.current.state === 1
 					? 'text-green-300'
-					: $wsState === 2
+					: wsState.current.state === 2
 						? 'text-red-200'
-						: $wsState === 3
+						: wsState.current.state === 3
 							? 'text-black'
 							: ''}
 		>
-			{$wsState === 0
+			{wsState.current.state === 0
 				? 'opening...'
-				: $wsState === 1
+				: wsState.current.state === 1
 					? 'connected'
-					: $wsState === 2
+					: wsState.current.state === 2
 						? 'closing...'
-						: $wsState === 3
+						: wsState.current.state === 3
 							? 'closed'
 							: ''}
-		</p>
-		<p class="italic opacity-50">{$wsState}</p>
+		</span>
+		<span class="italic opacity-50">{wsState.current.state}</span>
 	</div>
 
 	<Checkbox desc="use moving background" setting="enableMovingBG" />

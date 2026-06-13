@@ -2,10 +2,9 @@ import { PersistentState } from '@friendofsvelte/state';
 import { settings, overlay } from './storage.svelte';
 import { type BaseTimerEvent, type MessageTypes, defaultMessages } from './websocket-types';
 import { ProxyWebSocket } from './ProxyWebSocket';
-import { type Writable } from 'svelte/store';
 
-let ws: ProxyWebSocket = new ProxyWebSocket(`https://console.jumpfortress.tf/?token=0`);
-export let wsState: Writable<number> = ws.state;
+export let ws: ProxyWebSocket = new ProxyWebSocket(`https://console.jumpfortress.tf/?token=0`);
+export const wsState = new PersistentState('wsState', { state: 0 }, 'sessionStorage');
 let competitionTimer: NodeJS.Timeout;
 export const messages = new PersistentState('messages', defaultMessages);
 
@@ -30,11 +29,7 @@ export function clearTimer() {
 export function initializeWebSocket() {
 	if (ws && ws.readyState == ProxyWebSocket.OPEN) {
 		console.log('closing web socket connection...');
-		wsState.set(3);
 		ws.close();
-	}
-	if (ws && ws.readyState == ProxyWebSocket.OPEN) {
-		return;
 	}
 
 	if (!settings.current.useWebSocket) {
@@ -48,7 +43,11 @@ export function initializeWebSocket() {
 	ws = new ProxyWebSocket(
 		`https://console.jumpfortress.tf/?token=${settings.current.webSocketToken}`
 	);
-	wsState = ws.state;
+
+	ws.state.subscribe((s) => {
+		wsState.current.state = s;
+	});
+
 	ws.onmessage = function (event) {
 		const data: MessageTypes = JSON.parse(event.data);
 		console.log(data);
