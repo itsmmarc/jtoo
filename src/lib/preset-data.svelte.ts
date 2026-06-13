@@ -124,7 +124,7 @@ const soldierPlayoffs2026 = {
 			WRs: 149,
 			TTs: 615,
 			bestRun: 'jump_destination_v2',
-			note: '<img src="https://cdn.7tv.app/emote/01J4YTP1E0000FXZ59PB5ZJ8KW/4x.avif" class="rounded-xl object-cover" />', // find better quality if possible
+			note: '<img src="https://media.discordapp.net/attachments/1513525278264262799/1515369370816090152/beh.png?ex=6a2ec134&is=6a2d6fb4&hm=ff05552b818d3e0a2263dbbbdee10c1c942f709dbdbbd8979925921d86d06105&=&format=webp&quality=lossless" class="rounded-xl object-cover" />', // find better quality if possible
 			favouriteMap: 'jump_atrial',
 			score: 0
 		},
