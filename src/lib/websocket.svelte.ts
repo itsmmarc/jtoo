@@ -252,7 +252,7 @@ function competition_timer_start(durationSeconds: number) {
 		return;
 	}
 	timer.current.competition.durationSeconds = durationSeconds;
-	timer.current.competition.timeLeftSeconds = durationSeconds;
+	timer.current.competition.timeLeftSeconds = durationSeconds - 1;
 
 	competitionTimer = setInterval(() => {
 		if (timer.current.competition.timeLeftSeconds > 0) {
