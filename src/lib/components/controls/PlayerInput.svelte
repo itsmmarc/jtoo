@@ -229,25 +229,25 @@
 
 		{#each Object.entries(items.current.maps) as [map], i (i)}
 			{#if map !== 'null'}
-				<label class="col-span-6" for="pr-{map}-rank">pr {map}</label>
+				<label class="col-span-6" for="pr-{map}-time">pr {map}</label>
 				<input
 					class="input col-span-3 mr-1"
 					type="text"
-					id="pr-{map}-rank"
+					id="pr-{map}-time"
 					placeholder="0:00.00"
 					onkeyup={(e) => {
 						const value = (e.target as HTMLInputElement).value;
-						player.tempusPrs![map].rank = parseInt(value);
+						player.tempusPrs![map].time = value;
 					}}
 				/>
 				<input
-					class="input col-span-1"
-					type="text"
-					id="pr-{map}-time"
+					class="input remove-arrow col-span-1"
+					type="number"
+					id="pr-{map}-rank"
 					placeholder="rank"
 					onkeyup={(e) => {
 						const value = (e.target as HTMLInputElement).value;
-						player.tempusPrs![map].time = value;
+						player.tempusPrs![map].rank = parseInt(value);
 					}}
 				/>
 			{/if}
