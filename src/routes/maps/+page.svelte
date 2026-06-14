@@ -4,28 +4,30 @@
 	import { fade, slide } from 'svelte/transition';
 	import { messages } from '$lib/websocket.svelte';
 	import { type PickBansSessionStateEvent } from '$lib/websocket-types';
-	import type { Attachment } from 'svelte/attachments';
 
-	let progress = 0;
+	let progress = $state(0);
 	let increment = 0;
 	let timeout: NodeJS.Timeout;
 
-	const turnTimer: Attachment = () => {
-		clearTimeout(timeout);
-		progress = 0;
+	$effect(() => {
+		if (messages.current.mapPicks.length) {
+			clearTimeout(timeout);
+			progress = 0;
 
-		let m: PickBansSessionStateEvent =
-			messages.current.mapPicks[messages.current.mapPicks.length - 1];
+			let m: PickBansSessionStateEvent =
+				messages.current.mapPicks[messages.current.mapPicks.length - 1];
 
-		if (m && m.session?.config.turnTimeLimitSeconds) {
-			let timelimit = (m.session.config.turnTimeLimitSeconds + 2) * 1000;
-			let fps = 30;
-			let interval = 1000 / fps;
-			increment = (interval / timelimit) * 100;
+			if (m && m.session?.config.turnTimeLimitSeconds) {
+				let timelimit = (m.session.config.turnTimeLimitSeconds + 2) * 1000;
+				let fps = 30;
+				let interval = 1000 / fps;
+				increment = (interval / timelimit) * 100;
 
-			timeout = setInterval(timer, interval);
+				timeout = setInterval(timer, interval);
+			}
 		}
-	};
+	});
+
 	function timer() {
 		progress += increment;
 		if (progress > 100) {
@@ -122,7 +124,6 @@
 							: 'banning'}
 					</div>
 					<div
-						{@attach turnTimer}
 						class="h-5 rounded-xl bg-ctp-lavender"
 						style="width: {progress}%; {getFiltersStyle()}"
 					></div>
