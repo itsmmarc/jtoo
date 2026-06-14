@@ -62,9 +62,7 @@
 
 <!-- presets -->
 <div class="relative m-2 flex w-full max-w-lg justify-center gap-4 self-center">
-	<button class="button-remove" onclick={() => fullReset()}>full reset</button>
-	<button class="button-remove" onclick={() => clearTimer()}>clear timer</button>
-	<button class="button-remove" onclick={() => clearPicksAndBans()}>clear map picks</button>
+	<button class="button-remove" onclick={() => fullReset()}>full settings reset</button>
 	<button class="hover:mix-blend-soft-light" onclick={() => loadSoldierPlayoffs2026()}>
 		<img
 			src={icon_soldier}
@@ -81,6 +79,11 @@
 			alt="load soldier playoffs 2026"
 		/>
 	</button>
+</div>
+<div class="relative m-2 flex w-full max-w-lg justify-center gap-4 self-center">
+	<button class="button-remove" onclick={() => clearTimer()}>clear timers and checkpoints</button>
+	<button class="button-remove" onclick={() => clearPicksAndBans()}>clear map picks and bans</button
+	>
 </div>
 
 <!-- items -->
