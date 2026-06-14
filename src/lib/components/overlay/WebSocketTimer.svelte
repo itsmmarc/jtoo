@@ -7,8 +7,15 @@
 	let rightTime = $derived(csToTime(rightCs));
 	const updateInterval = 77;
 
+	let leftTimerStart = $derived(timer.current.left.timer_start);
+	let rightTimerStart = $derived(timer.current.right.timer_start);
+	let leftTimerStop = $derived(timer.current.left.timer_stop);
+	let rightTimerStop = $derived(timer.current.right.timer_stop);
+
 	$effect(() => {
+		console.log('$effect resetPulse.state');
 		if (resetPulse.state) {
+			console.log('true');
 			leftCs = 0;
 			rightCs = 0;
 			resetTimer('left');
@@ -18,8 +25,10 @@
 	});
 
 	$effect(() => {
+		console.log('$effect timer.current.left.timer_start');
 		// run is ongoing
-		if (timer.current.left.timer_start) {
+		if (leftTimerStart) {
+			console.log('true');
 			const startDate = Math.floor(Date.now() / 10);
 			const leftTimer = setInterval(() => {
 				leftCs = Math.floor(Date.now() / 10 - startDate);
@@ -32,8 +41,10 @@
 	});
 
 	$effect(() => {
+		console.log('$effect timer.current.right.timer_start');
 		// run is ongoing
-		if (timer.current.right.timer_start) {
+		if (rightTimerStart) {
+			console.log('true');
 			const startDate = Date.now() / 10;
 			const rightTimer = setInterval(() => {
 				rightCs = Math.floor(Date.now() / 10 - startDate);
@@ -46,13 +57,17 @@
 	});
 
 	$effect(() => {
-		if (timer.current.left.timer_stop) {
+		console.log('$effect timer.current.left.timer_stop');
+		if (leftTimerStop) {
+			console.log('true');
 			leftCs = 0;
 		}
 	});
 
 	$effect(() => {
-		if (timer.current.right.timer_stop) {
+		console.log('$effect timer.current.right.timer_stop');
+		if (rightTimerStop) {
+			console.log('true');
 			rightCs = 0;
 		}
 	});

@@ -411,6 +411,15 @@ const demoPlayoffs2026 = {
 			note: '',
 			favouriteMap: '',
 			score: 0
+		},
+		{
+			...soldierPlayoffs2026.players.filter((p) => p.name == 'Shanks')[0]
+		},
+		{
+			...soldierPlayoffs2026.players.filter((p) => p.name == 'mmarc')[0]
+		},
+		{
+			...soldierPlayoffs2026.players.filter((p) => p.name == 'Kingstripes')[0]
 		}
 	] as Player[],
 	maps: {

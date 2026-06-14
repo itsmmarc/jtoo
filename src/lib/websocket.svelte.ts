@@ -142,7 +142,9 @@ const defaultTimerStore: TimerStore = {
 
 export const timer = new PersistentState('timer', defaultTimerStore);
 
-function checkTimerSide(data: BaseTimerEvent): string {
+type Side = 'left' | 'right' | '';
+
+function checkTimerSide(data: BaseTimerEvent): Side {
 	return data.steamid == overlay.current.leftPlayer.steamID3
 		? 'left'
 		: data.steamid == overlay.current.rightPlayer.steamID3
@@ -150,58 +152,45 @@ function checkTimerSide(data: BaseTimerEvent): string {
 			: '';
 }
 
-function timer_start(side: string) {
-	if (side === 'left') {
-		Object.assign(timer.current.left, defaultTimer);
-		timer.current.left.timer_start = true;
-	} else if (side === 'right') {
-		Object.assign(timer.current.right, defaultTimer);
-		timer.current.right.timer_start = true;
+function timer_start(side: Side) {
+	if (side) {
+		Object.assign(timer.current[side], defaultTimer);
+		timer.current[side].timer_start = true;
 	}
 }
 
-function timer_stop(side: string) {
-	if (side === 'left') {
-		Object.assign(timer.current.left, defaultTimer);
-		timer.current.leftcps = [];
-		timer.current.left.timer_stop = true;
-	} else if (side === 'right') {
-		Object.assign(timer.current.right, defaultTimer);
-		timer.current.leftcps = [];
-		timer.current.right.timer_stop = true;
+function timer_stop(side: Side) {
+	if (side) {
+		Object.assign(timer.current[side], defaultTimer);
+		timer.current[`${side}cps`] = [];
+		timer.current[side].timer_stop = true;
 	}
 }
 
-function timer_finish(side: string, finishTime: number) {
-	if (side === 'left') {
-		timer.current.left.timer_start = false;
-		timer.current.left.timer_finish = true;
-		timer.current.left.finishTime = finishTime;
-		if (!timer.current.leftPr || finishTime < timer.current.leftPr) {
-			timer.current.leftPr = finishTime;
+function timer_finish(side: Side, finishTime: number) {
+	if (side) {
+		timer.current[side].timer_start = false;
+		timer.current[side].timer_finish = true;
+		timer.current[side].finishTime = finishTime;
+		if (!timer.current[`${side}Pr`] || finishTime < timer.current[`${side}Pr`]!) {
+			timer.current[`${side}Pr`] = finishTime;
 		}
-		Object.assign(timer.current.leftcps, { finish: finishTime });
-	} else {
-		timer.current.right.timer_start = false;
-		timer.current.right.timer_finish = true;
-		timer.current.right.finishTime = finishTime;
-		if (!timer.current.rightPr || finishTime < timer.current.rightPr) {
-			timer.current.rightPr = finishTime;
-		}
-		Object.assign(timer.current.rightcps, { finish: finishTime });
+		Object.assign(timer.current[`${side}cps`], { finish: finishTime });
 	}
 }
 
-function timer_checkpoint(side: string, checkpointName: string, checkpointTime: number) {
+function timer_checkpoint(side: Side, checkpointName: string, checkpointTime: number) {
+	// this block of code causes the timer to reset when a checkpoint is collected
 	if (timer.current.checkpoints && !timer.current.checkpoints.includes(checkpointName)) {
+		console.log(timer.current.checkpoints);
 		timer.current.checkpoints.push(checkpointName);
+		console.log(timer.current.checkpoints);
 	}
+
 	const index = indexOf(timer.current.checkpoints, checkpointName);
 
-	if (side === 'left') {
-		timer.current.leftcps[index] = checkpointTime;
-	} else {
-		timer.current.rightcps[index] = checkpointTime;
+	if (side) {
+		timer.current[`${side}cps`][index] = checkpointTime;
 	}
 }
 
@@ -210,13 +199,10 @@ function resetCheckpoints() {
 	timer.current.rightcps = [];
 }
 
-export function resetTimer(side: string) {
-	if (side === 'left') {
-		Object.assign(timer.current.left, defaultTimer);
-		timer.current.leftcps = [];
-	} else {
-		Object.assign(timer.current.right, defaultTimer);
-		timer.current.rightcps = [];
+export function resetTimer(side: Side) {
+	if (side) {
+		Object.assign(timer.current[side], defaultTimer);
+		timer.current[`${side}cps`] = [];
 	}
 }
 
