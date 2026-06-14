@@ -150,24 +150,22 @@ function checkTimerSide(data: BaseTimerEvent): string {
 			: '';
 }
 
-// don't start timer if already finished
 function timer_start(side: string) {
-	if (side === 'left' && !timer.current.left.timer_finish) {
+	if (side === 'left') {
 		Object.assign(timer.current.left, defaultTimer);
 		timer.current.left.timer_start = true;
-	} else if (side === 'right' && !timer.current.right.timer_finish) {
+	} else if (side === 'right') {
 		Object.assign(timer.current.right, defaultTimer);
 		timer.current.right.timer_start = true;
 	}
 }
 
-// don't stop timer if already finished
 function timer_stop(side: string) {
-	if (side === 'left' && !timer.current.left.timer_finish) {
+	if (side === 'left') {
 		Object.assign(timer.current.left, defaultTimer);
 		timer.current.leftcps = [];
 		timer.current.left.timer_stop = true;
-	} else if (side === 'right' && !timer.current.right.timer_finish) {
+	} else if (side === 'right') {
 		Object.assign(timer.current.right, defaultTimer);
 		timer.current.leftcps = [];
 		timer.current.right.timer_stop = true;

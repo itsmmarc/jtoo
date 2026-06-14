@@ -32,10 +32,10 @@
 			}
 		}
 
-		console.log(timer.current.checkpoints);
-		console.log(timer.current.leftcps);
-		console.log(timer.current.rightcps);
-		console.log(merged);
+		// console.log(timer.current.checkpoints);
+		// console.log(timer.current.leftcps);
+		// console.log(timer.current.rightcps);
+		// console.log(merged);
 		return merged;
 	}
 </script>

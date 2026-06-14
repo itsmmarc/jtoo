@@ -114,17 +114,23 @@ export interface BaseTimerEvent {
 	tick?: number;
 }
 
-// {"type":"timer_start","steamid":50734103,"track":0,"style":0,"timestamp":10000}
+/*
+{"type":"timer_start","steamid":50734103,"track":0,"style":0,"timestamp":10000}
+*/
 interface TimerStartEvent extends BaseTimerEvent {
 	type: 'timer_start';
 }
 
-// {"type":"timer_stop","steamid":50734103,"track":0,"style":0,"timestamp":10000}
+/*
+{"type":"timer_stop","steamid":50734103,"track":0,"style":0,"timestamp":10000}
+*/
 interface TimerStopEvent extends BaseTimerEvent {
 	type: 'timer_stop';
 }
 
-// {"type":"timer_finish","steamid":50734103,"track":0,"style":0,"timestamp":10000,"time":600,"jumps":21,"strafes":21,"sync":50,"oldtime":500,"perfs":21,"avgvel":1000,"maxvel":3500}
+/*
+{"type":"timer_finish","steamid":50734103,"track":0,"style":0,"timestamp":10000,"time":600,"jumps":21,"strafes":21,"sync":50,"oldtime":500,"perfs":21,"avgvel":1000,"maxvel":3500}
+*/
 interface TimerFinishEvent extends BaseTimerEvent {
 	type: 'timer_finish';
 	time: number; // time in seconds float32
