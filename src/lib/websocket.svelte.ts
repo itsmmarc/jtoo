@@ -77,8 +77,12 @@ export function initializeWebSocket() {
 				competition_timer_start(data.durationSeconds);
 				messages.current.competition.push(data);
 				break;
+			case 'competition_session_ended':
+				competition_timer_stop();
+				messages.current.competition.push(data);
+				break;
 			case 'competition_session_overtime':
-				competition_timer_overtime(data.durationSeconds);
+				competition_timer_overtime();
 				messages.current.competition.push(data);
 				break;
 			default:
@@ -237,6 +241,10 @@ function competition_timer_start(durationSeconds: number) {
 	if (timer.current.competition.timer_start) {
 		return;
 	}
+
+	timer.current = defaultTimerStore;
+
+	timer.current.competition.timer_stop = false;
 	timer.current.competition.durationSeconds = durationSeconds;
 	timer.current.competition.timeLeftSeconds = durationSeconds - 1;
 
@@ -244,7 +252,7 @@ function competition_timer_start(durationSeconds: number) {
 		if (timer.current.competition.timeLeftSeconds > 0) {
 			timer.current.competition.timeLeftSeconds--;
 		} else {
-			competition_timer_stop();
+			timer.current.competition.timeLeftSeconds = 0;
 		}
 	}, 1000);
 }
@@ -255,9 +263,6 @@ function competition_timer_stop() {
 	timer.current.competition.timer_stop = true;
 }
 
-function competition_timer_overtime(durationSeconds: number) {
+function competition_timer_overtime() {
 	timer.current.competition.overtime = true;
-	setTimeout(() => {
-		timer.current.competition.overtime = false;
-	}, durationSeconds * 1000);
 }

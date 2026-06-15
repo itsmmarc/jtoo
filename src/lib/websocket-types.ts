@@ -164,7 +164,7 @@ interface TimerCheckpointEvent extends BaseTimerEvent {
 // MARK: Competition
 // written by me for now, will get kingstripes' interfaces at some point
 interface BaseCompetitionEvent {
-	type: 'competition_session_live' | 'competition_session_overtime';
+	type: 'competition_session_live' | 'competition_session_overtime' | 'competition_session_ended';
 	timestamp: number;
 	sessionId: number;
 	startedAt: number;
@@ -180,7 +180,12 @@ interface CompetitionLiveEvent extends BaseCompetitionEvent {
 // {"type":"competition_session_overtime","timestamp":1780753430,"sessionId":49,"startedAt":1780753370,"durationSeconds":60,"expiredAt":1780753430}
 interface CompetitionOvertimeEvent extends BaseCompetitionEvent {
 	type: 'competition_session_overtime';
-	expiredAt: 1780753430;
+	expiredAt: number;
+}
+
+interface CompetitionEndEvent extends BaseCompetitionEvent {
+	type: 'competition_session_ended';
+	expiredAt: number;
 }
 
 // MARK: Messages
@@ -192,7 +197,8 @@ export type MessageTypes =
 	| TimerFinishEvent
 	| TimerCheckpointEvent
 	| CompetitionLiveEvent
-	| CompetitionOvertimeEvent;
+	| CompetitionOvertimeEvent
+	| CompetitionEndEvent;
 
 export type Messages = {
 	mapPicks: PickBansSessionStateEvent;
