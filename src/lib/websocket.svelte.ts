@@ -17,7 +17,7 @@ export function clearWebSocketMessages() {
 	resetCheckpoints();
 }
 export function clearPicksAndBans() {
-	messages.current.mapPicks = [];
+	messages.current.mapPicks = { type: 'pickbans_session_state', session: null };
 }
 
 export function clearTimer() {
@@ -56,7 +56,7 @@ export function initializeWebSocket() {
 
 		switch (data.type) {
 			case 'pickbans_session_state':
-				messages.current.mapPicks.push(data);
+				messages.current.mapPicks = data;
 				break;
 			case 'timer_start':
 				timer_start(checkTimerSide(data));

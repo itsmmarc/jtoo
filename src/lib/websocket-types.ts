@@ -195,13 +195,13 @@ export type MessageTypes =
 	| CompetitionOvertimeEvent;
 
 export type Messages = {
-	mapPicks: PickBansSessionStateEvent[];
+	mapPicks: PickBansSessionStateEvent;
 	timer: BaseTimerEvent[];
 	competition: BaseCompetitionEvent[];
 };
 
 export const defaultMessages = {
-	mapPicks: [],
+	mapPicks: { type: 'pickbans_session_state', session: null },
 	timer: [],
 	competition: []
 } as Messages;

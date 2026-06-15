@@ -62,7 +62,14 @@
 
 <!-- presets -->
 <div class="relative m-2 flex w-full max-w-lg justify-center gap-4 self-center">
-	<button class="button-remove" onclick={() => fullReset()}>full settings reset</button>
+	<button
+		class="button-remove"
+		onclick={() => {
+			fullReset();
+			clearTimer();
+			clearPicksAndBans();
+		}}>full settings reset</button
+	>
 	<button class="hover:mix-blend-soft-light" onclick={() => loadSoldierPlayoffs2026()}>
 		<img
 			src={icon_soldier}

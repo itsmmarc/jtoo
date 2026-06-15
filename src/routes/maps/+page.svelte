@@ -8,25 +8,45 @@
 	let progress = $state(0);
 	let increment = 0;
 	let timeout: NodeJS.Timeout;
+	let mapPicks = $derived(messages.current.mapPicks);
+	let mapPicksOld: PickBansSessionStateEvent | null = null;
 
 	$effect(() => {
-		if (messages.current.mapPicks.length) {
-			clearTimeout(timeout);
-			progress = 0;
-
-			let m: PickBansSessionStateEvent =
-				messages.current.mapPicks[messages.current.mapPicks.length - 1];
-
-			if (m && m.session?.config.turnTimeLimitSeconds) {
-				let timelimit = (m.session.config.turnTimeLimitSeconds + 2) * 1000;
-				let fps = 30;
-				let interval = 1000 / fps;
-				increment = (interval / timelimit) * 100;
-
-				timeout = setInterval(timer, interval);
-			}
+		// if no session exists, ignore
+		if (!mapPicks.session) {
+			return;
 		}
+
+		// if this is the first session, set up old session
+		if (!mapPicksOld) {
+			mapPicksOld = { ...mapPicks };
+		} else if (
+			// if the new session matches the old session, ignore
+			mapPicksOld.session &&
+			mapPicks.session.currentTurn?.turnId == mapPicksOld.session.currentTurn?.turnId
+		) {
+			return;
+		}
+
+		startTurnTimer();
+		mapPicksOld = { ...mapPicks };
 	});
+
+	function startTurnTimer() {
+		clearTimeout(timeout);
+		progress = 0;
+
+		let m: PickBansSessionStateEvent = messages.current.mapPicks;
+
+		if (m && m.session?.config.turnTimeLimitSeconds) {
+			let timelimit = (m.session.config.turnTimeLimitSeconds + 2) * 1000;
+			let fps = 30;
+			let interval = 1000 / fps;
+			increment = (interval / timelimit) * 100;
+
+			timeout = setInterval(timer, interval);
+		}
+	}
 
 	function timer() {
 		progress += increment;
@@ -34,7 +54,6 @@
 			progress = 0;
 		}
 	}
-	console.log(messages.current);
 </script>
 
 <!-- isolated border filter -->
@@ -60,7 +79,7 @@
 	<section class="flex flex-wrap justify-around gap-5 p-10">
 		{#each Object.entries(items.current.maps) as [key, map], i (i)}
 			{#if key !== 'null'}
-				{@const m: PickBansSessionStateEvent | null = messages.current.mapPicks ? messages.current.mapPicks[messages.current.mapPicks.length - 1] : null}
+				{@const m: PickBansSessionStateEvent | null = messages.current.mapPicks ? messages.current.mapPicks : null}
 				<div class="@container relative mb-2 h-65 w-130 text-4xl">
 					{#if m && 'session' in m && m.session}
 						{#each m.session.history as step, i (i)}
@@ -112,8 +131,8 @@
 		{/each}
 	</section>
 	<section class="m-auto flex w-[90%] flex-col gap-3 self-center pb-3">
-		{#if messages.current.mapPicks && messages.current.mapPicks[messages.current.mapPicks.length - 1]}
-			{@const m: PickBansSessionStateEvent = messages.current.mapPicks[messages.current.mapPicks.length - 1]}
+		{#if messages.current.mapPicks && messages.current.mapPicks}
+			{@const m: PickBansSessionStateEvent = messages.current.mapPicks}
 			{#if m && 'session' in m && m.session}
 				{@const step = m.session.steps[m.session.currentStepIndex]}
 				{#if step}
