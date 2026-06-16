@@ -32,6 +32,7 @@ import m879 from '$lib/assets/jump-fortress-team/879m.jpg';
 import zike from '$lib/assets/jump-fortress-team/zike.jpg';
 import kendrick from '$lib/assets/jump-fortress-team/kendrick.jpg';
 import sgt from '$lib/assets/jump-fortress-team/sgt.jpg';
+import cier from '$lib/assets/jump-fortress-team/cier.jpg';
 
 import momentummod from '$lib/assets/jump-fortress-team/special-thanks/momentum-mod.png';
 import essentialstf from '$lib/assets/jump-fortress-team/special-thanks/essentialstf.jpg';
@@ -40,58 +41,69 @@ import tempus from '$lib/assets/jump-fortress-team/special-thanks/tempus.webp';
 import b4nny from '$lib/assets/jump-fortress-team/special-thanks/b4nny.jpg';
 import htwo from '$lib/assets/jump-fortress-team/special-thanks/htwo.jpg';
 import sourceruns from '$lib/assets/jump-fortress-team/special-thanks/sourceruns.png';
+import passfortress from '$lib/assets/jump-fortress-team/special-thanks/passfortress.jpg';
+import rtf2 from '$lib/assets/jump-fortress-team/special-thanks/rtf2.webp';
+import plaza from '$lib/assets/jump-fortress-team/special-thanks/plaza.webp';
+import steam from '$lib/assets/jump-fortress-team/special-thanks/steam.png';
+import tftv from '$lib/assets/jump-fortress-team/special-thanks/tftv.png';
 
 export type Member = { name: string; image: string };
 export const team: { casters: Member[]; team: Member[]; specialThanks: Member[] } = {
 	casters: [
-		{ name: 'zagrfige', image: zag },
+		{ name: 'Zagrfige', image: zag },
 		{ name: 'tev', image: tev },
 		{ name: 'pmittens', image: pmittens },
-		{ name: 'warped', image: warped },
-		{ name: 'matty', image: matty },
-		{ name: 'steve', image: steve },
-		{ name: 'wild_rumpus', image: wild_rumpus },
+		{ name: 'Warped', image: warped },
+		{ name: 'Matty', image: matty },
+		{ name: 'Steve', image: steve },
+		{ name: 'Wild_Rumpus', image: wild_rumpus },
 		{ name: '879m', image: m879 },
-		{ name: 'zike1017', image: zike }
+		{ name: 'Zike1017', image: zike }
 	],
 	team: [
 		{ name: 'Shanks', image: shanks },
 		{ name: 'resin', image: resin },
 		{ name: 'mmarc', image: mmarc },
-		{ name: 'kingstripes', image: kingstripes },
+		{ name: 'Kingstripes', image: kingstripes },
 
-		{ name: 'kendrick', image: kendrick },
+		{ name: 'Kendrick', image: kendrick },
 		{ name: 'goth', image: goth },
-		{ name: 'shadowoflight', image: shadowoflight },
-		{ name: 'jbrns', image: jbrns },
+		{ name: 'ShadowOfLight', image: shadowoflight },
+		{ name: 'Jbrns♡', image: jbrns },
 		{ name: 'sgt Bytheway', image: sgt },
-		{ name: 'zagrfige', image: zag },
-		{ name: 'sandman', image: sandman },
+		{ name: 'Zagrfige', image: zag },
+		{ name: 'Sandman', image: sandman },
 		{ name: 'c00kie', image: c00kie },
-		{ name: 'charlie', image: charlie },
-		{ name: 'digital', image: digital },
+		{ name: 'Charlie', image: charlie },
+		{ name: 'Digital', image: digital },
 		{ name: 'Else', image: Else },
 		{ name: 'ixam', image: ixam },
 		{ name: 'lily', image: lily },
 		{ name: 'omega', image: omega },
-		{ name: 'star', image: star },
-		{ name: 'blank', image: blank },
-		{ name: 'matty', image: matty },
+		{ name: 'Star', image: star },
+		{ name: 'BLANK', image: blank },
+		{ name: 'Matty', image: matty },
 		{ name: 'jessica', image: jessica },
 		{ name: 'ADJ', image: ADJ },
 		{ name: 'tev', image: tev },
 		{ name: 'NVG', image: NVG },
 		{ name: 'stoneflower', image: stoneflower },
 		{ name: 'hiei', image: hiei },
-		{ name: 'vice', image: vice }
+		{ name: 'vice', image: vice },
+		{ name: 'Cier', image: cier }
 	],
 	specialThanks: [
-		{ name: 'Tempus', image: tempus },
+		{ name: 'Tempus Network', image: tempus },
 		{ name: 'Momentum Mod', image: momentummod },
 		{ name: 'EssentialsTF', image: essentialstf },
+		{ name: 'Tempus Plaza', image: plaza },
+		{ name: 'Pass Fortress', image: passfortress },
+		{ name: 'r/tf2', image: rtf2 },
+		{ name: 'TFTV', image: tftv },
 		{ name: 'SourceRuns', image: sourceruns },
 		{ name: 'b4nny', image: b4nny },
-		{ name: 'htwo', image: htwo },
-		{ name: 'obsidiian', image: obsidiian }
+		{ name: 'Htwo', image: htwo },
+		{ name: 'obsidiian', image: obsidiian },
+		{ name: 'Steam', image: steam }
 	]
 };
