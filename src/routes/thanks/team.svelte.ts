@@ -33,6 +33,8 @@ import zike from '$lib/assets/jump-fortress-team/zike.jpg';
 import kendrick from '$lib/assets/jump-fortress-team/kendrick.jpg';
 import sgt from '$lib/assets/jump-fortress-team/sgt.jpg';
 import cier from '$lib/assets/jump-fortress-team/cier.jpg';
+import metalcloud from '$lib/assets/jump-fortress-team/metalcloud.jpg';
+import overpovered from '$lib/assets/jump-fortress-team/overpovered.jpg';
 
 import momentummod from '$lib/assets/jump-fortress-team/special-thanks/momentum-mod.png';
 import essentialstf from '$lib/assets/jump-fortress-team/special-thanks/essentialstf.jpg';
@@ -48,62 +50,65 @@ import steam from '$lib/assets/jump-fortress-team/special-thanks/steam.png';
 import tftv from '$lib/assets/jump-fortress-team/special-thanks/tftv.png';
 
 export type Member = { name: string; image: string };
-export const team: { casters: Member[]; team: Member[]; specialThanks: Member[] } = {
-	casters: [
-		{ name: 'Zagrfige', image: zag },
-		{ name: 'tev', image: tev },
-		{ name: 'pmittens', image: pmittens },
-		{ name: 'Warped', image: warped },
-		{ name: 'Matty', image: matty },
-		{ name: 'Steve', image: steve },
-		{ name: 'Wild_Rumpus', image: wild_rumpus },
-		{ name: '879m', image: m879 },
-		{ name: 'Zike1017', image: zike }
-	],
-	team: [
-		{ name: 'Shanks', image: shanks },
-		{ name: 'resin', image: resin },
-		{ name: 'mmarc', image: mmarc },
-		{ name: 'Kingstripes', image: kingstripes },
+export const team: { casters: Member[]; shanks: Member; team: Member[]; specialThanks: Member[] } =
+	{
+		casters: [
+			{ name: 'Zagrfige', image: zag },
+			{ name: 'tev', image: tev },
+			{ name: 'pmittens', image: pmittens },
+			{ name: 'Warped', image: warped },
+			{ name: 'Matty', image: matty },
+			{ name: 'Steve', image: steve },
+			{ name: 'Wild_Rumpus', image: wild_rumpus },
+			{ name: '879m', image: m879 },
+			{ name: 'Zike1017', image: zike }
+		],
+		shanks: { name: 'Shanks', image: shanks },
+		team: [
+			{ name: 'resin', image: resin },
+			{ name: 'mmarc', image: mmarc },
+			{ name: 'Kingstripes', image: kingstripes },
 
-		{ name: 'Kendrick', image: kendrick },
-		{ name: 'goth', image: goth },
-		{ name: 'ShadowOfLight', image: shadowoflight },
-		{ name: 'Jbrns♡', image: jbrns },
-		{ name: 'sgt Bytheway', image: sgt },
-		{ name: 'Zagrfige', image: zag },
-		{ name: 'Sandman', image: sandman },
-		{ name: 'c00kie', image: c00kie },
-		{ name: 'Charlie', image: charlie },
-		{ name: 'Digital', image: digital },
-		{ name: 'Else', image: Else },
-		{ name: 'ixam', image: ixam },
-		{ name: 'lily', image: lily },
-		{ name: 'omega', image: omega },
-		{ name: 'Star', image: star },
-		{ name: 'BLANK', image: blank },
-		{ name: 'Matty', image: matty },
-		{ name: 'Owlfy', image: owlfy },
-		{ name: 'ADJ', image: ADJ },
-		{ name: 'tev', image: tev },
-		{ name: 'NVG', image: NVG },
-		{ name: 'stoneflower', image: stoneflower },
-		{ name: 'hiei', image: hiei },
-		{ name: 'vice', image: vice },
-		{ name: 'Cier', image: cier }
-	],
-	specialThanks: [
-		{ name: 'Tempus Network', image: tempus },
-		{ name: 'Momentum Mod', image: momentummod },
-		{ name: 'EssentialsTF', image: essentialstf },
-		{ name: 'Tempus Plaza', image: plaza },
-		{ name: 'Pass Fortress', image: passfortress },
-		{ name: 'r/tf2', image: rtf2 },
-		{ name: 'TFTV', image: tftv },
-		{ name: 'SourceRuns', image: sourceruns },
-		{ name: 'b4nny', image: b4nny },
-		{ name: 'Htwo', image: htwo },
-		{ name: 'obsidiian', image: obsidiian },
-		{ name: 'Steam', image: steam }
-	]
-};
+			{ name: 'Kendrick', image: kendrick },
+			{ name: 'goth', image: goth },
+			{ name: 'ShadowOfLight', image: shadowoflight },
+			{ name: 'Jbrns♡', image: jbrns },
+			{ name: 'sgt Bytheway', image: sgt },
+			{ name: 'Zagrfige', image: zag },
+			{ name: 'Sandman', image: sandman },
+			{ name: 'c00kie', image: c00kie },
+			{ name: 'Charlie', image: charlie },
+			{ name: 'Digital', image: digital },
+			{ name: 'Else', image: Else },
+			{ name: 'ixam', image: ixam },
+			{ name: 'lily', image: lily },
+			{ name: 'omega', image: omega },
+			{ name: 'Star', image: star },
+			{ name: 'BLANK', image: blank },
+			{ name: 'Matty', image: matty },
+			{ name: 'Owlfy', image: owlfy },
+			{ name: 'ADJ', image: ADJ },
+			{ name: 'tev', image: tev },
+			{ name: 'NVG', image: NVG },
+			{ name: 'stoneflower', image: stoneflower },
+			{ name: 'hiei', image: hiei },
+			{ name: 'vice', image: vice },
+			{ name: 'MetalCloud', image: metalcloud },
+			{ name: 'Cier', image: cier },
+			{ name: 'OverPovered', image: overpovered }
+		],
+		specialThanks: [
+			{ name: 'Tempus Network', image: tempus },
+			{ name: 'Momentum Mod', image: momentummod },
+			{ name: 'EssentialsTF', image: essentialstf },
+			{ name: 'Tempus Plaza', image: plaza },
+			{ name: 'Pass Fortress', image: passfortress },
+			{ name: 'r/tf2', image: rtf2 },
+			{ name: 'TFTV', image: tftv },
+			{ name: 'SourceRuns', image: sourceruns },
+			{ name: 'b4nny', image: b4nny },
+			{ name: 'Htwo', image: htwo },
+			{ name: 'obsidiian', image: obsidiian },
+			{ name: 'Steam', image: steam }
+		]
+	};
