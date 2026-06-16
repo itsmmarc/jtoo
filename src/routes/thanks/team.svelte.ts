@@ -8,7 +8,7 @@ import goth from '$lib/assets/jump-fortress-team/goth.png';
 import hiei from '$lib/assets/jump-fortress-team/hiei.png';
 import ixam from '$lib/assets/jump-fortress-team/ixam.png';
 import jbrns from '$lib/assets/jump-fortress-team/jbrns.png';
-import jessica from '$lib/assets/jump-fortress-team/jessica.png';
+import owlfy from '$lib/assets/jump-fortress-team/owlfy.png';
 import kingstripes from '$lib/assets/jump-fortress-team/kingstripes.png';
 import lily from '$lib/assets/jump-fortress-team/lily.png';
 import mmarc from '$lib/assets/jump-fortress-team/mmarc.jpg';
@@ -83,7 +83,7 @@ export const team: { casters: Member[]; team: Member[]; specialThanks: Member[] 
 		{ name: 'Star', image: star },
 		{ name: 'BLANK', image: blank },
 		{ name: 'Matty', image: matty },
-		{ name: 'jessica', image: jessica },
+		{ name: 'Owlfy', image: owlfy },
 		{ name: 'ADJ', image: ADJ },
 		{ name: 'tev', image: tev },
 		{ name: 'NVG', image: NVG },

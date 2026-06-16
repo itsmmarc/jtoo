@@ -5,7 +5,7 @@
 
 <section class="{settings.current.font} grid grid-cols-12 text-center text-3xl">
 	<h1 class="col-span-full mt-5 text-center text-5xl">Thanks to the Jump Fortress team!</h1>
-	<div class="col-span-5 m-10 mb-0 grid auto-rows-min grid-cols-5 gap-4">
+	<div class="col-span-5 m-10 mb-0 flex flex-wrap gap-4">
 		<h2>Casters</h2>
 		{#each team.casters as member, i (i)}
 			{@render TeamMember(member)}
@@ -37,7 +37,10 @@
 <style>
 	@import 'tailwindcss';
 
-	h2 {
+	.grid > h2 {
 		@apply col-span-full;
+	}
+	.flex > h2 {
+		@apply w-full;
 	}
 </style>
