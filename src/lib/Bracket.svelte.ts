@@ -13,11 +13,21 @@ export type Bracket = {
 };
 
 export function setMatchWinner(m: Match, w: 'A' | 'B' | '') {
-	if (m.A.name && m.B.name) {
-		// set winner
-		m.winner = w;
+	// set winner
+	m.winner = w;
 
-		// progress players
+	// remove winner from subsequent matches
+	if (!w) {
+		if (m.winDest) {
+			setMatchWinner(items.current.bracket[m.winDest[0]][m.winDest[1]][m.winDest[2]], '');
+		}
+		if (m.loseDest) {
+			setMatchWinner(items.current.bracket[m.loseDest[0]][m.loseDest[1]][m.loseDest[2]], '');
+		}
+	}
+
+	// progress players
+	if (m.A.name && m.B.name) {
 		if (m.winDest) {
 			items.current.bracket[m.winDest[0]][m.winDest[1]][m.winDest[2]][m.winDest[3]] = w
 				? m[w]
@@ -28,10 +38,5 @@ export function setMatchWinner(m: Match, w: 'A' | 'B' | '') {
 				? m[w == 'A' ? 'B' : 'A']
 				: nullPlayer;
 		}
-	}
-
-	if (!w) {
-		setMatchWinner(items.current.bracket[m.winDest[0]][m.winDest[1]][m.winDest[2]], '');
-		setMatchWinner(items.current.bracket[m.loseDest[0]][m.loseDest[1]][m.loseDest[2]], '');
 	}
 }

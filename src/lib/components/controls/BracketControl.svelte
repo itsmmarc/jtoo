@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { setMatchWinner, type Match } from '$lib/Bracket.svelte';
-	import { items } from '$lib/storage.svelte';
+	import { items, settings } from '$lib/storage.svelte';
+	import { fade, slide } from 'svelte/transition';
 </script>
 
 {#if items.current.bracket}
@@ -89,31 +90,52 @@
 {/if}
 
 {#snippet Match(match: Match)}
-	<div class="flex min-h-25 min-w-60 flex-col justify-between gap-2 bg-red-400 p-2 text-3xl">
-		<button
-			class="z-1 {match.winner ? (match.winner == 'A' ? 'bg-green-500' : 'bg-red-500') : ''}"
-			onclick={() => {
-				setMatchWinner(match, 'A');
-			}}
-			oncontextmenu={() => {
-				setMatchWinner(match, '');
-			}}
-		>
-			{match.A.name}
-		</button>
-
-		<button
-			class="z-1 {match.winner ? (match.winner == 'B' ? 'bg-green-500' : 'bg-red-500') : ''}"
-			onclick={() => {
-				setMatchWinner(match, 'B');
-			}}
-			oncontextmenu={() => {
-				setMatchWinner(match, '');
-			}}
-		>
-			{match.B.name}
-		</button>
+	<div
+		class="flex min-h-32 min-w-60 flex-col justify-between
+                {match.A.name && match.B.name && !match.winner
+			? 'bg-ctp-lavender-900'
+			: 'bg-gray-800'} text-3xl"
+	>
+		{@render MatchPlayer(match, 'A')}
+		{@render MatchPlayer(match, 'B')}
 	</div>
+{/snippet}
+
+{#snippet MatchPlayer(match: Match, player: 'A' | 'B')}
+	{#key match.winner}
+		<button
+			in:slide={{ axis: 'x', duration: 800 }}
+			class="z-1 grow"
+			onclick={() => {
+				setMatchWinner(match, player);
+			}}
+			oncontextmenu={() => {
+				setMatchWinner(match, '');
+			}}
+		>
+			<div
+				class="flex h-full w-full items-center gap-4 bg-linear-to-tr pl-6
+                                {match.winner
+					? match.winner == player
+						? 'from-[#06d641a5] via-[#53c359cb] to-[#bfefc1db] mix-blend-hard-light'
+						: 'from-[#cd130acc] via-[#240a0a8f] to-[#0f0000d2] mix-blend-soft-light'
+					: ''}"
+			>
+				{#if settings.current.enableAvatars && match[player].avatarURL}
+					{#key match[player].avatarURL}
+						<img
+							in:fade
+							src={match[player].avatarURL}
+							alt=""
+							class="size-12 rounded-xl object-cover object-center"
+							draggable="false"
+						/>
+					{/key}
+				{/if}
+				{match[player].name}
+			</div>
+		</button>
+	{/key}
 {/snippet}
 
 <style>
@@ -122,6 +144,6 @@
 		@apply text-center;
 	}
 	.stage-container {
-		@apply flex h-full flex-col justify-around gap-10 bg-gray-400;
+		@apply flex h-full flex-col justify-around gap-4 bg-gray-900;
 	}
 </style>
