@@ -1,4 +1,5 @@
 import { PersistentState } from '@friendofsvelte/state';
+import { type Bracket } from './Bracket.svelte';
 
 export const Fonts = [
 	'font-cause',
@@ -100,6 +101,8 @@ export type Player = {
 	favouriteMap?: string;
 };
 
+export const nullPlayer: Player = { name: '', score: 0 } as const;
+
 export type Overlay = {
 	bestOf: number;
 	leftPlayer: Player;
@@ -114,6 +117,7 @@ export type Items = {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	maps: MapsInfo<any>;
 	stages: Array<string>;
+	bracket: Bracket;
 };
 
 export const defaultStages: Array<string> = [
@@ -128,6 +132,127 @@ export const defaultStages: Array<string> = [
 	"Loser's Semis",
 	"Loser's Finals"
 ];
+
+export const defaultBracket: Bracket = {
+	Upper: {
+		QuarterFinal: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Upper', 'SemiFinal', 0, 'A'],
+				loseDest: ['Lower', 'Round1', 0, 'A']
+			},
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Upper', 'SemiFinal', 0, 'B'],
+				loseDest: ['Lower', 'Round1', 0, 'B']
+			},
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Upper', 'SemiFinal', 1, 'A'],
+				loseDest: ['Lower', 'Round1', 1, 'A']
+			},
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Upper', 'SemiFinal', 1, 'B'],
+				loseDest: ['Lower', 'Round1', 1, 'B']
+			}
+		],
+		SemiFinal: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Upper', 'Final', 0, 'A'],
+				loseDest: ['Lower', 'QuarterFinal', 0, 'B']
+			},
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Upper', 'Final', 0, 'B'],
+				loseDest: ['Lower', 'QuarterFinal', 1, 'B']
+			}
+		],
+		Final: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Upper', 'GrandFinal', 0, 'A'],
+				loseDest: ['Lower', 'Final', 0, 'B']
+			}
+		],
+		GrandFinal: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: null,
+				loseDest: null
+			}
+		]
+	},
+	Lower: {
+		Round1: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Lower', 'QuarterFinal', 0, 'A'],
+				loseDest: null
+			},
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Lower', 'QuarterFinal', 1, 'A'],
+				loseDest: null
+			}
+		],
+		QuarterFinal: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Lower', 'SemiFinal', 0, 'A'],
+				loseDest: null
+			},
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Lower', 'SemiFinal', 0, 'B'],
+				loseDest: null
+			}
+		],
+		SemiFinal: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Lower', 'Final', 0, 'A'],
+				loseDest: null
+			}
+		],
+		Final: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Upper', 'GrandFinal', 0, 'B'],
+				loseDest: null
+			}
+		]
+	}
+};
 
 export const defaultSettings: Settings = {
 	font: 'font-space-grotesk',
@@ -158,9 +283,10 @@ export const defaultOverlay: Overlay = {
 };
 
 export const defaultItems: Items = {
-	players: [{ name: '', score: 0 }],
+	players: [nullPlayer],
 	maps: { null: { fileName: '', shortName: '', ID: '' } },
-	stages: defaultStages
+	stages: defaultStages,
+	bracket: defaultBracket
 };
 
 // overlay settings
@@ -173,6 +299,7 @@ export const overlay = new PersistentState('overlay', defaultOverlay);
 export const items = new PersistentState('items', defaultItems);
 
 export function fullReset() {
+	console.log(defaultBracket);
 	settings.current = defaultSettings;
 	overlay.current = defaultOverlay;
 	items.current = defaultItems;

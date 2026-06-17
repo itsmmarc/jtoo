@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Player, items } from '$lib/storage.svelte';
+	import { type Player, nullPlayer, items } from '$lib/storage.svelte';
 	import { slide } from 'svelte/transition';
 	import EditPlayer from './EditPlayer.svelte';
 
@@ -33,7 +33,7 @@
 	<button
 		class="button-remove"
 		onclick={() => {
-			items.current.players = [{ name: '', score: 0 } as Player];
+			items.current.players = [nullPlayer as Player];
 		}}>remove all</button
 	>
 </div>
