@@ -18,7 +18,7 @@ type Playoffs2026DemoMapList = {
 	nbn?: unknown;
 };
 
-const soldierPlayoffs2026 = {
+export const soldierPlayoffs2026 = {
 	players: [
 		{ name: '', score: 0, tempusPrs: {} },
 		{
@@ -197,6 +197,31 @@ const soldierPlayoffs2026 = {
 			score: 0
 		},
 		{
+			name: 'rev!4',
+			tempusID: '74551',
+			steamID3: 140795940,
+			avatarURL:
+				'https://avatars.akamai.steamstatic.com/11b15865f0ca1bfedec6df4938b1af00a3584d83_full.jpg',
+			tag: '',
+			flag: 'fr',
+			rank: { overall: 51, soldier: 28, demo: 444 },
+			tempusPrs: {
+				pokus: { rank: 0, time: '' },
+				marigold: { rank: 0, time: '' },
+				phobos: { rank: 0, time: '' },
+				oddie: { rank: 0, time: '' },
+				ahh: { rank: 0, time: '' },
+				soar: { rank: 0, time: '' },
+				above: { rank: 0, time: '' }
+			},
+			WRs: 13,
+			TTs: 74,
+			bestRun: '',
+			note: '',
+			favouriteMap: '',
+			score: 0
+		},
+		{
 			name: 'Shanks',
 			tempusID: '457363',
 			steamID3: 89322649,
@@ -326,7 +351,7 @@ const soldierPlayoffs2026 = {
 	} as MapsInfo<Playoffs2026SoldierMapList>
 };
 
-const demoPlayoffs2026 = {
+export const demoPlayoffs2026 = {
 	players: [
 		{ name: '', score: 0, tempusPrs: {} },
 		{
