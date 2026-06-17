@@ -29,10 +29,14 @@
 			<li>remove Custom CSS</li>
 			<li>repeat steps 2-4 for each overlay</li>
 		</ul>
-		<div class="flex gap-5">
+		<div class="flex gap-5 pb-10">
 			{@render URLButton('match', 'overlay')}
 			{@render URLButton('maps', 'maps')}
 			{@render URLButton('player cards', 'playercards')}
+		</div>
+		<div class="flex justify-center gap-5">
+			{@render URLButton('bracket', 'bracket')}
+			{@render URLButton('thanks', 'thanks')}
 		</div>
 	</div>
 </main>
