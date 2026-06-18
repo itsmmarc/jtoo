@@ -86,17 +86,20 @@
 
 			<div class="flex justify-end gap-3 {sideKey === 'rightPlayer' ? 'flex-row-reverse' : ''}">
 				<!-- info -->
-
 				<div
 					class="h-fit grow text-4xl {sideKey === 'rightPlayer' ? 'text-right' : 'text-left'}"
 					style:filter={getFiltersStyle()}
 				>
-					<ul class="w-full">
-						<li class="m-10">{player.WRs} world records</li>
-						<li class="m-10">{player.TTs} top times</li>
+					<ul class="flex h-150 w-full flex-col gap-6">
+						<li class="">{player.WRs} world records</li>
+						<li class="">{player.TTs} top times</li>
+						<li class="italic opacity-60">best run</li>
+						<li class="-mt-6">{player.bestRun}</li>
+						<li class="italic opacity-60">favourite map</li>
+						<li class="-mt-6">{player.favouriteMap}</li>
 						<!-- <li>{player.topTimes} top times</li> -->
 						<li
-							class="m-10 flex justify-end
+							class="flex h-20 grow justify-end
                                                                 {sideKey === 'rightPlayer'
 								? 'flex-row'
 								: 'flex-row-reverse'}"

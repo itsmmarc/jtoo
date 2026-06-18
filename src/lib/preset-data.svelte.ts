@@ -126,7 +126,7 @@ export const soldierPlayoffs2026 = {
 			WRs: 147,
 			TTs: 610,
 			bestRun: 'destination_v2',
-			note: '<img src="https://media.discordapp.net/attachments/1513525278264262799/1515369370816090152/beh.png?ex=6a2ec134&is=6a2d6fb4&hm=ff05552b818d3e0a2263dbbbdee10c1c942f709dbdbbd8979925921d86d06105&=&format=webp&quality=lossless" class="rounded-xl object-cover" />', // find better quality if possible
+			note: '<img src="https://media.discordapp.net/attachments/1513525278264262799/1515369370816090152/beh.png?ex=6a2ec134&is=6a2d6fb4&hm=ff05552b818d3e0a2263dbbbdee10c1c942f709dbdbbd8979925921d86d06105&=&format=webp&quality=lossless" class="object-fit h-auto max-w-full rounded-xl" alt="helmibunny" />',
 			favouriteMap: 'atrial',
 			score: 0
 		},
