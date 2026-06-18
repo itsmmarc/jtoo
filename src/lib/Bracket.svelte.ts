@@ -13,11 +13,9 @@ export type Bracket = {
 };
 
 export function setMatchWinner(m: Match, w: 'A' | 'B' | '') {
-	// set winner
-	m.winner = w;
-
 	// remove winner from subsequent matches
 	if (!w) {
+		m.winner = w;
 		if (m.winDest) {
 			setMatchWinner(items.current.bracket[m.winDest[0]][m.winDest[1]][m.winDest[2]], '');
 		}
@@ -28,6 +26,7 @@ export function setMatchWinner(m: Match, w: 'A' | 'B' | '') {
 
 	// progress players
 	if (m.A.name && m.B.name) {
+		m.winner = w;
 		if (m.winDest) {
 			items.current.bracket[m.winDest[0]][m.winDest[1]][m.winDest[2]][m.winDest[3]] = w
 				? m[w]
