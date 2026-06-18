@@ -85,6 +85,10 @@ export function initializeWebSocket() {
 				competition_timer_overtime();
 				messages.current.competition.push(data);
 				break;
+			// case 'competition_session_player_end':
+			// 	timer_stop_safe(checkTimerSide(data));
+			// 	messages.current.competition.push(data);
+			// 	break;
 			default:
 				return;
 		}
@@ -167,6 +171,13 @@ function timer_stop(side: Side) {
 	if (side) {
 		Object.assign(timer.current[side], defaultTimer);
 		timer.current[`${side}cps`] = [];
+		timer.current[side].timer_stop = true;
+	}
+}
+
+function timer_stop_safe(side: Side) {
+	if (side) {
+		timer.current[side].timer_start = false;
 		timer.current[side].timer_stop = true;
 	}
 }
@@ -261,6 +272,9 @@ function competition_timer_stop() {
 	clearTimeout(competitionTimer);
 	timer.current.competition.timer_start = false;
 	timer.current.competition.timer_stop = true;
+
+	timer_stop_safe('left');
+	timer_stop_safe('right');
 }
 
 function competition_timer_overtime() {

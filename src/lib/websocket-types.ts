@@ -164,7 +164,11 @@ interface TimerCheckpointEvent extends BaseTimerEvent {
 // MARK: Competition
 // written by me for now, will get kingstripes' interfaces at some point
 interface BaseCompetitionEvent {
-	type: 'competition_session_live' | 'competition_session_overtime' | 'competition_session_ended';
+	type:
+		| 'competition_session_live'
+		| 'competition_session_overtime'
+		| 'competition_session_ended'
+		| 'competition_session_player_end';
 	timestamp: number;
 	sessionId: number;
 	startedAt: number;
@@ -183,6 +187,9 @@ interface CompetitionOvertimeEvent extends BaseCompetitionEvent {
 	expiredAt: number;
 }
 
+/*
+{"type":"competition_session_ended","timestamp":1780753370,"sessionId":49,"startedAt":1780753370,"durationSeconds":60,"expiredAt":1780753430}
+*/
 interface CompetitionEndEvent extends BaseCompetitionEvent {
 	type: 'competition_session_ended';
 	expiredAt: number;
