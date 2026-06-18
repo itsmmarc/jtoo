@@ -60,30 +60,30 @@ export function initializeWebSocket() {
 				break;
 			case 'timer_start':
 				timer_start(checkTimerSide(data));
-				messages.current.timer.push(data);
+				// messages.current.timer.push(data);
 				break;
 			case 'timer_stop':
 				timer_stop(checkTimerSide(data));
-				messages.current.timer.push(data);
+				// messages.current.timer.push(data);
 				break;
 			case 'timer_finish':
 				timer_finish(checkTimerSide(data), data.time);
-				messages.current.timer.push(data);
+				// messages.current.timer.push(data);
 				break;
 			case 'timer_checkpoint':
 				timer_checkpoint(checkTimerSide(data), data.formattedCheckpoint, data.time);
 				break;
 			case 'competition_session_live':
 				competition_timer_start(data.durationSeconds);
-				messages.current.competition.push(data);
+				// messages.current.competition.push(data);
 				break;
 			case 'competition_session_ended':
 				competition_timer_stop();
-				messages.current.competition.push(data);
+				// messages.current.competition.push(data);
 				break;
 			case 'competition_session_overtime':
 				competition_timer_overtime();
-				messages.current.competition.push(data);
+				// messages.current.competition.push(data);
 				break;
 			// case 'competition_session_player_end':
 			// 	timer_stop_safe(checkTimerSide(data));
