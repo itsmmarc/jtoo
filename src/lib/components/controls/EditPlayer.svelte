@@ -1,22 +1,34 @@
 <script lang="ts">
 	import { type Player, items } from '$lib/storage.svelte';
 	import * as _ from 'underscore';
-	type Props = {
-		p: Player;
-	};
 
 	function replacePlayer() {
 		let index: number = _.findIndex(items.current.players, (p) => _.isEqual(p, oldPlayer));
 		items.current.players[index] = player;
 		items.current.players = [...items.current.players];
-		error = { noName: false };
+		clearErrors();
 	}
+	function clearChanges() {
+		player = { ...oldPlayer };
+	}
+	function clearErrors() {
+		error.noName.state = false;
+		error.noSteamID.state = false;
+	}
+
+	type Error = { state: boolean; msg: string };
+	type Props = {
+		p: Player;
+	};
 
 	let { p }: Props = $props();
 	const oldPlayer = $derived(p);
-	let player = $derived({ ...$state.snapshot(p) });
+	let player = $state(p);
 	let isOpen = $state(false);
-	let error = $state({ noName: false });
+	let error = $state({
+		noName: { state: false, msg: 'error: no name entered' } as Error,
+		noSteamID: { state: false, msg: 'error: no steam id3 entered' } as Error
+	});
 </script>
 
 <button
@@ -28,7 +40,7 @@
 	<section
 		class="absolute top-0 left-0 z-50 grid w-full grid-cols-12 gap-y-1 self-center border-2 bg-obs-content p-2"
 	>
-		<label for="name" class="col-span-6">name</label>
+		<label for="name" class="col-span-6">name*</label>
 		<input
 			class="input col-span-4"
 			type="text"
@@ -114,7 +126,7 @@
 			}}
 		/>
 
-		<label for="steamid3" class="col-span-6">steam ID3</label>
+		<label for="steamid3" class="col-span-6">steam ID3*</label>
 		<input
 			class="input remove-arrow col-span-4"
 			type="number"
@@ -261,20 +273,36 @@
 			class="button col-span-6 border-ctp-lavender-950/50 bg-ctp-lavender/35 px-2 hover:bg-ctp-lavender/85"
 			// value=""
 			onclick={() => {
-				if (player.name === '') {
-					error.noName = true;
+				let errorFound = false;
+				if (!player.name) {
+					error.noName.state = true;
+					errorFound = true;
+				}
+				if (!player.steamID3) {
+					error.noSteamID.state = true;
+					errorFound = true;
+				}
+
+				if (errorFound) {
 					return;
 				}
+
 				replacePlayer();
 				isOpen = false;
 			}}>update player</button
 		>
-		{#if error.noName}
-			<div class="col-span-6">error: no name entered</div>
-		{/if}
+		<div class="col-span-6 flex flex-col">
+			{#each Object.values(error) as e, i (i)}
+				{#if e.state}
+					<div>{e.msg}</div>
+				{/if}
+			{/each}
+		</div>
+
 		<button
 			class="button-remove absolute top-0 right-2"
 			onclick={() => {
+				clearChanges();
 				isOpen = false;
 			}}>✖</button
 		>

@@ -4,16 +4,27 @@
 	import EditPlayer from './EditPlayer.svelte';
 
 	function addPlayer() {
-		items.current.players.push(player);
-		error = { noName: false };
+		items.current.players = [...items.current.players, player];
+		clearErrors();
+	}
+
+	function clearErrors() {
+		error.noName.state = false;
+		error.noSteamID.state = false;
 	}
 	function clearPlayer() {
 		player = { name: '', score: 0, rank: { soldier: 0, demo: 0, overall: 0 } };
 	}
-	let openAddPlayers = false;
-	let openManagePlayers = false;
-	let error = { noName: false };
-	let player: Player = { name: '', score: 0, rank: { soldier: 0, demo: 0, overall: 0 } };
+
+	type Error = { state: boolean; msg: string };
+
+	let openAddPlayers = $state(false);
+	let openManagePlayers = $state(false);
+	let error = $state({
+		noName: { state: false, msg: 'error: no name entered' } as Error,
+		noSteamID: { state: false, msg: 'error: no steam id3 entered' } as Error
+	});
+	let player: Player = $state({ name: '', score: 0, rank: { soldier: 0, demo: 0, overall: 0 } });
 </script>
 
 <div transition:slide>
@@ -41,7 +52,7 @@
 	<section
 		class="absolute z-50 grid w-full grid-cols-12 gap-y-1 self-center border-2 bg-obs-content p-2"
 	>
-		<label for="name" class="col-span-6">name</label>
+		<label for="name" class="col-span-6">name*</label>
 		<input
 			class="input col-span-4"
 			type="text"
@@ -121,12 +132,23 @@
 			}}
 		/>
 
-		<label for="steamid3" class="col-span-6">steam ID3</label>
+		<label for="steamid3" class="col-span-5">steam ID3*</label>
+		<button
+			onclick={() => {
+				alert(
+					"enter the the long number from the end of a steamID3.\neg: [U:1:99019190] => 99019190\n\nyou can find a player's steamID3 here https://steamid.io/"
+				);
+			}}
+			class="col-span-1 text-left"
+			aria-label="steamid3-explanation"
+		>
+			<span class="icon-[mdi--question-mark]"></span>
+		</button>
 		<input
 			class="input remove-arrow col-span-4"
 			type="number"
 			id="steamid3"
-			placeholder="steam id3"
+			placeholder="*steam id3"
 			onkeyup={(e) => {
 				const value = (e.target as HTMLInputElement).value;
 				player.steamID3 = parseInt(value);
@@ -259,17 +281,33 @@
 			class="button col-span-6 border-ctp-lavender-950/50 bg-ctp-lavender/35 px-2 hover:bg-ctp-lavender/85"
 			// value=""
 			onclick={() => {
-				if (player.name === '') {
-					error.noName = true;
+				let errorFound = false;
+				if (!player.name) {
+					error.noName.state = true;
+					errorFound = true;
+				}
+				if (!player.steamID3) {
+					error.noSteamID.state = true;
+					errorFound = true;
+				}
+
+				if (errorFound) {
 					return;
 				}
+
 				addPlayer();
 				openAddPlayers = false;
 			}}>add player</button
 		>
-		{#if error.noName}
-			<div class="col-span-6">error: no name entered</div>
-		{/if}
+
+		<div class="col-span-6 flex flex-col">
+			{#each Object.values(error) as e, i (i)}
+				{#if e.state}
+					<div>{e.msg}</div>
+				{/if}
+			{/each}
+		</div>
+
 		<button
 			class="button-remove absolute top-0 right-2"
 			onclick={() => {
@@ -287,7 +325,7 @@
 			<div class="col-span-12">no players</div>
 		{:else}
 			{#each items.current.players as player, i (i)}
-				{#if player.name != ''}
+				{#if player.name}
 					<div class="col-span-12 grid grid-cols-3">
 						<div>{player.name}</div>
 						<EditPlayer p={player} />
