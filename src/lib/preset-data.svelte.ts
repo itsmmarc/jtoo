@@ -50,9 +50,9 @@ export const soldierPlayoffs2026 = {
 			},
 			WRs: 318,
 			TTs: 2168,
-			bestRun: 'jump_phobos',
-			note: '',
-			favouriteMap: '',
+			bestRun: 'phobos',
+			note: '-cg',
+			favouriteMap: 'baqu',
 			score: 0
 		},
 		{
@@ -75,9 +75,9 @@ export const soldierPlayoffs2026 = {
 			},
 			WRs: 426,
 			TTs: 534,
-			bestRun: '?',
-			note: '',
-			favouriteMap: '',
+			bestRun: 'bangarang',
+			note: '-rng',
+			favouriteMap: 'pow',
 			score: 0
 		},
 		{
@@ -100,9 +100,9 @@ export const soldierPlayoffs2026 = {
 			},
 			WRs: 92,
 			TTs: 951,
-			bestRun: 'jump_yona',
+			bestRun: 'yona',
 			note: 'hello',
-			favouriteMap: '',
+			favouriteMap: 'uranium',
 			score: 0
 		},
 		{
@@ -125,9 +125,9 @@ export const soldierPlayoffs2026 = {
 			},
 			WRs: 147,
 			TTs: 610,
-			bestRun: 'jump_destination_v2',
+			bestRun: 'destination_v2',
 			note: '<img src="https://media.discordapp.net/attachments/1513525278264262799/1515369370816090152/beh.png?ex=6a2ec134&is=6a2d6fb4&hm=ff05552b818d3e0a2263dbbbdee10c1c942f709dbdbbd8979925921d86d06105&=&format=webp&quality=lossless" class="rounded-xl object-cover" />', // find better quality if possible
-			favouriteMap: 'jump_atrial',
+			favouriteMap: 'atrial',
 			score: 0
 		},
 		{
@@ -151,8 +151,8 @@ export const soldierPlayoffs2026 = {
 			WRs: 132,
 			TTs: 922,
 			bestRun: 'jump_junk_solly',
-			note: '',
-			favouriteMap: '',
+			note: '-rng',
+			favouriteMap: 'miner',
 			score: 0
 		},
 		{
@@ -175,9 +175,9 @@ export const soldierPlayoffs2026 = {
 			},
 			WRs: 2,
 			TTs: 226,
-			bestRun: 'jump_pharaoh',
+			bestRun: 'nebu',
 			note: 'never ask speedy a question',
-			favouriteMap: 'jump_lion',
+			favouriteMap: 'lion',
 			score: 0
 		},
 		{
@@ -200,9 +200,9 @@ export const soldierPlayoffs2026 = {
 			},
 			WRs: 6,
 			TTs: 174,
-			bestRun: 'jump_descent',
-			note: '',
-			favouriteMap: '',
+			bestRun: 'nebu',
+			note: 'fuck vice',
+			favouriteMap: 'nebu',
 			score: 0
 		},
 		{
@@ -225,9 +225,9 @@ export const soldierPlayoffs2026 = {
 			},
 			WRs: 13,
 			TTs: 74,
-			bestRun: '',
-			note: '',
-			favouriteMap: '',
+			bestRun: 'rocky',
+			note: '4',
+			favouriteMap: 'vape',
 			score: 0
 		},
 		{
