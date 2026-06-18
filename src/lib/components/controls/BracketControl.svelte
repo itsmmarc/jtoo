@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { setMatchWinner, type Match } from '$lib/Bracket.svelte';
+	import { clearMatchWinner, setMatchWinner, type Match } from '$lib/Bracket.svelte';
 	import { items, settings } from '$lib/storage.svelte';
 	import { fade, slide } from 'svelte/transition';
 </script>
@@ -110,7 +110,7 @@
 				setMatchWinner(match, player);
 			}}
 			oncontextmenu={() => {
-				setMatchWinner(match, '');
+				clearMatchWinner(match);
 			}}
 		>
 			<div

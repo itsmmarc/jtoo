@@ -39,3 +39,25 @@ export function setMatchWinner(m: Match, w: 'A' | 'B' | '') {
 		}
 	}
 }
+
+export function clearMatchWinner(m: Match) {
+	// remove winner from subsequent matches
+	m.winner = '';
+	if (m.winDest) {
+		clearMatchWinner(items.current.bracket[m.winDest[0]][m.winDest[1]][m.winDest[2]]);
+	}
+	if (m.loseDest) {
+		clearMatchWinner(items.current.bracket[m.loseDest[0]][m.loseDest[1]][m.loseDest[2]]);
+	}
+
+	// progress
+	if (m.A.name && m.B.name) {
+		if (m.winDest) {
+			items.current.bracket[m.winDest[0]][m.winDest[1]][m.winDest[2]][m.winDest[3]] = nullPlayer;
+		}
+		if (m.loseDest) {
+			items.current.bracket[m.loseDest[0]][m.loseDest[1]][m.loseDest[2]][m.loseDest[3]] =
+				nullPlayer;
+		}
+	}
+}
