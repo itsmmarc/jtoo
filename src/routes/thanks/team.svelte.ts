@@ -28,7 +28,7 @@ import matty from '$lib/assets/jump-fortress-team/matty.jpg';
 import pmittens from '$lib/assets/jump-fortress-team/pmittens.jpg';
 import steve from '$lib/assets/jump-fortress-team/steve.jpg';
 import wild_rumpus from '$lib/assets/jump-fortress-team/wild_rumpus.jpg';
-import m879 from '$lib/assets/jump-fortress-team/879m.jpg';
+import m879 from '$lib/assets/jump-fortress-team/879m.webp';
 import zike from '$lib/assets/jump-fortress-team/zike.jpg';
 import kendrick from '$lib/assets/jump-fortress-team/kendrick.jpg';
 import sgt from '$lib/assets/jump-fortress-team/sgt.jpg';
