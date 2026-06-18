@@ -14,17 +14,17 @@
 					Upper Bracket
 				</h2>
 				<div>
-					<h2 class="text-3xl">Quarter Final</h2>
+					<h2 class="text-3xl">Quarter Finals</h2>
 					<div class="stage-container">
-						{#each items.current.bracket.Upper.QuarterFinal as match, i (i)}
+						{#each items.current.bracket.Upper.QuarterFinals as match, i (i)}
 							{@render Match(match)}
 						{/each}
 					</div>
 				</div>
 				<div>
-					<h2 class="text-3xl">Semi Final</h2>
+					<h2 class="text-3xl">Semi Finals</h2>
 					<div class="stage-container">
-						{#each items.current.bracket.Upper.SemiFinal as match, i (i)}
+						{#each items.current.bracket.Upper.SemiFinals as match, i (i)}
 							{@render Match(match)}
 						{/each}
 					</div>
@@ -61,9 +61,9 @@
 					</div>
 				</div>
 				<div>
-					<h2 class="text-3xl">Quarter Final</h2>
+					<h2 class="text-3xl">Quarter Finals</h2>
 					<div class="stage-container">
-						{#each items.current.bracket.Lower.QuarterFinal as match, i (i)}
+						{#each items.current.bracket.Lower.QuarterFinals as match, i (i)}
 							{@render Match(match)}
 						{/each}
 					</div>

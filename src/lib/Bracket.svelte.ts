@@ -8,8 +8,8 @@ export type Match = {
 	loseDest: Array<string | number> | null;
 };
 export type Bracket = {
-	Upper: { QuarterFinal: Match[]; SemiFinal: Match[]; Final: Match[]; GrandFinal: Match[] };
-	Lower: { Round1: Match[]; QuarterFinal: Match[]; SemiFinal: Match[]; Final: Match[] };
+	Upper: { QuarterFinals: Match[]; SemiFinals: Match[]; Final: Match[]; GrandFinal: Match[] };
+	Lower: { Round1: Match[]; QuarterFinals: Match[]; SemiFinal: Match[]; Final: Match[] };
 };
 
 export function setMatchWinner(m: Match, w: 'A' | 'B' | '') {

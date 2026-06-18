@@ -135,50 +135,50 @@ export const defaultStages: Array<string> = [
 
 export const defaultBracket: Bracket = {
 	Upper: {
-		QuarterFinal: [
+		QuarterFinals: [
 			{
 				A: nullPlayer,
 				B: nullPlayer,
 				winner: '',
-				winDest: ['Upper', 'SemiFinal', 0, 'A'],
+				winDest: ['Upper', 'SemiFinals', 0, 'A'],
 				loseDest: ['Lower', 'Round1', 0, 'A']
 			},
 			{
 				A: nullPlayer,
 				B: nullPlayer,
 				winner: '',
-				winDest: ['Upper', 'SemiFinal', 0, 'B'],
+				winDest: ['Upper', 'SemiFinals', 0, 'B'],
 				loseDest: ['Lower', 'Round1', 0, 'B']
 			},
 			{
 				A: nullPlayer,
 				B: nullPlayer,
 				winner: '',
-				winDest: ['Upper', 'SemiFinal', 1, 'A'],
+				winDest: ['Upper', 'SemiFinals', 1, 'A'],
 				loseDest: ['Lower', 'Round1', 1, 'A']
 			},
 			{
 				A: nullPlayer,
 				B: nullPlayer,
 				winner: '',
-				winDest: ['Upper', 'SemiFinal', 1, 'B'],
+				winDest: ['Upper', 'SemiFinals', 1, 'B'],
 				loseDest: ['Lower', 'Round1', 1, 'B']
 			}
 		],
-		SemiFinal: [
+		SemiFinals: [
 			{
 				A: nullPlayer,
 				B: nullPlayer,
 				winner: '',
 				winDest: ['Upper', 'Final', 0, 'A'],
-				loseDest: ['Lower', 'QuarterFinal', 0, 'B']
+				loseDest: ['Lower', 'QuarterFinals', 0, 'B']
 			},
 			{
 				A: nullPlayer,
 				B: nullPlayer,
 				winner: '',
 				winDest: ['Upper', 'Final', 0, 'B'],
-				loseDest: ['Lower', 'QuarterFinal', 1, 'B']
+				loseDest: ['Lower', 'QuarterFinals', 1, 'B']
 			}
 		],
 		Final: [
@@ -206,18 +206,18 @@ export const defaultBracket: Bracket = {
 				A: nullPlayer,
 				B: nullPlayer,
 				winner: '',
-				winDest: ['Lower', 'QuarterFinal', 0, 'A'],
+				winDest: ['Lower', 'QuarterFinals', 0, 'A'],
 				loseDest: null
 			},
 			{
 				A: nullPlayer,
 				B: nullPlayer,
 				winner: '',
-				winDest: ['Lower', 'QuarterFinal', 1, 'A'],
+				winDest: ['Lower', 'QuarterFinals', 1, 'A'],
 				loseDest: null
 			}
 		],
-		QuarterFinal: [
+		QuarterFinals: [
 			{
 				A: nullPlayer,
 				B: nullPlayer,

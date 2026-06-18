@@ -363,50 +363,50 @@ export const soldierPlayoffs2026 = {
 const soldierPlayoffs2026Bracket: Bracket = {
 	...defaultBracket,
 	Upper: {
-		QuarterFinal: [
+		QuarterFinals: [
 			{
 				A: getPlayer('vice', undefined, soldierPlayoffs2026.players),
 				B: getPlayer('Spidda', undefined, soldierPlayoffs2026.players),
 				winner: '',
-				winDest: ['Upper', 'SemiFinal', 0, 'A'],
+				winDest: ['Upper', 'SemiFinals', 0, 'A'],
 				loseDest: ['Lower', 'Round1', 0, 'A']
 			},
 			{
 				A: getPlayer('bunny.', undefined, soldierPlayoffs2026.players),
 				B: getPlayer('Sammy', undefined, soldierPlayoffs2026.players),
 				winner: '',
-				winDest: ['Upper', 'SemiFinal', 0, 'B'],
+				winDest: ['Upper', 'SemiFinals', 0, 'B'],
 				loseDest: ['Lower', 'Round1', 0, 'B']
 			},
 			{
 				A: getPlayer('Garf', undefined, soldierPlayoffs2026.players),
 				B: getPlayer('Hass', undefined, soldierPlayoffs2026.players),
 				winner: '',
-				winDest: ['Upper', 'SemiFinal', 1, 'A'],
+				winDest: ['Upper', 'SemiFinals', 1, 'A'],
 				loseDest: ['Lower', 'Round1', 1, 'A']
 			},
 			{
 				A: getPlayer('Nikita', undefined, soldierPlayoffs2026.players),
 				B: getPlayer('rev!4', undefined, soldierPlayoffs2026.players),
 				winner: '',
-				winDest: ['Upper', 'SemiFinal', 1, 'B'],
+				winDest: ['Upper', 'SemiFinals', 1, 'B'],
 				loseDest: ['Lower', 'Round1', 1, 'B']
 			}
 		],
-		SemiFinal: [
+		SemiFinals: [
 			{
 				A: nullPlayer,
 				B: nullPlayer,
 				winner: '',
 				winDest: ['Upper', 'Final', 0, 'A'],
-				loseDest: ['Lower', 'QuarterFinal', 0, 'B']
+				loseDest: ['Lower', 'QuarterFinals', 0, 'B']
 			},
 			{
 				A: nullPlayer,
 				B: nullPlayer,
 				winner: '',
 				winDest: ['Upper', 'Final', 0, 'B'],
-				loseDest: ['Lower', 'QuarterFinal', 1, 'B']
+				loseDest: ['Lower', 'QuarterFinals', 1, 'B']
 			}
 		],
 		Final: [
