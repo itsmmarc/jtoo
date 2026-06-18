@@ -10,6 +10,7 @@
 	let timeout: NodeJS.Timeout;
 	let mapPicks = $derived(messages.current.mapPicks);
 	let mapPicksOld: PickBansSessionStateEvent | null = null;
+	let pickOrder: string[] = $state([]);
 
 	$effect(() => {
 		// if no session exists, ignore
@@ -26,6 +27,13 @@
 			mapPicks.session.currentTurn?.turnId == mapPicksOld.session.currentTurn?.turnId
 		) {
 			return;
+		}
+
+		pickOrder = [];
+		for (const turn of mapPicks.session.history) {
+			if (turn.action == 'pick') {
+				pickOrder = [...pickOrder, turn.mapId];
+			}
 		}
 
 		startTurnTimer();
@@ -82,6 +90,10 @@
 				{@const m: PickBansSessionStateEvent | null = messages.current.mapPicks ? messages.current.mapPicks : null}
 				<div class="@container relative mb-2 h-65 w-130 text-4xl">
 					{#if m && 'session' in m && m.session}
+						{@const pickNum = pickOrder.findIndex((p) => p == map.ID)}
+						{#if pickNum >= 0}
+							<div class="absolute right-6 bottom-4 text-5xl">{pickNum + 1}</div>
+						{/if}
 						{#each m.session.history as step, i (i)}
 							{#if step.mapId == map.ID}
 								<div
