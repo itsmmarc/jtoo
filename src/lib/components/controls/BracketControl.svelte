@@ -3,6 +3,8 @@
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { items, settings } from '$lib/storage.svelte';
 	import { fade, slide } from 'svelte/transition';
+
+	let svg = {};
 </script>
 
 {#if items.current.bracket}
@@ -113,6 +115,27 @@
 				</div>
 			</div>
 		</div>
+		<svg height="1920" width="1080" class="absolute top-0 left-0 -z-1 h-full w-full">
+			<line style:filter={getFiltersStyle()} x1="450" y1="125" x2="645" y2="205"></line>
+			<line style:filter={getFiltersStyle()} x1="450" y1="300" x2="645" y2="205"></line>
+
+			<line style:filter={getFiltersStyle()} x1="450" y1="425" x2="645" y2="520"></line>
+			<line style:filter={getFiltersStyle()} x1="450" y1="600" x2="645" y2="520"></line>
+
+			<line style:filter={getFiltersStyle()} x1="870" y1="205" x2="1045" y2="360"></line>
+			<line style:filter={getFiltersStyle()} x1="870" y1="515" x2="1045" y2="360"></line>
+
+			<line style:filter={getFiltersStyle()} x1="1275" y1="365" x2="1450" y2="365"></line>
+
+			<line style:filter={getFiltersStyle()} x1="450" y1="815" x2="645" y2="815"></line>
+
+			<line style:filter={getFiltersStyle()} x1="450" y1="975" x2="645" y2="975"></line>
+
+			<line style:filter={getFiltersStyle()} x1="870" y1="975" x2="1045" y2="895"></line>
+			<line style:filter={getFiltersStyle()} x1="870" y1="815" x2="1045" y2="895"></line>
+
+			<line style:filter={getFiltersStyle()} x1="1275" y1="895" x2="1450" y2="895"></line>
+		</svg>
 	</section>
 {/if}
 
@@ -176,6 +199,7 @@
 
 <style>
 	@import 'tailwindcss';
+	@import '@catppuccin/tailwindcss/mocha.css';
 	h2 {
 		@apply text-center;
 	}
@@ -184,5 +208,9 @@
 	}
 	.stage-container ~ .background {
 		@apply -z-1 col-[1/1] row-[1/1] min-h-32 min-w-60 rounded-xl bg-gray-900;
+	}
+
+	svg > line {
+		@apply stroke-ctp-lavender-900 stroke-2;
 	}
 </style>
