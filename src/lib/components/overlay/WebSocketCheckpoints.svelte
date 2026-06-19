@@ -51,7 +51,7 @@
 				{#if timer.current.checkpoints[i].includes('Course')}
 					<span
 						class="border-overlay-orange/70 absolute bottom-1.5 h-full w-90 rounded-lg border-t-3"
-						style={getFiltersStyle()}
+						style:filter={getFiltersStyle()}
 					></span>
 				{/if}
 				<span class="flex">{csToTime(time * 100)}</span>

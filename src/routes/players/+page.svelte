@@ -33,10 +33,10 @@
 	<ul class="grid grid-cols-[repeat(6,auto)] gap-x-6 gap-y-4 text-4xl">
 		<li></li>
 		<li></li>
-		<li class="header">name</li>
-		<li class="header">{overlay.current.class} rank</li>
-		<li class="header">world records</li>
-		<li class="header">top times</li>
+		<li class="header" style:filter={getFiltersStyle()}>name</li>
+		<li class="header" style:filter={getFiltersStyle()}>{overlay.current.class} rank</li>
+		<li class="header" style:filter={getFiltersStyle()}>world records</li>
+		<li class="header" style:filter={getFiltersStyle()}>top times</li>
 
 		<hr class="col-span-6 mb-0 h-0.5 w-full border-none bg-obs-padding" />
 		{#each items.current.players as player, i (i)}
@@ -61,16 +61,16 @@
 	<li class="bodycell">
 		<span in:fade class="fi fi-{player.flag} flex h-fit w-fit rounded-xl text-[6rem]"></span>
 	</li>
-	<li class="bodycell">
+	<li class="bodycell" style:filter={getFiltersStyle()}>
 		{player.name}
 	</li>
-	<li class="bodycell">
+	<li class="bodycell" style:filter={getFiltersStyle()}>
 		{player.rank![overlay.current.class]}
 	</li>
-	<li class="bodycell">
+	<li class="bodycell" style:filter={getFiltersStyle()}>
 		{player.WRs}
 	</li>
-	<li class="bodycell">
+	<li class="bodycell" style:filter={getFiltersStyle()}>
 		{player.TTs}
 	</li>
 {/snippet}
