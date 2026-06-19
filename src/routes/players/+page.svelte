@@ -34,7 +34,7 @@
 		<li></li>
 		<li></li>
 		<li class="header">name</li>
-		<li class="header">x rank</li>
+		<li class="header">{overlay.current.class} rank</li>
 		<li class="header">world records</li>
 		<li class="header">top times</li>
 
@@ -65,7 +65,7 @@
 		{player.name}
 	</li>
 	<li class="bodycell">
-		{player.rank?.soldier}
+		{player.rank![overlay.current.class]}
 	</li>
 	<li class="bodycell">
 		{player.WRs}
