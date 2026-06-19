@@ -27,11 +27,15 @@ type Playoffs2026DemoMapList = {
 	nbn?: unknown;
 };
 
-export const soldierPlayoffs2026 = {
+export const soldierPlayoffs2026: {
+	players: Player[];
+	maps: MapsInfo<Playoffs2026SoldierMapList>;
+} = {
 	players: [
-		{ name: '', score: 0, tempusPrs: {} },
+		nullPlayer,
 		{
 			name: 'vice',
+			isCompetitor: true,
 			tempusID: '10736',
 			steamID3: 406102720,
 			avatarURL:
@@ -57,6 +61,7 @@ export const soldierPlayoffs2026 = {
 		},
 		{
 			name: 'Nikita',
+			isCompetitor: true,
 			tempusID: '602086',
 			steamID3: 1554510582,
 			avatarURL:
@@ -82,6 +87,7 @@ export const soldierPlayoffs2026 = {
 		},
 		{
 			name: 'Garf',
+			isCompetitor: true,
 			tempusID: '579826',
 			steamID3: 1283135081,
 			avatarURL:
@@ -107,6 +113,7 @@ export const soldierPlayoffs2026 = {
 		},
 		{
 			name: 'bunny.',
+			isCompetitor: true,
 			tempusID: '357942',
 			steamID3: 241719671,
 			avatarURL:
@@ -132,6 +139,7 @@ export const soldierPlayoffs2026 = {
 		},
 		{
 			name: 'Sammy',
+			isCompetitor: true,
 			tempusID: '503501',
 			steamID3: 1041041942,
 			avatarURL:
@@ -157,6 +165,7 @@ export const soldierPlayoffs2026 = {
 		},
 		{
 			name: 'Hass',
+			isCompetitor: true,
 			tempusID: '31339',
 			steamID3: 192454142,
 			avatarURL:
@@ -182,6 +191,7 @@ export const soldierPlayoffs2026 = {
 		},
 		{
 			name: 'Spidda',
+			isCompetitor: true,
 			tempusID: '24856',
 			steamID3: 97170957,
 			avatarURL:
@@ -207,6 +217,7 @@ export const soldierPlayoffs2026 = {
 		},
 		{
 			name: 'rev!4',
+			isCompetitor: true,
 			tempusID: '74551',
 			steamID3: 140795940,
 			avatarURL:
@@ -232,6 +243,7 @@ export const soldierPlayoffs2026 = {
 		},
 		{
 			name: 'Shanks',
+			isCompetitor: false,
 			tempusID: '457363',
 			steamID3: 89322649,
 			avatarURL:
@@ -257,6 +269,7 @@ export const soldierPlayoffs2026 = {
 		},
 		{
 			name: 'mmarc',
+			isCompetitor: false,
 			tempusID: '94512',
 			steamID3: 99019190,
 			avatarURL:
@@ -282,6 +295,7 @@ export const soldierPlayoffs2026 = {
 		},
 		{
 			name: 'Kingstripes',
+			isCompetitor: false,
 			tempusID: '364734',
 			steamID3: 50734103,
 			avatarURL:
@@ -305,7 +319,7 @@ export const soldierPlayoffs2026 = {
 			favouriteMap: '',
 			score: 0
 		}
-	] as Player[],
+	],
 	maps: {
 		null: { filename: '', shortName: '' },
 		pokus: {
@@ -357,7 +371,7 @@ export const soldierPlayoffs2026 = {
 			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_above_rc1.webp'
 			// zones:
 		}
-	} as MapsInfo<Playoffs2026SoldierMapList>
+	}
 };
 
 const soldierPlayoffs2026Bracket: Bracket = {
@@ -430,9 +444,12 @@ const soldierPlayoffs2026Bracket: Bracket = {
 	}
 };
 
-export const demoPlayoffs2026 = {
+export const demoPlayoffs2026: {
+	players: Player[];
+	maps: MapsInfo<Playoffs2026DemoMapList>;
+} = {
 	players: [
-		{ name: '', score: 0, tempusPrs: {} },
+		nullPlayer,
 		{
 			...soldierPlayoffs2026.players.filter((p) => p.name == 'vice')[0],
 			tempusPrs: {
@@ -446,6 +463,7 @@ export const demoPlayoffs2026 = {
 		},
 		{
 			name: 'newjuls',
+			isCompetitor: true,
 			tempusID: '281915',
 			steamID3: 435752610,
 			avatarURL:
@@ -470,6 +488,7 @@ export const demoPlayoffs2026 = {
 		},
 		{
 			name: 'cander',
+			isCompetitor: true,
 			tempusID: '243670',
 			steamID3: 358457151,
 			avatarURL:
@@ -494,6 +513,7 @@ export const demoPlayoffs2026 = {
 		},
 		{
 			name: 'namee',
+			isCompetitor: true,
 			tempusID: '35454',
 			steamID3: 135796457,
 			avatarURL:
@@ -525,7 +545,7 @@ export const demoPlayoffs2026 = {
 		{
 			...soldierPlayoffs2026.players.filter((p) => p.name == 'Kingstripes')[0]
 		}
-	] as Player[],
+	],
 	maps: {
 		null: { filename: '', shortName: '' },
 		tissue: {
@@ -570,7 +590,7 @@ export const demoPlayoffs2026 = {
 			imageURL: 'https://tempusplaza.com/map-backgrounds/jump_nbn_b4b_redo_a1.webp'
 			// zones:
 		}
-	} as MapsInfo<Playoffs2026DemoMapList>
+	}
 };
 
 export function loadSoldierPlayoffs2026() {

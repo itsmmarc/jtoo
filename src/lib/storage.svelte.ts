@@ -84,6 +84,7 @@ export type Rank = {
 
 export type Player = {
 	name: string;
+	isCompetitor: boolean;
 	score: number;
 	tempusID?: string;
 	steamID3?: number;
@@ -101,7 +102,7 @@ export type Player = {
 	favouriteMap?: string;
 };
 
-export const nullPlayer: Player = { name: '', score: 0 } as const;
+export const nullPlayer: Player = { name: '', isCompetitor: false, score: 0 } as const;
 
 export type Overlay = {
 	bestOf: number;
@@ -275,8 +276,24 @@ export const defaultSettings: Settings = {
 
 export const defaultOverlay: Overlay = {
 	bestOf: 3,
-	leftPlayer: { name: '', avatarURL: '', tag: '', flag: '', score: 0, tempusPrs: {} },
-	rightPlayer: { name: '', avatarURL: '', tag: '', flag: '', score: 0, tempusPrs: {} },
+	leftPlayer: {
+		name: '',
+		isCompetitor: false,
+		avatarURL: '',
+		tag: '',
+		flag: '',
+		score: 0,
+		tempusPrs: {}
+	},
+	rightPlayer: {
+		name: '',
+		isCompetitor: false,
+		avatarURL: '',
+		tag: '',
+		flag: '',
+		score: 0,
+		tempusPrs: {}
+	},
 	map: { fileName: '', shortName: '', ID: '' },
 	stage: '',
 	class: 'soldier'

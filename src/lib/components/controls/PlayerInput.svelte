@@ -13,7 +13,7 @@
 		error.noSteamID.state = false;
 	}
 	function clearPlayer() {
-		player = { name: '', score: 0, rank: { soldier: 0, demo: 0, overall: 0 } };
+		player = { name: '', isCompetitor: false, score: 0, rank: { soldier: 0, demo: 0, overall: 0 } };
 	}
 
 	type Error = { state: boolean; msg: string };
@@ -24,7 +24,12 @@
 		noName: { state: false, msg: 'error: no name entered' } as Error,
 		noSteamID: { state: false, msg: 'error: no steam id3 entered' } as Error
 	});
-	let player: Player = $state({ name: '', score: 0, rank: { soldier: 0, demo: 0, overall: 0 } });
+	let player: Player = $state({
+		name: '',
+		isCompetitor: false,
+		score: 0,
+		rank: { soldier: 0, demo: 0, overall: 0 }
+	});
 </script>
 
 <div transition:slide>
@@ -83,6 +88,15 @@
 				const value = (e.target as HTMLInputElement).value;
 				player.avatarURL = value;
 			}}
+		/>
+
+		<label for="isCompetitor" class="col-span-6">tournament competitor?*</label>
+		<input
+			class="peer col-span-4 mt-1 size-4 accent-ctp-lavender"
+			id="isCompetitor"
+			name="isCompetitor"
+			type="checkbox"
+			bind:checked={player.isCompetitor as boolean}
 		/>
 
 		<label for="tag" class="col-span-6">tag</label>

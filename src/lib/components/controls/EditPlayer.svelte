@@ -53,6 +53,15 @@
 			}}
 		/>
 
+		<label for="isCompetitor" class="col-span-6">tournament competitor?*</label>
+		<input
+			class="peer col-span-4 mt-1 size-4 accent-ctp-lavender"
+			id="isCompetitor"
+			name="isCompetitor"
+			type="checkbox"
+			bind:checked={player.isCompetitor as boolean}
+		/>
+
 		{#if player.avatarURL}
 			<img
 				src={player.avatarURL}
