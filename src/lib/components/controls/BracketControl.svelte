@@ -4,7 +4,7 @@
 	import { items, settings } from '$lib/storage.svelte';
 	import { fade, slide } from 'svelte/transition';
 
-	let svg = {};
+	type Coordinate = { x: number; y: number };
 </script>
 
 {#if items.current.bracket}
@@ -116,28 +116,61 @@
 			</div>
 		</div>
 		<svg height="1920" width="1080" class="absolute top-0 left-0 -z-1 h-full w-full">
-			<line style:filter={getFiltersStyle()} x1="450" y1="125" x2="645" y2="205"></line>
-			<line style:filter={getFiltersStyle()} x1="450" y1="300" x2="645" y2="205"></line>
+			<!-- upper bracket -->
+			{@render Path({ x: 475, y: 125 }, { x: 645, y: 205 }, 'down')}
+			{@render Path({ x: 475, y: 300 }, { x: 645, y: 205 }, 'up')}
 
-			<line style:filter={getFiltersStyle()} x1="450" y1="425" x2="645" y2="520"></line>
-			<line style:filter={getFiltersStyle()} x1="450" y1="600" x2="645" y2="520"></line>
+			{@render Path({ x: 475, y: 425 }, { x: 645, y: 520 }, 'down')}
+			{@render Path({ x: 475, y: 600 }, { x: 645, y: 520 }, 'up')}
 
-			<line style:filter={getFiltersStyle()} x1="870" y1="205" x2="1045" y2="360"></line>
-			<line style:filter={getFiltersStyle()} x1="870" y1="515" x2="1045" y2="360"></line>
+			{@render Path({ x: 880, y: 205 }, { x: 1045, y: 360 }, 'down')}
+			{@render Path({ x: 880, y: 515 }, { x: 1045, y: 360 }, 'up')}
 
-			<line style:filter={getFiltersStyle()} x1="1275" y1="365" x2="1450" y2="365"></line>
+			{@render Path({ x: 1275, y: 365 }, { x: 1450, y: 365 })}
 
-			<line style:filter={getFiltersStyle()} x1="450" y1="815" x2="645" y2="815"></line>
+			<!-- lower bracket -->
+			{@render Path({ x: 475, y: 815 }, { x: 645, y: 815 })}
 
-			<line style:filter={getFiltersStyle()} x1="450" y1="975" x2="645" y2="975"></line>
+			{@render Path({ x: 475, y: 975 }, { x: 645, y: 975 })}
 
-			<line style:filter={getFiltersStyle()} x1="870" y1="975" x2="1045" y2="895"></line>
-			<line style:filter={getFiltersStyle()} x1="870" y1="815" x2="1045" y2="895"></line>
+			{@render Path({ x: 880, y: 815 }, { x: 1045, y: 895 }, 'down')}
+			{@render Path({ x: 880, y: 975 }, { x: 1045, y: 895 }, 'up')}
 
-			<line style:filter={getFiltersStyle()} x1="1275" y1="895" x2="1450" y2="895"></line>
+			{@render Path({ x: 1275, y: 895 }, { x: 1450, y: 895 })}
 		</svg>
 	</section>
 {/if}
+
+{#snippet Path(A: Coordinate, B: Coordinate, direction?: 'up' | 'down')}
+	{@const mod = direction == 'down' ? 1 : -1}
+	{@const midx = A.x + (A.x - B.x) / -2}
+	{@const curveRadius = 25}
+	{#if direction}
+		<path
+			d="
+                                M{A.x} {A.y} 
+                                H{midx - curveRadius} 
+                                a{curveRadius},{curveRadius} 0 0 {mod == 1
+				? 1
+				: 0} {curveRadius},{mod * curveRadius} 
+                                V{B.y - mod * curveRadius} 
+                                a{curveRadius},{curveRadius} 0 0 {mod == 1
+				? 0
+				: 1} {curveRadius},{mod * curveRadius} 
+                                H{B.x}
+                        "
+		></path>
+	{:else}
+		<path
+			d="
+                                M{A.x} {A.y} 
+                                H{midx} 
+                                V{B.y} 
+                                H{B.x}
+                        "
+		></path>
+	{/if}
+{/snippet}
 
 {#snippet Match(match: Match)}
 	<div class="grid">
@@ -212,5 +245,8 @@
 
 	svg > line {
 		@apply stroke-ctp-lavender-900 stroke-2;
+	}
+	svg > path {
+		@apply fill-none stroke-ctp-lavender-900 stroke-2;
 	}
 </style>
