@@ -1,6 +1,11 @@
 import { PersistentState } from '@friendofsvelte/state';
 import { settings, overlay } from './storage.svelte';
-import { type BaseTimerEvent, type MessageTypes, defaultMessages } from './websocket-types';
+import {
+	type BaseTimerEvent,
+	type MessageTypes,
+	defaultMessages,
+	type CompetitionSessionPlayerEnd
+} from './websocket-types';
 import { ProxyWebSocket } from './ProxyWebSocket';
 import { indexOf } from 'underscore';
 
@@ -85,10 +90,10 @@ export function initializeWebSocket() {
 				competition_timer_overtime();
 				// messages.current.competition.push(data);
 				break;
-			// case 'competition_session_player_end':
-			// 	timer_stop_safe(checkTimerSide(data));
-			// 	messages.current.competition.push(data);
-			// 	break;
+			case 'competition_session_player_ended':
+				timer_stop_safe(checkTimerSide_competitive_session_player_ended(data));
+				// messages.current.competition.push(data);
+				break;
 			default:
 				return;
 		}
@@ -156,6 +161,14 @@ function checkTimerSide(data: BaseTimerEvent): Side {
 	return data.steamid == overlay.current.leftPlayer.steamID3
 		? 'left'
 		: data.steamid == overlay.current.rightPlayer.steamID3
+			? 'right'
+			: '';
+}
+
+function checkTimerSide_competitive_session_player_ended(data: CompetitionSessionPlayerEnd): Side {
+	return parseInt(data.steamAccountId) == overlay.current.leftPlayer.steamID3
+		? 'left'
+		: parseInt(data.steamAccountId) == overlay.current.rightPlayer.steamID3
 			? 'right'
 			: '';
 }

@@ -168,7 +168,7 @@ interface BaseCompetitionEvent {
 		| 'competition_session_live'
 		| 'competition_session_overtime'
 		| 'competition_session_ended'
-		| 'competition_session_player_end';
+		| 'competition_session_player_ended';
 	timestamp: number;
 	sessionId: number;
 	startedAt: number;
@@ -195,6 +195,11 @@ interface CompetitionEndEvent extends BaseCompetitionEvent {
 	expiredAt: number;
 }
 
+export interface CompetitionSessionPlayerEnd extends BaseCompetitionEvent {
+	type: 'competition_session_player_ended';
+	steamAccountId: string;
+}
+
 // MARK: Messages
 
 export type MessageTypes =
@@ -205,7 +210,8 @@ export type MessageTypes =
 	| TimerCheckpointEvent
 	| CompetitionLiveEvent
 	| CompetitionOvertimeEvent
-	| CompetitionEndEvent;
+	| CompetitionEndEvent
+	| CompetitionSessionPlayerEnd;
 
 export type Messages = {
 	mapPicks: PickBansSessionStateEvent;
