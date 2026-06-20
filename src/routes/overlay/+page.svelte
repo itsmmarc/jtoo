@@ -66,7 +66,7 @@
                 {overlay.current.stage === '' ? 'opacity-0' : ''}"
 	>
 		{#key overlay.current.stage}
-			<span in:fade class="relative left-2 skew-x-30 px-8 text-3xl text-ctp-text/75"
+			<span in:fade class="relative left-2 skew-x-30 px-8 text-2xl text-ctp-text/75"
 				>{overlay.current.stage}</span
 			>
 		{/key}
