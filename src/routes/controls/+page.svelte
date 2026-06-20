@@ -22,7 +22,9 @@
 		Fonts,
 		type Font,
 		MonoFonts,
-		type MonoFont
+		type MonoFont,
+		BracketOptions,
+		type BracketOption
 	} from '$lib/storage.svelte';
 	import { loadSoldierPlayoffs2026, loadDemoPlayoffs2026 } from '$lib/preset-data.svelte';
 	import { slide } from 'svelte/transition';
@@ -287,6 +289,23 @@
 			oncontextmenu={() => {
 				return;
 			}}>{tfClass}</Button
+		>
+	{/each}
+</div>
+
+<!-- bracket -->
+<span>bracket display</span>
+<div class="button-container">
+	{#each Object.values(BracketOptions) as bracketOption, i (i)}
+		{@const selected = overlay.current.bracket === bracketOption}
+		<Button
+			{selected}
+			onclick={() => {
+				overlay.current.bracket = bracketOption as BracketOption;
+			}}
+			oncontextmenu={() => {
+				return;
+			}}>{bracketOption}</Button
 		>
 	{/each}
 </div>

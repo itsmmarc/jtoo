@@ -1,143 +1,176 @@
 <script lang="ts">
 	import { clearMatchWinner, setMatchWinner, type Match } from '$lib/Bracket.svelte';
 	import { getFiltersStyle } from '$lib/filters.svelte';
-	import { items, settings } from '$lib/storage.svelte';
+	import { items, settings, overlay } from '$lib/storage.svelte';
 	import { fade, slide } from 'svelte/transition';
 
 	type Coordinate = { x: number; y: number };
 </script>
 
 {#if items.current.bracket}
-	<section class="m-auto mt-4">
+	<section class="m-auto">
 		<div class=" flex flex-col gap-20">
-			<div class="flex gap-40">
-				<h2
-					class="-ml-40 max-w-0 translate-x-30 translate-y-10 rotate-180 text-3xl [writing-mode:vertical-lr]"
-					style:filter={getFiltersStyle()}
-				>
-					Upper Bracket
-				</h2>
-				<div>
-					<h2 class="text-3xl" style:filter={getFiltersStyle()}>Quarter Finals</h2>
-					<div class="grid h-full">
-						<div class="stage-container">
-							{#each items.current.bracket.Upper.QuarterFinals as match, i (i)}
-								{@render Match(match)}
-							{/each}
+			{#if overlay.current.bracket == 'whole' || overlay.current.bracket == 'upper'}
+				<div class="flex gap-40" in:fade>
+					<h2
+						class="-ml-40 max-w-0 translate-x-30 translate-y-10 rotate-180 text-3xl [writing-mode:vertical-lr]"
+						style:filter={getFiltersStyle()}
+					>
+						Upper Bracket
+					</h2>
+					<div class="flex flex-col">
+						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Quarter Finals</h2>
+						<div class="grid grow">
+							<div class="stage-container">
+								{#each items.current.bracket.Upper.QuarterFinals as match, i (i)}
+									{@render Match(match)}
+								{/each}
+							</div>
+							<div class="background" style:filter={getFiltersStyle()}></div>
 						</div>
-						<div class="background" style:filter={getFiltersStyle()}></div>
 					</div>
-				</div>
-				<div>
-					<h2 class="text-3xl" style:filter={getFiltersStyle()}>Semi Finals</h2>
-					<div class="grid h-full">
-						<div class="stage-container">
-							{#each items.current.bracket.Upper.SemiFinals as match, i (i)}
-								{@render Match(match)}
-							{/each}
+					<div class="flex flex-col">
+						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Semi Finals</h2>
+						<div class="grid grow">
+							<div class="stage-container">
+								{#each items.current.bracket.Upper.SemiFinals as match, i (i)}
+									{@render Match(match)}
+								{/each}
+							</div>
+							<div class="background" style:filter={getFiltersStyle()}></div>
 						</div>
-						<div class="background" style:filter={getFiltersStyle()}></div>
 					</div>
-				</div>
-				<div>
-					<h2 class="text-3xl" style:filter={getFiltersStyle()}>Final</h2>
-					<div class="grid h-full">
-						<div class="stage-container">
-							{#each items.current.bracket.Upper.Final as match, i (i)}
-								{@render Match(match)}
-							{/each}
+					<div class="flex flex-col">
+						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Final</h2>
+						<div class="grid grow">
+							<div class="stage-container">
+								{#each items.current.bracket.Upper.Final as match, i (i)}
+									{@render Match(match)}
+								{/each}
+							</div>
+							<div class="background" style:filter={getFiltersStyle()}></div>
 						</div>
-						<div class="background" style:filter={getFiltersStyle()}></div>
 					</div>
-				</div>
-				<div>
-					<h2 class="text-3xl" style:filter={getFiltersStyle()}>Grand Final</h2>
-					<div class="grid h-full">
-						<div class="stage-container">
-							{#each items.current.bracket.Upper.GrandFinal as match, i (i)}
-								{@render Match(match)}
-							{/each}
+					<div class="flex flex-col">
+						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Grand Final</h2>
+						<div class="grid grow">
+							<div class="stage-container">
+								{#each items.current.bracket.Upper.GrandFinal as match, i (i)}
+									{@render Match(match)}
+								{/each}
+							</div>
+							<div class="background" style:filter={getFiltersStyle()}></div>
 						</div>
-						<div class="background" style:filter={getFiltersStyle()}></div>
 					</div>
+					{#key overlay.current.bracket}
+						{@const col1r = 240}
+						{@const col2l = 400}
+						{@const col2r = 640}
+						{@const col3l = 800}
+						{@const col3r = 1040}
+						{@const col4l = 1200}
+
+						{@const row1 = 115}
+						{@const row2 = 185}
+						{@const row3 = 260}
+						{@const row4 = 330}
+						{@const row5 = 405}
+						{@const row6 = 480}
+						{@const row7 = 550}
+
+						<svg width="1200" height="550" class="absolute -z-1 w-[80%]">
+							{@render Path({ x: col1r, y: row1 }, { x: col2l, y: row2 }, 'down')}
+							{@render Path({ x: col1r, y: row3 }, { x: col2l, y: row2 }, 'up')}
+
+							{@render Path({ x: col1r, y: row5 }, { x: col2l, y: row6 }, 'down')}
+							{@render Path({ x: col1r, y: row7 }, { x: col2l, y: row6 }, 'up')}
+
+							{@render Path({ x: col2r, y: row2 }, { x: col3l, y: row4 }, 'down')}
+							{@render Path({ x: col2r, y: row6 }, { x: col3l, y: row4 }, 'up')}
+
+							{@render Path({ x: col3r, y: row4 }, { x: col4l, y: row4 })}
+						</svg>
+					{/key}
 				</div>
-			</div>
-			<div class="flex gap-40">
-				<h2
-					class="-ml-40 max-w-0 translate-x-30 translate-y-10 rotate-180 text-3xl [writing-mode:vertical-lr]"
-					style:filter={getFiltersStyle()}
-				>
-					Lower Bracket
-				</h2>
-				<div>
-					<h2 class="text-3xl" style:filter={getFiltersStyle()}>Round 1</h2>
-					<div class="grid h-full">
-						<div class="stage-container">
-							{#each items.current.bracket.Lower.Round1 as match, i (i)}
-								{@render Match(match)}
-							{/each}
+			{/if}
+			{#if overlay.current.bracket == 'whole' || overlay.current.bracket == 'lower'}
+				<div class="flex gap-40" in:fade>
+					<h2
+						class="-ml-40 max-w-0 translate-x-30 translate-y-10 rotate-180 text-3xl [writing-mode:vertical-lr]"
+						style:filter={getFiltersStyle()}
+					>
+						Lower Bracket
+					</h2>
+					<div class="flex flex-col">
+						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Round 1</h2>
+						<div class="grid grow">
+							<div class="stage-container">
+								{#each items.current.bracket.Lower.Round1 as match, i (i)}
+									{@render Match(match)}
+								{/each}
+							</div>
+							<div class="background" style:filter={getFiltersStyle()}></div>
 						</div>
-						<div class="background" style:filter={getFiltersStyle()}></div>
 					</div>
-				</div>
-				<div>
-					<h2 class="text-3xl" style:filter={getFiltersStyle()}>Quarter Finals</h2>
-					<div class="grid h-full">
-						<div class="stage-container">
-							{#each items.current.bracket.Lower.QuarterFinals as match, i (i)}
-								{@render Match(match)}
-							{/each}
+					<div class="flex flex-col">
+						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Quarter Finals</h2>
+						<div class="grid grow">
+							<div class="stage-container">
+								{#each items.current.bracket.Lower.QuarterFinals as match, i (i)}
+									{@render Match(match)}
+								{/each}
+							</div>
+							<div class="background" style:filter={getFiltersStyle()}></div>
 						</div>
-						<div class="background" style:filter={getFiltersStyle()}></div>
 					</div>
-				</div>
-				<div>
-					<h2 class="text-3xl" style:filter={getFiltersStyle()}>Semi Final</h2>
-					<div class="grid h-full">
-						<div class="stage-container">
-							{#each items.current.bracket.Lower.SemiFinal as match, i (i)}
-								{@render Match(match)}
-							{/each}
+					<div class="flex flex-col">
+						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Semi Final</h2>
+						<div class="grid grow">
+							<div class="stage-container">
+								{#each items.current.bracket.Lower.SemiFinal as match, i (i)}
+									{@render Match(match)}
+								{/each}
+							</div>
+							<div class="background" style:filter={getFiltersStyle()}></div>
 						</div>
-						<div class="background" style:filter={getFiltersStyle()}></div>
 					</div>
-				</div>
-				<div>
-					<h2 class="text-3xl" style:filter={getFiltersStyle()}>Final</h2>
-					<div class="grid h-full">
-						<div class="stage-container">
-							{#each items.current.bracket.Lower.Final as match, i (i)}
-								{@render Match(match)}
-							{/each}
+					<div class="flex flex-col">
+						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Final</h2>
+						<div class="grid grow">
+							<div class="stage-container">
+								{#each items.current.bracket.Lower.Final as match, i (i)}
+									{@render Match(match)}
+								{/each}
+							</div>
+							<div class="background" style:filter={getFiltersStyle()}></div>
 						</div>
-						<div class="background" style:filter={getFiltersStyle()}></div>
 					</div>
+					{#key overlay.current.bracket}
+						{@const col1r = 240}
+						{@const col2l = 400}
+						{@const col2r = 640}
+						{@const col3l = 800}
+						{@const col3r = 1040}
+						{@const col4l = 1200}
+
+						{@const row1 = 115}
+						{@const row2 = 190}
+						{@const row3 = 260}
+
+						<svg width="1200" height="260" class="absolute -z-1 w-[80%]">
+							{@render Path({ x: col1r, y: row1 }, { x: col2l, y: row1 })}
+
+							{@render Path({ x: col1r, y: row3 }, { x: col2l, y: row3 })}
+
+							{@render Path({ x: col2r, y: row1 }, { x: col3l, y: row2 }, 'down')}
+							{@render Path({ x: col2r, y: row3 }, { x: col3l, y: row2 }, 'up')}
+
+							{@render Path({ x: col3r, y: row2 }, { x: col4l, y: row2 })}
+						</svg>
+					{/key}
 				</div>
-			</div>
+			{/if}
 		</div>
-		<svg height="1920" width="1080" class="absolute top-0 left-0 -z-1 h-full w-full">
-			<!-- upper bracket -->
-			{@render Path({ x: 475, y: 125 }, { x: 645, y: 205 }, 'down')}
-			{@render Path({ x: 475, y: 300 }, { x: 645, y: 205 }, 'up')}
-
-			{@render Path({ x: 475, y: 425 }, { x: 645, y: 520 }, 'down')}
-			{@render Path({ x: 475, y: 600 }, { x: 645, y: 520 }, 'up')}
-
-			{@render Path({ x: 880, y: 205 }, { x: 1045, y: 360 }, 'down')}
-			{@render Path({ x: 880, y: 515 }, { x: 1045, y: 360 }, 'up')}
-
-			{@render Path({ x: 1275, y: 365 }, { x: 1450, y: 365 })}
-
-			<!-- lower bracket -->
-			{@render Path({ x: 475, y: 815 }, { x: 645, y: 815 })}
-
-			{@render Path({ x: 475, y: 975 }, { x: 645, y: 975 })}
-
-			{@render Path({ x: 880, y: 815 }, { x: 1045, y: 895 }, 'down')}
-			{@render Path({ x: 880, y: 975 }, { x: 1045, y: 895 }, 'up')}
-
-			{@render Path({ x: 1275, y: 895 }, { x: 1450, y: 895 })}
-		</svg>
 	</section>
 {/if}
 

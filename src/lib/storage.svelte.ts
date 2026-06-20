@@ -104,6 +104,9 @@ export type Player = {
 
 export const nullPlayer: Player = { name: '', isCompetitor: false, score: 0 } as const;
 
+export const BracketOptions = ['whole', 'upper', 'lower'] as const;
+export type BracketOption = (typeof BracketOptions)[number];
+
 export type Overlay = {
 	bestOf: number;
 	leftPlayer: Player;
@@ -111,6 +114,7 @@ export type Overlay = {
 	map: Map;
 	stage: string;
 	class: TFClass;
+	bracket: BracketOption;
 };
 
 export type Items = {
@@ -296,7 +300,8 @@ export const defaultOverlay: Overlay = {
 	},
 	map: { fileName: '', shortName: '', ID: '' },
 	stage: '',
-	class: 'soldier'
+	class: 'soldier',
+	bracket: 'whole'
 };
 
 export const defaultItems: Items = {
