@@ -195,6 +195,11 @@ interface CompetitionEndEvent extends BaseCompetitionEvent {
 	expiredAt: number;
 }
 
+export interface CompetitionSessionPlayerEnd extends BaseCompetitionEvent {
+	type: 'competition_session_player_end';
+	steamAccountId: string;
+}
+
 // MARK: Messages
 
 export type MessageTypes =
@@ -205,7 +210,8 @@ export type MessageTypes =
 	| TimerCheckpointEvent
 	| CompetitionLiveEvent
 	| CompetitionOvertimeEvent
-	| CompetitionEndEvent;
+	| CompetitionEndEvent
+	| CompetitionSessionPlayerEnd;
 
 export type Messages = {
 	mapPicks: PickBansSessionStateEvent;
