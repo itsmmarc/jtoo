@@ -3,7 +3,9 @@
 	import { items, overlay, type Player } from '$lib/storage.svelte';
 	import { settings } from '$lib/storage.svelte';
 	import { fade } from 'svelte/transition';
-	import PRDisplay from '$lib/components/maps/PRDisplay.svelte';
+	import { page } from '$app/state';
+
+	const drawBG: boolean = !page.url.searchParams.has('nobg');
 </script>
 
 <!-- isolated border filter -->
@@ -14,21 +16,23 @@
 <PlayerInput side="right" /> -->
 
 <section class="relative z-20 m-auto flex w-full justify-center gap-10 p-4">
-	{#if settings.current.enableGradient}
-		<!-- gradients -->
-		{#if settings.current.enableTeamColors}
-			<div
-				class="absolute top-0 left-0 -z-10 size-full bg-linear-to-r from-ctp-blue/35 via-black/35 to-ctp-red/35"
-			></div>
+	{#if drawBG}
+		{#if settings.current.enableGradient}
+			<!-- gradients -->
+			{#if settings.current.enableTeamColors}
+				<div
+					class="absolute top-0 left-0 -z-10 size-full bg-linear-to-r from-ctp-blue/35 via-black/35 to-ctp-red/35"
+				></div>
+			{:else}
+				<div
+					class="absolute top-0 left-0 -z-10 size-full bg-linear-to-r from-ctp-lavender/35 via-black/35 to-ctp-lavender/35"
+					style:filter={getFiltersStyle()}
+				></div>
+			{/if}
 		{:else}
-			<div
-				class="absolute top-0 left-0 -z-10 size-full bg-linear-to-r from-ctp-lavender/35 via-black/35 to-ctp-lavender/35"
-				style:filter={getFiltersStyle()}
-			></div>
+			<!-- transparent black bg -->
+			<div class="absolute top-0 left-0 size-full bg-black/35"></div>
 		{/if}
-	{:else}
-		<!-- transparent black bg -->
-		<div class="absolute top-0 left-0 size-full bg-black/35"></div>
 	{/if}
 	<ul class="grid grid-cols-[repeat(6,auto)] gap-x-6 gap-y-4 text-4xl">
 		<li></li>

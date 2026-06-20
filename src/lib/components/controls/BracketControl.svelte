@@ -8,7 +8,7 @@
 </script>
 
 {#if items.current.bracket}
-	<section class="m-auto mt-6">
+	<section class="m-auto mt-4">
 		<div class=" flex flex-col gap-20">
 			<div class="flex gap-40">
 				<h2
@@ -234,7 +234,7 @@
 	@import 'tailwindcss';
 	@import '@catppuccin/tailwindcss/mocha.css';
 	h2 {
-		@apply text-center;
+		@apply mb-2 text-center;
 	}
 	.stage-container {
 		@apply col-[1/1] row-[1/1] flex h-full flex-col justify-around gap-4 rounded-xl;
