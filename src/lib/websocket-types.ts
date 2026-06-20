@@ -168,7 +168,7 @@ interface BaseCompetitionEvent {
 		| 'competition_session_live'
 		| 'competition_session_overtime'
 		| 'competition_session_ended'
-		| 'competition_session_player_end';
+		| 'competition_session_player_ended';
 	timestamp: number;
 	sessionId: number;
 	startedAt: number;
@@ -196,7 +196,7 @@ interface CompetitionEndEvent extends BaseCompetitionEvent {
 }
 
 export interface CompetitionSessionPlayerEnd extends BaseCompetitionEvent {
-	type: 'competition_session_player_end';
+	type: 'competition_session_player_ended';
 	steamAccountId: string;
 }
 

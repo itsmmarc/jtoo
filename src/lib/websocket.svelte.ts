@@ -90,7 +90,7 @@ export function initializeWebSocket() {
 				competition_timer_overtime();
 				// messages.current.competition.push(data);
 				break;
-			case 'competition_session_player_end':
+			case 'competition_session_player_ended':
 				timer_stop_safe(checkTimerSide_competitive_session_player_ended(data));
 				// messages.current.competition.push(data);
 				break;
