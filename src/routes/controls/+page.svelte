@@ -111,7 +111,7 @@
 		}}>reset to default</button
 	>
 	<span>font</span>
-	<div class="flex gap-1">
+	<div class="flex flex-wrap gap-1">
 		{#each fonts as font, i (i)}
 			{@const selected = font === settings.current.font}
 			<div class={font}>
@@ -125,7 +125,7 @@
 		{/each}
 	</div>
 	<span>mono font</span>
-	<div class="flex gap-1">
+	<div class="flex flex-wrap gap-1">
 		{#each monoFonts as font, i (i)}
 			{@const selected = font === settings.current.monoFont}
 			<div class={font}>
@@ -243,104 +243,101 @@
 </div>
 
 <!-- players -->
-<div class="flex w-full justify-evenly">
+<div class="flex w-full max-w-lg justify-evenly self-center">
 	<Player side="left" />
 	<hr class="mx-2 mb-2 h-32 w-1 self-end border-none bg-obs-padding" />
 	<Player side="right" />
 </div>
 
-<!-- maps -->
-<span>map</span>
-<div class="button-container">
-	{#each Object.entries(items.current.maps) as [key, map], i (i)}
-		{@const selected = overlay.current.map.shortName === map.shortName}
-		<Button
-			{selected}
-			onclick={() => {
-				overlay.current.map = map;
-			}}
-			oncontextmenu={() => {
-				if (map.fileName == '') {
+<div class="max-w-lg self-center">
+	<!-- maps -->
+
+	<span>map</span>
+	<div class="button-container">
+		{#each Object.entries(items.current.maps) as [key, map], i (i)}
+			{@const selected = overlay.current.map.shortName === map.shortName}
+			<Button
+				{selected}
+				onclick={() => {
+					overlay.current.map = map;
+				}}
+				oncontextmenu={() => {
+					if (map.fileName == '') {
+						return;
+					}
+					// reset if deleting selected
+					if (overlay.current.map.fileName === map.fileName) {
+						overlay.current.map = items.current.maps['null'];
+					}
+					items.current.maps = _.omit(items.current.maps, key);
+				}}>{map.shortName === '' ? '✖' : map.shortName}</Button
+			>
+		{/each}
+	</div>
+
+	<!-- classes -->
+	<span>class</span>
+	<div class="button-container">
+		{#each Object.values(TFClasses) as tfClass, i (i)}
+			{@const selected = overlay.current.class === tfClass}
+			<Button
+				{selected}
+				onclick={() => {
+					overlay.current.class = tfClass as TFClass;
+				}}
+				oncontextmenu={() => {
 					return;
-				}
-				// reset if deleting selected
-				if (overlay.current.map.fileName === map.fileName) {
-					overlay.current.map = items.current.maps['null'];
-				}
-				items.current.maps = _.omit(items.current.maps, key);
-			}}>{map.shortName === '' ? '✖' : map.shortName}</Button
-		>
-	{/each}
-</div>
-<!-- {#if items.current.maps.length === 1}
-	<span class="text-ctp-text/50">no maps..</span>
-{/if} -->
+				}}>{tfClass}</Button
+			>
+		{/each}
+	</div>
 
-<!-- classes -->
-<span>class</span>
-<div class="button-container">
-	{#each Object.values(TFClasses) as tfClass, i (i)}
-		{@const selected = overlay.current.class === tfClass}
-		<Button
-			{selected}
-			onclick={() => {
-				overlay.current.class = tfClass as TFClass;
-			}}
-			oncontextmenu={() => {
-				return;
-			}}>{tfClass}</Button
-		>
-	{/each}
-</div>
-
-<!-- bracket -->
-<span>bracket display</span>
-<div class="button-container">
-	{#each Object.values(BracketOptions) as bracketOption, i (i)}
-		{@const selected = overlay.current.bracket === bracketOption}
-		<Button
-			{selected}
-			onclick={() => {
-				overlay.current.bracket = bracketOption as BracketOption;
-			}}
-			oncontextmenu={() => {
-				return;
-			}}>{bracketOption}</Button
-		>
-	{/each}
-</div>
-
-<!-- stages -->
-<div class="flex justify-between">
-	<span>stage</span>
-	<button
-		class="button-remove"
-		onclick={() => {
-			items.current.stages = defaultStages;
-		}}>reset to default</button
-	>
-</div>
-<div class="button-container">
-	{#each items.current.stages as stage, i (i)}
-		{@const selected = (overlay.current.stage ?? items.current.stages.at(0)) === stage}
-		<Button
-			{selected}
-			onclick={() => {
-				overlay.current.stage = stage;
-			}}
-			oncontextmenu={() => {
-				if (stage == '') {
+	<!-- bracket -->
+	<span>bracket display</span>
+	<div class="button-container">
+		{#each Object.values(BracketOptions) as bracketOption, i (i)}
+			{@const selected = overlay.current.bracket === bracketOption}
+			<Button
+				{selected}
+				onclick={() => {
+					overlay.current.bracket = bracketOption as BracketOption;
+				}}
+				oncontextmenu={() => {
 					return;
-				}
-				// reset if deleting selected
-				if (overlay.current.stage === stage) {
-					overlay.current.stage = items.current.stages.at(0) ?? '';
-				}
-				items.current.stages.splice(items.current.stages.indexOf(stage), 1);
-			}}>{stage == '' ? '✖' : stage}</Button
+				}}>{bracketOption}</Button
+			>
+		{/each}
+	</div>
+
+	<!-- stages -->
+	<div class="flex justify-between">
+		<span>stage</span>
+		<button
+			class="button-remove"
+			onclick={() => {
+				items.current.stages = defaultStages;
+			}}>reset to default</button
 		>
-	{/each}
+	</div>
+	<div class="button-container">
+		{#each items.current.stages as stage, i (i)}
+			{@const selected = (overlay.current.stage ?? items.current.stages.at(0)) === stage}
+			<Button
+				{selected}
+				onclick={() => {
+					overlay.current.stage = stage;
+				}}
+				oncontextmenu={() => {
+					if (stage == '') {
+						return;
+					}
+					// reset if deleting selected
+					if (overlay.current.stage === stage) {
+						overlay.current.stage = items.current.stages.at(0) ?? '';
+					}
+					items.current.stages.splice(items.current.stages.indexOf(stage), 1);
+				}}>{stage == '' ? '✖' : stage}</Button
+			>
+		{/each}
+	</div>
 </div>
-<!-- {#if items.current.stages.length === 1}
-	<span class="text-ctp-text/50">no stages..</span>
-{/if} -->
