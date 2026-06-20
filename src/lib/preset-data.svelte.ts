@@ -75,7 +75,7 @@ export const soldierPlayoffs2026: {
 				marigold: { rank: 6, time: '01:20.550' },
 				phobos: { rank: 7, time: '01:16.215' },
 				oddie: { rank: 2, time: '01:48.510' },
-				ahh: { rank: 427, time: '01:57.015' },
+				ahh: { rank: 3, time: '01:02.070' },
 				soar: { rank: 4, time: '04:04.980' },
 				above: { rank: 3, time: '01:10.575' }
 			},
@@ -127,7 +127,7 @@ export const soldierPlayoffs2026: {
 				marigold: { rank: 1, time: '01:15.420' },
 				phobos: { rank: 4, time: '01:14.070' },
 				oddie: { rank: 1, time: '01:47.640' },
-				ahh: { rank: 4, time: '01:02.265' },
+				ahh: { rank: 5, time: '01:02.265' },
 				soar: { rank: 8, time: '04:21.210' },
 				above: { rank: 7, time: '01:13.140' }
 			},
@@ -153,7 +153,7 @@ export const soldierPlayoffs2026: {
 				marigold: { rank: 18, time: '01:27.885' },
 				phobos: { rank: 9, time: '01:17.670' },
 				oddie: { rank: 6, time: '01:53.805' },
-				ahh: { rank: 3, time: '01:02.130' },
+				ahh: { rank: 4, time: '01:02.130' },
 				soar: { rank: 26, time: '05:02.250' },
 				above: { rank: 4, time: '01:11.160' }
 			},
@@ -179,7 +179,7 @@ export const soldierPlayoffs2026: {
 				marigold: { rank: 8, time: '01:22.215' },
 				phobos: { rank: 6, time: '01:15.180' },
 				oddie: { rank: 10, time: '01:55.830' },
-				ahh: { rank: 8, time: '01:04.530' },
+				ahh: { rank: 9, time: '01:04.530' },
 				soar: { rank: 13, time: '04:30.975' },
 				above: { rank: 10, time: '01:14.040' }
 			},
@@ -205,7 +205,7 @@ export const soldierPlayoffs2026: {
 				marigold: { rank: 5, time: '01:19.980' },
 				phobos: { rank: 5, time: '01:14.535' },
 				oddie: { rank: 11, time: '01:56.790' },
-				ahh: { rank: 7, time: '01:03.660' },
+				ahh: { rank: 8, time: '01:03.660' },
 				soar: { rank: 262, time: '09:46.110' },
 				above: { rank: 27, time: '01:20.190' }
 			},
@@ -231,7 +231,7 @@ export const soldierPlayoffs2026: {
 				marigold: { rank: 2, time: '01:18.450' },
 				phobos: { rank: 3, time: '01:12.855' },
 				oddie: { rank: 8, time: '01:54.930' },
-				ahh: { rank: 11, time: '01:05.370' },
+				ahh: { rank: 12, time: '01:05.370' },
 				soar: { rank: 31, time: '05:07.245' },
 				above: { rank: 5, time: '01:11.895' }
 			},
