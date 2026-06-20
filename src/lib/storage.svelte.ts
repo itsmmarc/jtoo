@@ -1,5 +1,5 @@
 import { PersistentState } from '@friendofsvelte/state';
-import { type Bracket } from './Bracket.svelte';
+import { type Bracket4, type Bracket8 } from './Bracket.svelte';
 
 export const Fonts = [
 	'font-cause',
@@ -122,7 +122,7 @@ export type Items = {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	maps: MapsInfo<any>;
 	stages: Array<string>;
-	bracket: Bracket;
+	bracket: Bracket8 | Bracket4;
 };
 
 export const defaultStages: Array<string> = [
@@ -138,7 +138,8 @@ export const defaultStages: Array<string> = [
 	"Loser's Finals"
 ];
 
-export const defaultBracket: Bracket = {
+export const defaultBracket8: Bracket8 = {
+	type: 8,
 	Upper: {
 		QuarterFinals: [
 			{
@@ -259,6 +260,66 @@ export const defaultBracket: Bracket = {
 	}
 };
 
+export const defaultBracket4: Bracket4 = {
+	type: 4,
+	Upper: {
+		QuarterFinals: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Upper', 'SemiFinal', 0, 'A'],
+				loseDest: ['Lower', 'SemiFinal', 0, 'A']
+			},
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Upper', 'SemiFinal', 0, 'B'],
+				loseDest: ['Lower', 'SemiFinal', 0, 'B']
+			}
+		],
+		SemiFinal: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Upper', 'GrandFinal', 0, 'A'],
+				loseDest: ['Lower', 'Final', 0, 'B']
+			}
+		],
+		GrandFinal: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: null,
+				loseDest: null
+			}
+		]
+	},
+	Lower: {
+		SemiFinal: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Lower', 'Final', 0, 'A'],
+				loseDest: null
+			}
+		],
+		Final: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Upper', 'GrandFinal', 0, 'B'],
+				loseDest: null
+			}
+		]
+	}
+};
+
 export const defaultSettings: Settings = {
 	font: 'font-space-grotesk',
 	monoFont: 'font-chivo-mono',
@@ -308,7 +369,7 @@ export const defaultItems: Items = {
 	players: [nullPlayer],
 	maps: { null: { fileName: '', shortName: '', ID: '' } },
 	stages: defaultStages,
-	bracket: defaultBracket
+	bracket: defaultBracket8
 };
 
 // overlay settings
@@ -321,7 +382,7 @@ export const overlay = new PersistentState('overlay', defaultOverlay);
 export const items = new PersistentState('items', defaultItems);
 
 export function fullReset() {
-	console.log(defaultBracket);
+	console.log(defaultBracket8);
 	settings.current = defaultSettings;
 	overlay.current = defaultOverlay;
 	items.current = defaultItems;

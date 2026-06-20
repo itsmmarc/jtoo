@@ -1,11 +1,12 @@
-import { type Bracket } from './Bracket.svelte';
+import { type Bracket4, type Bracket8 } from './Bracket.svelte';
 import {
 	type Player,
 	nullPlayer,
 	type MapsInfo,
 	items,
 	overlay,
-	defaultBracket
+	defaultBracket8,
+	defaultBracket4
 } from './storage.svelte';
 import { getPlayer } from './util';
 
@@ -374,76 +375,6 @@ export const soldierPlayoffs2026: {
 	}
 };
 
-const soldierPlayoffs2026Bracket: Bracket = {
-	...defaultBracket,
-	Upper: {
-		QuarterFinals: [
-			{
-				A: getPlayer('vice', undefined, soldierPlayoffs2026.players),
-				B: getPlayer('Spidda', undefined, soldierPlayoffs2026.players),
-				winner: '',
-				winDest: ['Upper', 'SemiFinals', 0, 'A'],
-				loseDest: ['Lower', 'Round1', 0, 'A']
-			},
-			{
-				A: getPlayer('bunny.', undefined, soldierPlayoffs2026.players),
-				B: getPlayer('Sammy', undefined, soldierPlayoffs2026.players),
-				winner: '',
-				winDest: ['Upper', 'SemiFinals', 0, 'B'],
-				loseDest: ['Lower', 'Round1', 0, 'B']
-			},
-			{
-				A: getPlayer('Garf', undefined, soldierPlayoffs2026.players),
-				B: getPlayer('Hass', undefined, soldierPlayoffs2026.players),
-				winner: '',
-				winDest: ['Upper', 'SemiFinals', 1, 'A'],
-				loseDest: ['Lower', 'Round1', 1, 'A']
-			},
-			{
-				A: getPlayer('Nikita', undefined, soldierPlayoffs2026.players),
-				B: getPlayer('rev!4', undefined, soldierPlayoffs2026.players),
-				winner: '',
-				winDest: ['Upper', 'SemiFinals', 1, 'B'],
-				loseDest: ['Lower', 'Round1', 1, 'B']
-			}
-		],
-		SemiFinals: [
-			{
-				A: nullPlayer,
-				B: nullPlayer,
-				winner: '',
-				winDest: ['Upper', 'Final', 0, 'A'],
-				loseDest: ['Lower', 'QuarterFinals', 0, 'B']
-			},
-			{
-				A: nullPlayer,
-				B: nullPlayer,
-				winner: '',
-				winDest: ['Upper', 'Final', 0, 'B'],
-				loseDest: ['Lower', 'QuarterFinals', 1, 'B']
-			}
-		],
-		Final: [
-			{
-				A: nullPlayer,
-				B: nullPlayer,
-				winner: '',
-				winDest: ['Upper', 'GrandFinal', 0, 'A'],
-				loseDest: ['Lower', 'Final', 0, 'B']
-			}
-		],
-		GrandFinal: [
-			{
-				A: nullPlayer,
-				B: nullPlayer,
-				winner: '',
-				winDest: null,
-				loseDest: null
-			}
-		]
-	}
-};
-
 export const demoPlayoffs2026: {
 	players: Player[];
 	maps: MapsInfo<Playoffs2026DemoMapList>;
@@ -512,7 +443,7 @@ export const demoPlayoffs2026: {
 			score: 0
 		},
 		{
-			name: 'namee',
+			name: 'nNameee',
 			isCompetitor: true,
 			tempusID: '35454',
 			steamID3: 135796457,
@@ -593,6 +524,116 @@ export const demoPlayoffs2026: {
 	}
 };
 
+const soldierPlayoffs2026Bracket: Bracket8 = {
+	...defaultBracket8,
+	Upper: {
+		QuarterFinals: [
+			{
+				A: getPlayer('vice', undefined, soldierPlayoffs2026.players),
+				B: getPlayer('Spidda', undefined, soldierPlayoffs2026.players),
+				winner: '',
+				winDest: ['Upper', 'SemiFinals', 0, 'A'],
+				loseDest: ['Lower', 'Round1', 0, 'A']
+			},
+			{
+				A: getPlayer('bunny.', undefined, soldierPlayoffs2026.players),
+				B: getPlayer('Sammy', undefined, soldierPlayoffs2026.players),
+				winner: '',
+				winDest: ['Upper', 'SemiFinals', 0, 'B'],
+				loseDest: ['Lower', 'Round1', 0, 'B']
+			},
+			{
+				A: getPlayer('Garf', undefined, soldierPlayoffs2026.players),
+				B: getPlayer('Hass', undefined, soldierPlayoffs2026.players),
+				winner: '',
+				winDest: ['Upper', 'SemiFinals', 1, 'A'],
+				loseDest: ['Lower', 'Round1', 1, 'A']
+			},
+			{
+				A: getPlayer('Nikita', undefined, soldierPlayoffs2026.players),
+				B: getPlayer('rev!4', undefined, soldierPlayoffs2026.players),
+				winner: '',
+				winDest: ['Upper', 'SemiFinals', 1, 'B'],
+				loseDest: ['Lower', 'Round1', 1, 'B']
+			}
+		],
+		SemiFinals: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Upper', 'Final', 0, 'A'],
+				loseDest: ['Lower', 'QuarterFinals', 0, 'B']
+			},
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Upper', 'Final', 0, 'B'],
+				loseDest: ['Lower', 'QuarterFinals', 1, 'B']
+			}
+		],
+		Final: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Upper', 'GrandFinal', 0, 'A'],
+				loseDest: ['Lower', 'Final', 0, 'B']
+			}
+		],
+		GrandFinal: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: null,
+				loseDest: null
+			}
+		]
+	}
+};
+
+const demoPlayoffs2026Bracket: Bracket4 = {
+	...defaultBracket4,
+	Upper: {
+		QuarterFinals: [
+			{
+				A: getPlayer('vice', undefined, demoPlayoffs2026.players),
+				B: getPlayer('cander', undefined, demoPlayoffs2026.players),
+				winner: '',
+				winDest: ['Upper', 'SemiFinal', 0, 'A'],
+				loseDest: ['Lower', 'SemiFinal', 0, 'A']
+			},
+			{
+				A: getPlayer('newjuls', undefined, demoPlayoffs2026.players),
+				B: getPlayer('nNameee', undefined, demoPlayoffs2026.players),
+				winner: '',
+				winDest: ['Upper', 'SemiFinal', 0, 'B'],
+				loseDest: ['Lower', 'SemiFinal', 0, 'B']
+			}
+		],
+		SemiFinal: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: ['Upper', 'GrandFinal', 0, 'A'],
+				loseDest: ['Lower', 'Final', 0, 'B']
+			}
+		],
+		GrandFinal: [
+			{
+				A: nullPlayer,
+				B: nullPlayer,
+				winner: '',
+				winDest: null,
+				loseDest: null
+			}
+		]
+	}
+};
+
 export function loadSoldierPlayoffs2026() {
 	items.current.players = soldierPlayoffs2026.players;
 	items.current.maps = soldierPlayoffs2026.maps;
@@ -603,5 +644,6 @@ export function loadSoldierPlayoffs2026() {
 export function loadDemoPlayoffs2026() {
 	items.current.players = demoPlayoffs2026.players;
 	items.current.maps = demoPlayoffs2026.maps;
+	items.current.bracket = demoPlayoffs2026Bracket;
 	overlay.current.class = 'demo';
 }
