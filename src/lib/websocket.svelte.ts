@@ -266,6 +266,10 @@ function competition_timer_start(durationSeconds: number) {
 		return;
 	}
 
+	if (competitionTimer) {
+		clearTimeout(competitionTimer);
+	}
+
 	timer.current = defaultTimerStore;
 
 	timer.current.competition.timer_stop = false;
