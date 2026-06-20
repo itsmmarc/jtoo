@@ -40,7 +40,7 @@ export const soldierPlayoffs2026: {
 			tempusID: '10736',
 			steamID3: 406102720,
 			avatarURL:
-				'https://avatars.akamai.steamstatic.com/75f84c1f8d7956ad4521718c53c6a7b381e3acee_full.jpg',
+				'https://avatars.akamai.steamstatic.com/a506cbb7cb2b69a9ce04193efe8668ec7d6f8725_full.jpg',
 			tag: 'fuck vice',
 			flag: 'sg',
 			rank: { overall: 1, soldier: 3, demo: 1 },
