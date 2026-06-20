@@ -185,7 +185,7 @@ export const soldierPlayoffs2026: {
 			},
 			WRs: 2,
 			TTs: 161,
-			bestRun: 'nebu',
+			bestRun: 'pharaoh',
 			note: 'never ask speedy a question',
 			favouriteMap: 'lion',
 			score: 0
