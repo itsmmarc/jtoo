@@ -70,15 +70,20 @@
 						{@const col3r = 1040}
 						{@const col4l = 1200}
 
-						{@const row1 = 115}
-						{@const row2 = 185}
-						{@const row3 = 260}
-						{@const row4 = 330}
-						{@const row5 = 405}
-						{@const row6 = 480}
-						{@const row7 = 550}
+						{@const row1 = 108}
+						{@const row2 = 181}
+						{@const row3 = 252}
+						{@const row4 = 323}
+						{@const row5 = 396}
+						{@const row6 = 467}
+						{@const row7 = 541}
 
-						<svg width="1200" height="550" class="absolute -z-1 w-[80%]">
+						<svg
+							width="1200"
+							height="550"
+							class="absolute -z-1 w-[80%]"
+							style:filter={getFiltersStyle()}
+						>
 							{@render Path({ x: col1r, y: row1 }, { x: col2l, y: row2 }, 'down')}
 							{@render Path({ x: col1r, y: row3 }, { x: col2l, y: row2 }, 'up')}
 
@@ -153,11 +158,16 @@
 						{@const col3r = 1040}
 						{@const col4l = 1200}
 
-						{@const row1 = 115}
-						{@const row2 = 190}
-						{@const row3 = 260}
+						{@const row1 = 109}
+						{@const row2 = 179}
+						{@const row3 = 252}
 
-						<svg width="1200" height="260" class="absolute -z-1 w-[80%]">
+						<svg
+							width="1200"
+							height="260"
+							class="absolute -z-1 w-[80%]"
+							style:filter={getFiltersStyle()}
+						>
 							{@render Path({ x: col1r, y: row1 }, { x: col2l, y: row1 })}
 
 							{@render Path({ x: col1r, y: row3 }, { x: col2l, y: row3 })}
@@ -214,10 +224,10 @@
 			{@render MatchPlayer(match, 'B')}
 		</div>
 		<div
-			class="col-[1/1] row-[1/1] min-h-32 min-w-60 rounded-xl
+			class="col-[1/1] row-[1/1] min-h-32 min-w-60 rounded-xl bg-linear-to-tr
                         {match.A.name && match.B.name && !match.winner
-				? 'bg-ctp-lavender-900'
-				: 'bg-gray-800'}"
+				? 'from-ctp-lavender-950 via-ctp-lavender-800 to-ctp-lavender-400'
+				: 'from-[#121925] via-[bg-gray-800] to-[#202833]'} bg-gray-800"
 			style:filter={getFiltersStyle()}
 		></div>
 	</div>
@@ -235,29 +245,33 @@
 				clearMatchWinner(match);
 			}}
 		>
-			<div
-				class="flex h-full w-full items-center gap-4 bg-linear-to-tr pl-6
-                                {player == 'A' ? 'rounded-t-xl' : 'rounded-b-xl'}
-                                {match.winner
-					? match.winner == player
-						? 'from-[#06d641a5] via-[#53c359cb] to-[#bfefc1db] mix-blend-hard-light'
-						: 'from-[#cd130acc] via-[#240a0a8f] to-[#0f0000d2] mix-blend-soft-light'
-					: ''}"
-			>
-				{#if settings.current.enableAvatars && match[player].avatarURL}
-					{#key match[player].avatarURL}
-						<img
-							in:fade
-							src={match[player].avatarURL}
-							alt=""
-							class="size-12 rounded-xl object-cover object-center"
-							draggable="false"
-						/>
-					{/key}
-				{/if}
-				<span style:filter={getFiltersStyle()}>
-					{match[player].name}
-				</span>
+			<div class="grid">
+				<div class="col-[1/1] row-[1/1] flex h-full w-full items-center gap-4 p-2">
+					{#if settings.current.enableAvatars && match[player].avatarURL}
+						{#key match[player].avatarURL}
+							<img
+								in:fade
+								src={match[player].avatarURL}
+								alt=""
+								class="size-12 rounded-xl object-cover object-center"
+								draggable="false"
+							/>
+						{/key}
+					{/if}
+					<span style:filter={getFiltersStyle()}>
+						{match[player].name}
+					</span>
+				</div>
+				<div
+					class="-z-1 col-[1/1] row-[1/1] h-full w-full bg-linear-to-tr pl-6
+                                        {player == 'A' ? 'rounded-t-xl' : 'rounded-b-xl'}
+                                        {match.winner
+						? match.winner == player
+							? 'from-ctp-lavender-950 via-ctp-lavender-800 to-ctp-lavender-400 mix-blend-hard-light'
+							: 'from-ctp-lavender-950/60 via-ctp-lavender-900/20 to-ctp-lavender-950/10 mix-blend-soft-light'
+						: ''}"
+					style:filter={getFiltersStyle()}
+				></div>
 			</div>
 		</button>
 	{/key}
