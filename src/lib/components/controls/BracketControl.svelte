@@ -382,12 +382,12 @@
 					</span>
 				</div>
 				<div
-					class="-z-1 col-[1/1] row-[1/1] h-full w-full bg-linear-to-tr pl-6
+					class=" -z-1 col-[1/1] row-[1/1] h-full w-full bg-linear-to-tr pl-6
                                         {player == 'A' ? 'rounded-t-xl' : 'rounded-b-xl'}
                                         {match.winner
 						? match.winner == player
-							? 'from-ctp-lavender-950 via-ctp-lavender-800 to-ctp-lavender-400 mix-blend-hard-light'
-							: 'from-ctp-lavender-950/60 via-ctp-lavender-900/20 to-ctp-lavender-950/10 mix-blend-soft-light'
+							? 'from-[#40834a]   via-[#369455]  to-[#b2e1bd]'
+							: 'from-ctp-lavender-950/60 via-ctp-lavender-900/20 to-ctp-lavender-950/10'
 						: ''}"
 					style:filter={getFiltersStyle()}
 				></div>
