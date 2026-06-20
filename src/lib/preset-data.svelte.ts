@@ -172,7 +172,7 @@ export const soldierPlayoffs2026: {
 			avatarURL:
 				'https://shared.akamai.steamstatic.com/community_assets/images/items/1913420/1a5409eff27cdf6c32706526a68316820ca66835.gif',
 			tag: '',
-			flag: 'gb',
+			flag: 'pk',
 			rank: { overall: 19, soldier: 8, demo: 733 },
 			tempusPrs: {
 				pokus: { rank: 16, time: '03:34.230' },
