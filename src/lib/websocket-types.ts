@@ -167,7 +167,7 @@ interface BaseCompetitionEvent {
 	type:
 		| 'competition_session_live'
 		| 'competition_session_overtime'
-		| 'competition_session_ended'
+		| 'competition_session_end'
 		| 'competition_session_player_ended';
 	timestamp: number;
 	sessionId: number;
@@ -191,7 +191,7 @@ interface CompetitionOvertimeEvent extends BaseCompetitionEvent {
 {"type":"competition_session_ended","timestamp":1780753370,"sessionId":49,"startedAt":1780753370,"durationSeconds":60,"expiredAt":1780753430}
 */
 interface CompetitionEndEvent extends BaseCompetitionEvent {
-	type: 'competition_session_ended';
+	type: 'competition_session_end';
 	expiredAt: number;
 }
 
