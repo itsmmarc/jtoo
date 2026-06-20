@@ -82,7 +82,7 @@ export function initializeWebSocket() {
 				competition_timer_start(data.durationSeconds);
 				// messages.current.competition.push(data);
 				break;
-			case 'competition_session_ended':
+			case 'competition_session_end':
 				competition_timer_stop();
 				// messages.current.competition.push(data);
 				break;
