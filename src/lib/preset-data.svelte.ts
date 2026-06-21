@@ -244,6 +244,32 @@ export const soldierPlayoffs2026: {
 			score: 0
 		},
 		{
+			name: 'BLANK',
+			isCompetitor: false,
+			tempusID: '11459',
+			steamID3: 86605721,
+			avatarURL:
+				'https://avatars.akamai.steamstatic.com/bbc54b7632c3e3304667a666c8d09d33ab7e4449_full.jpg',
+			tag: '',
+			flag: 'dk',
+			rank: { overall: 22, soldier: 10, demo: 1583 },
+			tempusPrs: {
+				pokus: { rank: 12, time: '03:29.985' },
+				marigold: { rank: 9, time: '01:23.610' },
+				phobos: { rank: 13, time: '01:21.615' },
+				oddie: { rank: 9, time: '01:55.320' },
+				ahh: { rank: 7, time: '01:03.570' },
+				soar: { rank: 250, time: '09:24.510' },
+				above: { rank: 140, time: '01:36.270' }
+			},
+			WRs: 9,
+			TTs: 233,
+			bestRun: 'camp',
+			note: 'till we meet again..',
+			favouriteMap: 'bromelia',
+			score: 0
+		},
+		{
 			name: 'Shanks',
 			isCompetitor: false,
 			tempusID: '457363',
