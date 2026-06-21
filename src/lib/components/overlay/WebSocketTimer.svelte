@@ -74,7 +74,7 @@
 </script>
 
 <div
-	class="absolute left-0 flex h-32 w-full items-center justify-center gap-70 {settings.current
+	class="absolute left-0 flex h-32 w-full items-center justify-center gap-60 {settings.current
 		.monoFont}"
 >
 	<span
