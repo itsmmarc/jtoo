@@ -7,24 +7,32 @@
 	function displayMapPick(map: Map, pickedMaps: { mapID: string; steamID3: string }[]) {
 		const playerA = overlay.current.leftPlayer.steamID3;
 		const playerB = overlay.current.rightPlayer.steamID3;
-		for (const pick of pickedMaps) {
-			if (pick.mapID == map.ID) {
-				let pickActor: RegExpMatchArray | null | number = pick.steamID3.match('\\d{2,9}');
-				if (!pickActor) continue;
-				pickActor = parseInt(pickActor[0]);
-				console.log(pick.mapID);
-				console.log(playerA);
-				console.log(playerB);
-				console.log(pickActor);
-				let x =
-					pickActor == playerA
-						? 'border-l-ctp-green-400'
-						: pickActor == playerB
-							? 'border-r-ctp-green-400'
-							: '';
-				console.log(x);
-				return x;
+
+		let mapIndex: number | null = null;
+		for (let i = 0; i < pickedMaps.length; i++) {
+			if (pickedMaps[i].mapID == map.ID) {
+				mapIndex = i;
+				break;
 			}
+		}
+		console.log(map.shortName);
+		console.log(mapIndex);
+
+		if (!mapIndex) {
+			return 'bg-[#250e0e]/40 z-1';
+		}
+
+		if (mapIndex) {
+			let pickActor: RegExpMatchArray | null | number =
+				pickedMaps[mapIndex].steamID3.match('\\d{2,9}');
+			if (!pickActor) return '';
+			pickActor = parseInt(pickActor[0]);
+
+			return pickActor == playerA
+				? 'border-l-ctp-green-400 bg-ctp-green-900/10'
+				: pickActor == playerB
+					? 'border-r-ctp-green-400 bg-ctp-green-900/10'
+					: '';
 		}
 	}
 </script>
@@ -43,12 +51,16 @@
 	{@const leftWinner = left!.rank < right!.rank}
 
 	<div
-		class="@container relative mb-1 h-32 w-95 text-3xl
-                {settings.current.monoFont} rounded-2xl border-4 border-transparent {displayMapPick(
-			map,
-			pickedMaps.current
-		)}"
+		class="@container relative mb-2 h-32 w-95 text-3xl
+                {settings.current.monoFont} rounded-2xl"
 	>
+		<!-- map picks -->
+		<div
+			class="absolute top-0 left-[-2px] mt-[-2px] h-[calc(100%+4px)] w-[calc(100%+4px)] rounded-2xl border-4 border-transparent {displayMapPick(
+				map,
+				pickedMaps.current
+			)}"
+		></div>
 		<!-- map name -->
 		<h1
 			class="absolute top-0 right-0 w-full p-2 text-center {settings.current.font}"
