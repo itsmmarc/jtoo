@@ -2,7 +2,7 @@
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { settings, items } from '$lib/storage.svelte';
 	import { fade, slide } from 'svelte/transition';
-	import { messages } from '$lib/websocket.svelte';
+	import { messages, pickedMaps } from '$lib/websocket.svelte';
 	import { type PickBansSessionStateEvent } from '$lib/websocket-types';
 
 	let progress = $state(0);
@@ -10,7 +10,6 @@
 	let timeout: NodeJS.Timeout;
 	let mapPicks = $derived(messages.current.mapPicks);
 	let mapPicksOld: PickBansSessionStateEvent | null = null;
-	let pickOrder: string[] = $state([]);
 
 	$effect(() => {
 		// if no session exists, ignore
@@ -29,10 +28,11 @@
 			return;
 		}
 
-		pickOrder = [];
+		pickedMaps.current = [];
 		for (const turn of mapPicks.session.history) {
 			if (turn.action == 'pick') {
-				pickOrder = [...pickOrder, turn.mapId];
+				let actor = mapPicks.session[`player${turn.actor}`].steamId3;
+				pickedMaps.current = [...pickedMaps.current, { mapID: turn.mapId, steamID3: actor }];
 			}
 		}
 
@@ -90,7 +90,7 @@
 				{@const m: PickBansSessionStateEvent | null = messages.current.mapPicks ? messages.current.mapPicks : null}
 				<div class="@container relative mb-2 h-65 w-130 text-4xl">
 					{#if m && 'session' in m && m.session}
-						{@const pickNum = pickOrder.findIndex((p) => p == map.ID)}
+						{@const pickNum = pickedMaps.current.findIndex((p) => p.mapID == map.ID)}
 						{#if pickNum >= 0}
 							<div class="absolute right-6 bottom-4 text-5xl">{pickNum + 1}</div>
 						{/if}

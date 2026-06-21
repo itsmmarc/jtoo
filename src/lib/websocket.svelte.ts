@@ -13,6 +13,8 @@ export let ws: ProxyWebSocket;
 export const wsState = new PersistentState('wsState', { state: 0 }, 'sessionStorage');
 let competitionTimer: NodeJS.Timeout;
 export const messages = new PersistentState('messages', defaultMessages);
+const defaultPickedMaps = [{ mapID: '', steamID3: '' }];
+export const pickedMaps = new PersistentState('pickedMaps', defaultPickedMaps);
 
 export function clearWebSocketMessages() {
 	messages.current = defaultMessages;
@@ -23,6 +25,7 @@ export function clearWebSocketMessages() {
 }
 export function clearPicksAndBans() {
 	messages.current.mapPicks = { type: 'pickbans_session_state', session: null };
+	pickedMaps.current = defaultPickedMaps;
 }
 
 export function clearTimer() {
