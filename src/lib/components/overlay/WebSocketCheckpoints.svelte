@@ -63,7 +63,7 @@
 					{#if timer.current.leftcps[i] < timer.current.rightcps[i]}
 						<span
 							transition:fade|global
-							class="rounded-lg bg-ctp-blue-900/50 px-2.5
+							class="mr-20 rounded-lg bg-ctp-blue-900/50 px-2.5
                                                         {size > 14 ? 'text-xl' : 'text-2xl'}"
 						>
 							{(timer.current.leftcps[i] - timer.current.rightcps[i]).toFixed(2)}
@@ -71,7 +71,7 @@
 					{:else}
 						<span
 							transition:fade|global
-							class=" rounded-lg bg-ctp-red-900/50 px-2.5
+							class=" ml-20 rounded-lg bg-ctp-red-900/50 px-2.5
                                                         {size > 14 ? 'text-xl' : 'text-2xl'}"
 						>
 							{(timer.current.rightcps[i] - timer.current.leftcps[i]).toFixed(2)}
