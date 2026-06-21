@@ -29,21 +29,21 @@
 			<li>remove Custom CSS</li>
 			<li>repeat steps 2-4 for each overlay</li>
 		</ul>
-		<div class="flex gap-5 pb-10">
+		<div class="grid grid-cols-3 pb-10">
 			{@render URLButton('match', 'overlay')}
 			{@render URLButton('maps', 'maps')}
-			{@render URLButton('player cards', 'playercards')}
+			{@render URLButton('player cards', 'playercards', true)}
 		</div>
-		<div class="flex justify-center gap-5">
-			{@render URLButton('players', 'players')}
+		<div class="grid grid-cols-3 justify-center">
+			{@render URLButton('players', 'players', true)}
 			{@render URLButton('bracket', 'bracket')}
 			{@render URLButton('thanks', 'thanks')}
 		</div>
 	</div>
 </main>
 
-{#snippet URLButton(name: string, pageUrl: string)}
-	<div class="relative flex flex-col items-center gap-5">
+{#snippet URLButton(name: string, pageUrl: string, nobg: boolean)}
+	<div class="relative flex flex-col items-center gap-2">
 		<a href={resolve(`/${pageUrl}`)}>
 			<button
 				class="button border-ctp-lavender-950/50 bg-ctp-lavender/35 p-1 px-5 text-4xl hover:bg-ctp-lavender/85"
@@ -64,6 +64,21 @@
 		>
 			{baseUrl}{pageUrl}
 		</button>
+		{#if nobg}
+			<button
+				class="button-remove p-1 px-5 text-2xl"
+				onmousedown={(e) => {
+					let url = e.currentTarget.innerText;
+					navigator.clipboard.writeText(url);
+					copied[name] = url;
+				}}
+				onmouseup={() => {
+					copied[name] = '';
+				}}
+			>
+				{baseUrl}{pageUrl + '?nobg'}
+			</button>
+		{/if}
 		{#if copied[name]}
 			<div class="absolute -bottom-5" out:fade={{ duration: 3000 }}>copied url to clipboard</div>
 		{/if}
