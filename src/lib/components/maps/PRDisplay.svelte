@@ -4,15 +4,21 @@
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { pickedMaps } from '$lib/websocket.svelte';
 
+	function getPlayerFromPickActor(steamID3: string): string | null {
+		const playerA = overlay.current.leftPlayer.steamID3;
+		const playerB = overlay.current.rightPlayer.steamID3;
+
+		let pickActor: RegExpMatchArray | null | number = steamID3.match('\\d{2,12}');
+		if (!pickActor) return null;
+		pickActor = parseInt(pickActor[0]);
+
+		return pickActor == playerA ? 'A' : pickActor == playerB ? 'B' : null;
+	}
+
 	function displayMapPick(map: Map, pickedMaps: { mapID: string; steamID3: string }[]) {
 		if (pickedMaps.length == 0) {
 			return '';
 		}
-
-		const playerA = overlay.current.leftPlayer.steamID3;
-		const playerB = overlay.current.rightPlayer.steamID3;
-		console.log(playerA);
-		console.log(playerB);
 
 		let mapIndex: number | null = null;
 		for (let i = 0; i < pickedMaps.length; i++) {
@@ -21,22 +27,17 @@
 				break;
 			}
 		}
-		// console.log(map.shortName);
-		// console.log(mapIndex);
 
 		if (!mapIndex) {
 			return 'bg-[#250e0e]/40 z-1';
 		}
 
 		if (mapIndex) {
-			let pickActor: RegExpMatchArray | null | number =
-				pickedMaps[mapIndex].steamID3.match('\\d{2,12}');
-			if (!pickActor) return '';
-			pickActor = parseInt(pickActor[0]);
+			let actor = getPlayerFromPickActor(pickedMaps[mapIndex].steamID3);
 
-			return pickActor == playerA
+			return actor == 'A'
 				? 'border-l-ctp-green-400 bg-ctp-green-900/10'
-				: pickActor == playerB
+				: actor == 'B'
 					? 'border-r-ctp-green-400 bg-ctp-green-900/10'
 					: '';
 		}
