@@ -406,7 +406,7 @@
 		@apply col-[1/1] row-[1/1] flex h-full flex-col justify-around gap-4 rounded-xl;
 	}
 	.stage-container ~ .background {
-		@apply -z-1 col-[1/1] row-[1/1] min-h-32 min-w-60 rounded-xl bg-gray-900;
+		@apply -z-1 col-[1/1] row-[1/1] min-h-32 min-w-60 rounded-xl bg-gray-900/70;
 	}
 
 	svg > line {
