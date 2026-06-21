@@ -109,6 +109,7 @@
 	{#if pickedMaps.current.length > 1}
 		{#each pickedMaps.current as pickedMap, i (i)}
 			{@const player = getPlayerFromPickActor(pickedMap.steamID3)}
+			{@const isCurrent = pickedMap.mapID == overlay.current.map.ID}
 			{@const map = () => {
 				for (const [key, map] of Object.entries(items.current.maps)) {
 					if (map.ID == pickedMap.mapID) {
@@ -119,8 +120,9 @@
 			{#if map()}
 				{@const MAP = map()!}
 				<div
-					class="@container relative h-32 w-55 text-3xl
-                                                {settings.current.monoFont} rounded-2xl"
+					class="@container relative h-32 w-55 border-ctp-lavender-900 text-3xl
+                                                {settings.current.monoFont} rounded-2xl
+                                                {isCurrent ? 'border-2' : ''}"
 				>
 					<!-- map name -->
 					<h1
@@ -146,7 +148,9 @@
 						in:fade
 						src={MAP.imageURL}
 						alt=""
-						class="absolute -z-10 h-full w-full rounded-xl object-cover brightness-50"
+						class="absolute -z-10 h-full w-full rounded-xl object-cover {isCurrent
+							? 'brightness-70'
+							: 'brightness-50'}"
 						draggable="false"
 					/>
 				</div>
