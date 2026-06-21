@@ -60,14 +60,13 @@
 			<!-- <div>comparison</div> -->
 			{#each merged as time, i (i)}
 				<div>
-					<!-- <div>1234</div> -->
 					{#if timer.current.leftcps[i] < timer.current.rightcps[i]}
 						<span
 							transition:fade|global
 							class="rounded-lg bg-ctp-blue-900/50 px-2.5
                                                         {size > 14 ? 'text-xl' : 'text-2xl'}"
 						>
-							{(timer.current.leftcps[i] - timer.current.rightcps[i]).toFixed(1)}
+							{(timer.current.leftcps[i] - timer.current.rightcps[i]).toFixed(2)}
 						</span>
 					{:else}
 						<span
@@ -75,7 +74,7 @@
 							class=" rounded-lg bg-ctp-red-900/50 px-2.5
                                                         {size > 14 ? 'text-xl' : 'text-2xl'}"
 						>
-							{(timer.current.rightcps[i] - timer.current.leftcps[i]).toFixed(1)}
+							{(timer.current.rightcps[i] - timer.current.leftcps[i]).toFixed(2)}
 						</span>
 					{/if}
 				</div>
