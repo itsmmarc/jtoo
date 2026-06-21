@@ -292,6 +292,8 @@ function competition_timer_stop() {
 	clearTimeout(competitionTimer);
 	timer.current.competition.timer_start = false;
 	timer.current.competition.timer_stop = true;
+	timer.current.competition.overtime = false;
+	resetCheckpoints();
 
 	timer_stop_safe('left');
 	timer_stop_safe('right');
