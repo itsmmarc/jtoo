@@ -60,7 +60,7 @@
 			<!-- <div>comparison</div> -->
 			{#each merged as time, i (i)}
 				<div>
-					<div>1234</div>
+					<!-- <div>1234</div> -->
 					{#if timer.current.leftcps[i] < timer.current.rightcps[i]}
 						<span
 							transition:fade|global
