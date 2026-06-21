@@ -10,11 +10,12 @@
 
 		console.log(`PLAYER A: ${playerA}`);
 		console.log(`PLAYER B: ${playerB}`);
-		console.log(`PICK ACTOR: ${steamID3}`);
+		console.log(`STEAMID: ${steamID3}`);
 
 		let pickActor: RegExpMatchArray | null | number = steamID3.match('\\d{2,12}');
 		if (!pickActor) return null;
 		pickActor = parseInt(pickActor[0]);
+		console.log(`PICK ACTOR: ${pickActor}`);
 
 		return pickActor == playerA ? 'A' : pickActor == playerB ? 'B' : null;
 	}
