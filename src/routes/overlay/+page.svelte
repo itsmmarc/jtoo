@@ -96,6 +96,9 @@
 	{@const avatarURL = overlay.current[sideKey].avatarURL}
 	{@const tag = overlay.current[sideKey].tag}
 	{@const name = overlay.current[sideKey].name}
+	{@const tempusPR = overlay.current[sideKey].tempusPrs
+		? overlay.current[sideKey].tempusPrs[overlay.current.map.shortName]
+		: ''}
 	<div
 		class="relative z-10 flex h-full gap-4 {sideKey === 'rightPlayer' ? 'flex-row-reverse' : ''}"
 	>
@@ -146,23 +149,35 @@
 					<span class="size-8 border-4 border-ctp-text/50"></span>
 				{/each}
 				<!-- PRs -->
-				{#if settings.current.enablePRs && settings.current.useWebSocket}
-					<div class="flex gap-2">
-						<span class="text-2xl">pr</span>
-						<span class="font-courier-prime text-3xl"
-							>{sideKey == 'leftPlayer'
-								? csToTime(Math.trunc(timer.current.leftPr! * 100))
-								: sideKey == 'rightPlayer'
-									? csToTime(Math.trunc(timer.current.rightPr! * 100))
-									: ''}</span
-						>
-					</div>
-				{:else if settings.current.enablePRs && overlay.current[sideKey].pr !== ''}
-					<div class="flex gap-2">
-						<span class="text-2xl">pr</span>
-						<span class="font-courier-prime text-3xl">{overlay.current[sideKey].pr}</span>
-					</div>
-				{/if}
+				<div
+					class="mr-2 ml-2 flex max-w-55 flex-wrap {sideKey === 'rightPlayer'
+						? 'flex-row-reverse'
+						: ''} {settings.current.monoFont} -mt-3"
+				>
+					{#if settings.current.enablePRs && settings.current.useWebSocket}
+						<div class="flex gap-2">
+							<span class="text-2xl">pr</span>
+							<span class="text-3xl"
+								>{sideKey == 'leftPlayer'
+									? csToTime(Math.trunc(timer.current.leftPr! * 100))
+									: sideKey == 'rightPlayer'
+										? csToTime(Math.trunc(timer.current.rightPr! * 100))
+										: ''}</span
+							>
+						</div>
+					{:else if settings.current.enablePRs && overlay.current[sideKey].pr !== ''}
+						<div class="flex gap-2">
+							<span class="text-2xl">pr</span>
+							<span class="text-3xl">{overlay.current[sideKey].pr}</span>
+						</div>
+					{/if}
+					{#if settings.current.enablePRs && tempusPR}
+						<div class="flex gap-2">
+							<span class="text-xl">tpn pr</span>
+							<span class="text-xl">{tempusPR.time}</span>
+						</div>
+					{/if}
+				</div>
 			</div>
 		</div>
 	</div>
