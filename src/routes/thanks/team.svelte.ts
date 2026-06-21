@@ -26,6 +26,7 @@ import zag from '$lib/assets/jump-fortress-team/zag.png';
 import warped from '$lib/assets/jump-fortress-team/warped.jpg';
 import matty from '$lib/assets/jump-fortress-team/matty.jpg';
 import pmittens from '$lib/assets/jump-fortress-team/pmittens.jpg';
+import steve from '$lib/assets/jump-fortress-team/steve.jpg';
 import wild_rumpus from '$lib/assets/jump-fortress-team/wild_rumpus.jpg';
 import m879 from '$lib/assets/jump-fortress-team/879m.webp';
 import zike from '$lib/assets/jump-fortress-team/zike.jpg';
@@ -53,10 +54,11 @@ export const team: { casters: Member[]; shanks: Member; team: Member[]; specialT
 	{
 		casters: [
 			{ name: 'Zagrfige', image: zag },
-			{ name: 'pmittens', image: pmittens },
 			{ name: 'tev', image: tev },
+			{ name: 'pmittens', image: pmittens },
 			{ name: 'Warped', image: warped },
 			{ name: 'Matty', image: matty },
+			{ name: 'Steve', image: steve },
 			{ name: 'ixam', image: ixam },
 			{ name: 'Wild_Rumpus', image: wild_rumpus },
 			{ name: '879m', image: m879 },
