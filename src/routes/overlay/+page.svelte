@@ -1,11 +1,26 @@
 <script lang="ts">
 	import { getFiltersStyle } from '$lib/filters.svelte';
-	import { settings, overlay } from '$lib/storage.svelte';
+	import { settings, overlay, items, type Player } from '$lib/storage.svelte';
 	import { fade, slide } from 'svelte/transition';
 	import WebSocketCheckpoints from '$lib/components/overlay/WebSocketCheckpoints.svelte';
 	import WebSocketTimer from '$lib/components/overlay/WebSocketTimer.svelte';
-	import { timer } from '$lib/websocket.svelte';
+	import { pickedMaps, timer } from '$lib/websocket.svelte';
 	import { csToTime } from '$lib/websocket.svelte';
+
+	function getPlayerFromPickActor(steamID3: string): Player | null {
+		const playerA = overlay.current.leftPlayer.steamID3;
+		const playerB = overlay.current.rightPlayer.steamID3;
+
+		let pickActor: RegExpMatchArray | null | number = steamID3.match('\\d{2,9}');
+		if (!pickActor) return null;
+		pickActor = parseInt(pickActor[0]);
+
+		return pickActor == playerA
+			? overlay.current.leftPlayer
+			: pickActor == playerB
+				? overlay.current.rightPlayer
+				: null;
+	}
 </script>
 
 <!-- MARK: top bar -->
@@ -88,6 +103,56 @@
 			>
 		{/key}
 	</div>
+</div>
+<!-- MARK: map picks -->
+<div class="absolute bottom-4 left-4 flex gap-4">
+	{#if pickedMaps.current.length > 1}
+		{#each pickedMaps.current as pickedMap, i (i)}
+			{@const player = getPlayerFromPickActor(pickedMap.steamID3)}
+			{@const map = () => {
+				for (const [key, map] of Object.entries(items.current.maps)) {
+					if (map.ID == pickedMap.mapID) {
+						return map;
+					}
+				}
+			}}
+			{#if map()}
+				{@const MAP = map()!}
+				<div
+					class="@container relative h-32 w-55 text-3xl
+                                                {settings.current.monoFont} rounded-2xl"
+				>
+					<!-- map name -->
+					<h1
+						class="absolute top-0 right-0 w-full p-2 text-center {settings.current.font}"
+						style:filter={getFiltersStyle()}
+					>
+						{settings.current.useShortMapNames ? MAP.shortName : MAP.fileName}
+					</h1>
+					{#if player}
+						{#if settings.current.enableAvatars && player.avatarURL}
+							{#key player.avatarURL}
+								<img
+									in:fade
+									src={player.avatarURL}
+									alt=""
+									class="absolute bottom-1 left-1 size-13 rounded-xl object-cover object-center"
+									draggable="false"
+								/>
+							{/key}
+						{/if}
+					{/if}
+					<img
+						in:fade
+						src={MAP.imageURL}
+						alt=""
+						class="absolute -z-10 h-full w-full rounded-xl object-cover brightness-50"
+						draggable="false"
+					/>
+				</div>
+			{/if}
+		{/each}
+	{/if}
 </div>
 
 <!-- MARK: OverlayPlayer -->
