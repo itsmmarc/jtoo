@@ -182,7 +182,7 @@
 			>
 		</div>
 	{/if}
-	<div class="flex gap-2">
+	<!-- <div class="flex gap-2">
 		<p>status:</p>
 		<span
 			class={wsState.current.state === 0
@@ -206,7 +206,7 @@
 							: ''}
 		</span>
 		<span class="italic opacity-50">{wsState.current.state}</span>
-	</div>
+	</div> -->
 
 	<Checkbox desc="use moving background" setting="enableMovingBG" />
 	<Checkbox desc="use short map names" setting="useShortMapNames" />
