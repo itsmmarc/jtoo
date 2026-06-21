@@ -105,7 +105,7 @@
 	</div>
 </div>
 <!-- MARK: map picks -->
-<div class="absolute bottom-4 left-4 flex gap-4">
+<div class="absolute bottom-4 left-4 z-1 flex gap-4">
 	{#if pickedMaps.current.length > 1}
 		{#each pickedMaps.current as pickedMap, i (i)}
 			{@const player = getPlayerFromPickActor(pickedMap.steamID3)}

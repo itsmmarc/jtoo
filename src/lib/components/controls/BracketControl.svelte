@@ -9,7 +9,7 @@
 
 {#if items.current.bracket}
 	{#if items.current.bracket.type == 8}
-		<section class="m-auto">
+		<section class="z-1 m-auto">
 			<div class=" flex flex-col gap-20">
 				{#if overlay.current.bracket == 'whole' || overlay.current.bracket == 'upper'}
 					<div class="flex gap-40" in:fade>
