@@ -37,7 +37,7 @@
 		console.log(`map: ${map.ID}`);
 		console.log(`mapIndex: ${mapIndex}`);
 
-		if (mapIndex == null || mapIndex > 0) {
+		if (mapIndex == null || mapIndex < 0) {
 			return 'bg-[#250e0e]/40 z-1';
 		}
 
