@@ -11,6 +11,8 @@
 
 		const playerA = overlay.current.leftPlayer.steamID3;
 		const playerB = overlay.current.rightPlayer.steamID3;
+		console.log(playerA);
+		console.log(playerB);
 
 		let mapIndex: number | null = null;
 		for (let i = 0; i < pickedMaps.length; i++) {
@@ -19,8 +21,8 @@
 				break;
 			}
 		}
-		console.log(map.shortName);
-		console.log(mapIndex);
+		// console.log(map.shortName);
+		// console.log(mapIndex);
 
 		if (!mapIndex) {
 			return 'bg-[#250e0e]/40 z-1';
@@ -28,7 +30,7 @@
 
 		if (mapIndex) {
 			let pickActor: RegExpMatchArray | null | number =
-				pickedMaps[mapIndex].steamID3.match('\\d{2,9}');
+				pickedMaps[mapIndex].steamID3.match('\\d{2,12}');
 			if (!pickActor) return '';
 			pickActor = parseInt(pickActor[0]);
 
