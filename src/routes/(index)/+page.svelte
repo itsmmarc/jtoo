@@ -35,6 +35,7 @@
 			{@render URLButton('player cards', 'playercards')}
 		</div>
 		<div class="flex justify-center gap-5">
+			{@render URLButton('players', 'players')}
 			{@render URLButton('bracket', 'bracket')}
 			{@render URLButton('thanks', 'thanks')}
 		</div>
