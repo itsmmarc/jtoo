@@ -5,6 +5,10 @@
 	import { pickedMaps } from '$lib/websocket.svelte';
 
 	function displayMapPick(map: Map, pickedMaps: { mapID: string; steamID3: string }[]) {
+		if (pickedMaps.length == 0) {
+			return '';
+		}
+
 		const playerA = overlay.current.leftPlayer.steamID3;
 		const playerB = overlay.current.rightPlayer.steamID3;
 
