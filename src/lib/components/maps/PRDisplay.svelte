@@ -8,6 +8,10 @@
 		const playerA = overlay.current.leftPlayer.steamID3;
 		const playerB = overlay.current.rightPlayer.steamID3;
 
+		console.log(`PLAYER A: ${playerA}`);
+		console.log(`PLAYER B: ${playerB}`);
+		console.log(`PICK ACTOR: ${steamID3}`);
+
 		let pickActor: RegExpMatchArray | null | number = steamID3.match('\\d{2,12}');
 		if (!pickActor) return null;
 		pickActor = parseInt(pickActor[0]);
@@ -34,7 +38,7 @@
 
 		if (mapIndex) {
 			let actor = getPlayerFromPickActor(pickedMaps[mapIndex].steamID3);
-
+			console.log(`ACTOR: ${actor}`);
 			return actor == 'A'
 				? 'border-l-ctp-green-400 bg-ctp-green-900/10'
 				: actor == 'B'
