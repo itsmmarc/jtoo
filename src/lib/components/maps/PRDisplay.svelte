@@ -8,20 +8,20 @@
 		const playerA = overlay.current.leftPlayer.steamID3;
 		const playerB = overlay.current.rightPlayer.steamID3;
 
-		console.log(`PLAYER A: ${playerA}`);
-		console.log(`PLAYER B: ${playerB}`);
-		console.log(`STEAMID: ${steamID3}`);
+		// console.log(`PLAYER A: ${playerA}`);
+		// console.log(`PLAYER B: ${playerB}`);
+		// console.log(`STEAMID: ${steamID3}`);
 
 		let pickActor: RegExpMatchArray | null | number = steamID3.match('\\d{2,12}');
 		if (!pickActor) return null;
 		pickActor = parseInt(pickActor[0]);
-		console.log(`PICK ACTOR: ${pickActor}`);
+		// console.log(`PICK ACTOR: ${pickActor}`);
 
 		return pickActor == playerA ? 'A' : pickActor == playerB ? 'B' : null;
 	}
 
 	function displayMapPick(map: Map, pickedMaps: { mapID: string; steamID3: string }[]) {
-		console.log(`displayMapPick(${map}, ${pickedMaps} length ${pickedMaps.length})`);
+		// console.log(`displayMapPick(${map}, ${pickedMaps} length ${pickedMaps.length})`);
 		if (pickedMaps.length == 0) {
 			return '';
 		}
@@ -29,13 +29,13 @@
 		let mapIndex: number | null = null;
 		for (let i = 0; i < pickedMaps.length; i++) {
 			if (pickedMaps[i].mapID == map.ID) {
-				console.log(`pickedMaps[${i}]: ${pickedMaps[i].mapID}`);
+				// console.log(`pickedMaps[${i}]: ${pickedMaps[i].mapID}`);
 				mapIndex = i;
 				break;
 			}
 		}
-		console.log(`map: ${map.ID}`);
-		console.log(`mapIndex: ${mapIndex}`);
+		// console.log(`map: ${map.ID}`);
+		// console.log(`mapIndex: ${mapIndex}`);
 
 		if (mapIndex == null || mapIndex < 0) {
 			return 'bg-[#250e0e]/40 z-1';
@@ -43,7 +43,7 @@
 
 		if (mapIndex != null) {
 			let actor = getPlayerFromPickActor(pickedMaps[mapIndex].steamID3);
-			console.log(`ACTOR: ${actor}`);
+			// console.log(`ACTOR: ${actor}`);
 			return actor == 'A'
 				? 'border-l-ctp-green-400 bg-ctp-green-900/10'
 				: actor == 'B'

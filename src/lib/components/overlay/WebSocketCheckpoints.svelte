@@ -33,23 +33,20 @@
 		}
 
 		// console.log(timer.current.checkpoints);
-		// console.log(timer.current.leftcps);
-		// console.log(timer.current.rightcps);
+		console.log(timer.current.leftcps);
+		console.log(timer.current.rightcps);
 		// console.log(merged);
 		return merged;
 	}
 </script>
 
-<div
-	class="absolute right-0 left-0 m-auto mt-2 w-[40%] justify-center {settings.current
-		.monoFont} text-center"
->
+<div class="absolute right-0 left-0 m-auto mt-2 w-[35%] {settings.current.monoFont}">
 	<div
-		class="absolute grid h-83 w-full grid-cols-3
+		class="absolute grid h-83 w-full grid-cols-3 justify-evenly
                 {size > 14 ? 'gap-y-1 text-2xl' : 'gap-y-3 text-3xl'}"
 	>
 		<!-- left cps -->
-		<div class="w-60">
+		<div class="w-45 justify-self-end text-right">
 			<!-- <div>leftcps</div> -->
 			{#each timer.current.leftcps as cp, i (i)}
 				<div>
@@ -59,17 +56,16 @@
 		</div>
 
 		<!-- comparison -->
-		<div class="w-60">
+		<div class="w-40 justify-self-center text-center">
 			<!-- <div>comparison</div> -->
 			{#each merged as time, i (i)}
 				<div>
+					<div>1234</div>
 					{#if timer.current.leftcps[i] < timer.current.rightcps[i]}
 						<span
 							transition:fade|global
 							class="rounded-lg bg-ctp-blue-900/50 px-2.5
-                                                        {size > 14
-								? 'py-0.5 text-xl'
-								: 'py-1 text-2xl'}"
+                                                        {size > 14 ? 'text-xl' : 'text-2xl'}"
 						>
 							{(timer.current.leftcps[i] - timer.current.rightcps[i]).toFixed(1)}
 						</span>
@@ -77,9 +73,7 @@
 						<span
 							transition:fade|global
 							class=" rounded-lg bg-ctp-red-900/50 px-2.5
-                                                        {size > 14
-								? 'py-0.5 text-xl'
-								: 'py-1 text-2xl'}"
+                                                        {size > 14 ? 'text-xl' : 'text-2xl'}"
 						>
 							{(timer.current.rightcps[i] - timer.current.leftcps[i]).toFixed(1)}
 						</span>
@@ -89,7 +83,7 @@
 		</div>
 
 		<!-- right cps -->
-		<div class="w-60">
+		<div class="w-45 justify-self-start text-left">
 			<!-- <div>rightcps</div> -->
 			{#each timer.current.rightcps as cp, i (i)}
 				<div>
