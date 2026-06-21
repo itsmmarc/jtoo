@@ -21,6 +21,7 @@
 	}
 
 	function displayMapPick(map: Map, pickedMaps: { mapID: string; steamID3: string }[]) {
+		console.log(`displayMapPick(${map}, ${pickedMaps} length ${pickedMaps.length})`);
 		if (pickedMaps.length == 0) {
 			return '';
 		}
@@ -28,10 +29,13 @@
 		let mapIndex: number | null = null;
 		for (let i = 0; i < pickedMaps.length; i++) {
 			if (pickedMaps[i].mapID == map.ID) {
+				console.log(`pickedMaps[${i}]: ${pickedMaps[i].mapID}`);
 				mapIndex = i;
 				break;
 			}
 		}
+		console.log(`map: ${map.ID}`);
+		console.log(`mapIndex: ${mapIndex}`);
 
 		if (!mapIndex) {
 			return 'bg-[#250e0e]/40 z-1';
