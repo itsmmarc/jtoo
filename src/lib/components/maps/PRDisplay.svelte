@@ -41,7 +41,7 @@
 			return 'bg-[#250e0e]/40 z-1';
 		}
 
-		if (mapIndex) {
+		if (mapIndex != null) {
 			let actor = getPlayerFromPickActor(pickedMaps[mapIndex].steamID3);
 			console.log(`ACTOR: ${actor}`);
 			return actor == 'A'
