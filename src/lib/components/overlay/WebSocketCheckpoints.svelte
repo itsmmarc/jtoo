@@ -40,41 +40,62 @@
 	}
 </script>
 
-<div class="mt-2 flex w-full justify-center {settings.current.monoFont}">
+<div
+	class="absolute right-0 left-0 m-auto mt-2 w-[40%] justify-center {settings.current
+		.monoFont} text-center"
+>
 	<div
-		class="flex h-83 flex-col flex-wrap items-center gap-x-60 {size > 14
-			? 'gap-y-1 text-2xl'
-			: 'gap-y-3 text-3xl'}"
+		class="absolute grid h-83 w-full grid-cols-3
+                {size > 14 ? 'gap-y-1 text-2xl' : 'gap-y-3 text-3xl'}"
 	>
-		{#each merged as time, i (i)}
-			<div in:slide class="relative flex items-center justify-center">
-				{#if timer.current.checkpoints[i].includes('Course')}
-					<span
-						class="border-overlay-orange/70 absolute bottom-1.5 h-full w-90 rounded-lg border-t-3"
-						style:filter={getFiltersStyle()}
-					></span>
-				{/if}
-				<span class="flex">{csToTime(time * 100)}</span>
-				{#if timer.current.leftcps[i] < timer.current.rightcps[i]}
-					<span
-						transition:fade|global
-						class="absolute rounded-lg bg-[#25ff75]/50 px-2.5 {size > 14
-							? 'right-32 py-0.5 text-xl'
-							: 'right-40 py-1 text-2xl'}"
-					>
-						{(timer.current.leftcps[i] - timer.current.rightcps[i]).toFixed(1)}
-					</span>
-				{:else}
-					<span
-						transition:fade|global
-						class="absolute rounded-lg bg-[#25ff75]/50 px-2.5 {size > 14
-							? 'left-32 py-0.5 text-xl'
-							: 'left-40 py-1 text-2xl'}"
-					>
-						{(timer.current.rightcps[i] - timer.current.leftcps[i]).toFixed(1)}
-					</span>
-				{/if}
-			</div>
-		{/each}
+		<!-- left cps -->
+		<div class="w-60">
+			<!-- <div>leftcps</div> -->
+			{#each timer.current.leftcps as cp, i (i)}
+				<div>
+					{csToTime(cp * 100)}
+				</div>
+			{/each}
+		</div>
+
+		<!-- comparison -->
+		<div class="w-60">
+			<!-- <div>comparison</div> -->
+			{#each merged as time, i (i)}
+				<div>
+					{#if timer.current.leftcps[i] < timer.current.rightcps[i]}
+						<span
+							transition:fade|global
+							class="rounded-lg bg-ctp-blue-900/50 px-2.5
+                                                        {size > 14
+								? 'py-0.5 text-xl'
+								: 'py-1 text-2xl'}"
+						>
+							{(timer.current.leftcps[i] - timer.current.rightcps[i]).toFixed(1)}
+						</span>
+					{:else}
+						<span
+							transition:fade|global
+							class=" rounded-lg bg-ctp-red-900/50 px-2.5
+                                                        {size > 14
+								? 'py-0.5 text-xl'
+								: 'py-1 text-2xl'}"
+						>
+							{(timer.current.rightcps[i] - timer.current.leftcps[i]).toFixed(1)}
+						</span>
+					{/if}
+				</div>
+			{/each}
+		</div>
+
+		<!-- right cps -->
+		<div class="w-60">
+			<!-- <div>rightcps</div> -->
+			{#each timer.current.rightcps as cp, i (i)}
+				<div>
+					{csToTime(cp * 100)}
+				</div>
+			{/each}
+		</div>
 	</div>
 </div>
