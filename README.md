@@ -2,8 +2,18 @@
 
 https://sooft.mmarc.net/
 
+<img width="1920" height="1080" alt="matchoverlay" src="https://github.com/user-attachments/assets/be6796c3-9912-42fb-87ae-ab476e86d028" />
+
+*discord, chat overlay, and gameplay not included*
+
 <details>
         <summary>Preview</summary>
+        <img width="768" height="939" alt="image" src="https://github.com/user-attachments/assets/58bbdca2-3c80-4ed2-99ed-060292821261" />
+        <img width="1594" height="900" alt="image" src="https://github.com/user-attachments/assets/1ab24d2b-2601-4445-aed4-f6ceb801839f" />
+        <img width="1594" height="896" alt="image" src="https://github.com/user-attachments/assets/8ba34cfd-0ee5-4a72-b0b2-ee38ff7d9166" />
+        <img width="1594" height="900" alt="image" src="https://github.com/user-attachments/assets/fab27d43-7cfc-4c34-b14d-430b67bb5692" />
+        <img width="1595" height="900" alt="image" src="https://github.com/user-attachments/assets/fe2707f5-9bf0-43f3-82fd-f58825060c84" />
+        <img width="1586" height="900" alt="image" src="https://github.com/user-attachments/assets/8d7f4ee5-b3a1-4c95-9ae9-5601a26b9abd" />
 </details>
 
 ## usage
