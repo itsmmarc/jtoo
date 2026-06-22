@@ -4,7 +4,7 @@ https://sooft.mmarc.net/
 
 <img width="1920" height="1080" alt="matchoverlay" src="https://github.com/user-attachments/assets/be6796c3-9912-42fb-87ae-ab476e86d028" />
 
-*discord, chat overlay, and gameplay not included*
+*discord overlay, chat overlay, and gameplay not included*
 
 <details>
         <summary>Preview</summary>
