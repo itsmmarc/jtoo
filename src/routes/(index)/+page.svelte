@@ -33,8 +33,6 @@
 			{@render URLButton('match', 'overlay')}
 			{@render URLButton('maps', 'maps')}
 			{@render URLButton('player cards', 'playercards', true)}
-		</div>
-		<div class="grid grid-cols-3 justify-center">
 			{@render URLButton('players', 'players', true)}
 			{@render URLButton('bracket', 'bracket')}
 			{@render URLButton('thanks', 'thanks')}
@@ -42,7 +40,7 @@
 	</div>
 </main>
 
-{#snippet URLButton(name: string, pageUrl: string, nobg: boolean)}
+{#snippet URLButton(name: string, pageUrl: string, nobg?: boolean)}
 	<div class="relative flex flex-col items-center gap-2">
 		<a href={resolve(`/${pageUrl}`)}>
 			<button
