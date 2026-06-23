@@ -1,10 +1,10 @@
-# jeoo - jump event obs overlay
+# jtoo - jump tournament obs overlay
 
 https://sooft.mmarc.net/
 
 <img width="1920" height="1080" alt="matchoverlay" src="https://github.com/user-attachments/assets/be6796c3-9912-42fb-87ae-ab476e86d028" />
 
-*discord overlay, chat overlay, and gameplay not included*
+_discord overlay, chat overlay, and gameplay not included_
 
 <details>
         <summary>Preview</summary>
