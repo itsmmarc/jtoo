@@ -1,6 +1,6 @@
 # jtoo - jump tournament obs overlay
 
-https://sooft.mmarc.net/
+https://jtoo.mmarc.net/
 
 <img width="1920" height="1080" alt="matchoverlay" src="https://github.com/user-attachments/assets/be6796c3-9912-42fb-87ae-ab476e86d028" />
 
@@ -19,15 +19,15 @@ _discord overlay, chat overlay, and gameplay not included_
 ## usage
 
 1. navigate to `Docks -> Custom Browser Docks`
-2. add [https://sooft.mmarc.net/controls](https://sooft.mmarc.net/controls)
+2. add [https://jtoo.mmarc.net/controls](https://jtoo.mmarc.net/controls)
 3. navigate to `Sources -> Add Source -> Browser`
 4. add the following urls with a width of 1920 and height of 1080
-   - [https://sooft.mmarc.net/overlay](https://sooft.mmarc.net/overlay)
-   - [https://sooft.mmarc.net/maps](https://sooft.mmarc.net/maps)
-   - [https://sooft.mmarc.net/playercards](https://sooft.mmarc.net/playercards)
-   - [https://sooft.mmarc.net/players](https://sooft.mmarc.net/players)
-   - [https://sooft.mmarc.net/bracket](https://sooft.mmarc.net/bracket)
-   - [https://sooft.mmarc.net/thanks](https://sooft.mmarc.net/thanks)
+   - [https://jtoo.mmarc.net/overlay](https://jtoo.mmarc.net/overlay)
+   - [https://jtoo.mmarc.net/maps](https://jtoo.mmarc.net/maps)
+   - [https://jtoo.mmarc.net/playercards](https://jtoo.mmarc.net/playercards)
+   - [https://jtoo.mmarc.net/players](https://jtoo.mmarc.net/players)
+   - [https://jtoo.mmarc.net/bracket](https://jtoo.mmarc.net/bracket)
+   - [https://jtoo.mmarc.net/thanks](https://jtoo.mmarc.net/thanks)
 
 that's all! you can access overlay controls in `Docks`
 
