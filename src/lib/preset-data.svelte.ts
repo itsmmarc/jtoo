@@ -398,32 +398,6 @@ export const soldierPlayoffs2026: {
 			note: 'i love goose',
 			favouriteMap: 'corona',
 			score: 0
-		},
-		{
-			name: 'ShadowOfLight',
-			isCompetitor: false,
-			tempusID: '431316',
-			steamID3: 175382377,
-			avatarURL:
-				'https://avatars.akamai.steamstatic.com/d5ca715343b678a2add747756909bfb36174669e_full.jpg',
-			tag: '',
-			flag: 'nl',
-			rank: { overall: 573, soldier: 626, demo: 411 },
-			tempusPrs: {
-				pokus: { rank: 1, time: '03:15.935' },
-				marigold: { rank: 3, time: '01:38.629' },
-				phobos: { rank: 1, time: '01:04.965' },
-				oddie: { rank: 4, time: '01:50.855' },
-				ahh: { rank: 1, time: '01:11.895' },
-				soar: { rank: 3, time: '04:20.995' },
-				above: { rank: 5, time: '01:11.305' }
-			},
-			WRs: 0,
-			TTs: 10,
-			bestRun: '',
-			note: 'plaza goat',
-			favouriteMap: '',
-			score: 0
 		}
 	],
 	maps: {
