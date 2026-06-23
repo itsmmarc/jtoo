@@ -346,6 +346,58 @@ export const soldierPlayoffs2026: {
 			note: '',
 			favouriteMap: '',
 			score: 0
+		},
+		{
+			name: 'Owlfy',
+			isCompetitor: false,
+			tempusID: '94512',
+			steamID3: 1113653731,
+			avatarURL:
+				'https://avatars.akamai.steamstatic.com/97a6b9fc436477f69d057203da5b6cef15d4aa3f_full.jpg',
+			tag: '',
+			flag: 'us',
+			rank: { overall: 573, soldier: 626, demo: 411 },
+			tempusPrs: {
+				pokus: { rank: 1, time: '03:15.935' },
+				marigold: { rank: 3, time: '01:38.629' },
+				phobos: { rank: 1, time: '01:04.965' },
+				oddie: { rank: 4, time: '01:50.855' },
+				ahh: { rank: 1, time: '01:11.895' },
+				soar: { rank: 3, time: '04:20.995' },
+				above: { rank: 5, time: '01:11.305' }
+			},
+			WRs: 0,
+			TTs: 1,
+			bestRun: 'corona',
+			note: 'i love goose',
+			favouriteMap: 'corona',
+			score: 0
+		},
+		{
+			name: 'Else',
+			isCompetitor: false,
+			tempusID: '346918478',
+			steamID3: 346918478,
+			avatarURL:
+				'https://avatars.akamai.steamstatic.com/6c4325589b36628f93f9d85fdfe9ceb655011b1f_full.jpg',
+			tag: '',
+			flag: 'gb',
+			rank: { overall: 573, soldier: 626, demo: 411 },
+			tempusPrs: {
+				pokus: { rank: 1, time: '03:15.935' },
+				marigold: { rank: 3, time: '01:38.629' },
+				phobos: { rank: 1, time: '01:04.965' },
+				oddie: { rank: 4, time: '01:50.855' },
+				ahh: { rank: 1, time: '01:11.895' },
+				soar: { rank: 3, time: '04:20.995' },
+				above: { rank: 5, time: '01:11.305' }
+			},
+			WRs: 0,
+			TTs: 1,
+			bestRun: 'corona',
+			note: 'i love goose',
+			favouriteMap: 'corona',
+			score: 0
 		}
 	],
 	maps: {
@@ -502,6 +554,12 @@ export const demoPlayoffs2026: {
 		},
 		{
 			...soldierPlayoffs2026.players.filter((p) => p.name == 'Kingstripes')[0]
+		},
+		{
+			...soldierPlayoffs2026.players.filter((p) => p.name == 'Else')[0]
+		},
+		{
+			...soldierPlayoffs2026.players.filter((p) => p.name == 'Owlfy')[0]
 		}
 	],
 	maps: {

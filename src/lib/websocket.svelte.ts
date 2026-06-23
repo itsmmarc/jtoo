@@ -140,6 +140,8 @@ type TimerStore = {
 	competition: CompetitionTimer;
 	leftPr: number | null;
 	rightPr: number | null;
+	leftPrCps: number[];
+	rightPrCps: number[];
 	leftcps: number[];
 	rightcps: number[];
 	checkpoints: string[];
@@ -151,6 +153,8 @@ const defaultTimerStore: TimerStore = {
 	competition: defaultCompetitionTimer,
 	leftPr: null,
 	rightPr: null,
+	leftPrCps: [],
+	rightPrCps: [],
 	leftcps: [],
 	rightcps: [],
 	checkpoints: []
@@ -205,6 +209,7 @@ function timer_finish(side: Side, finishTime: number) {
 		timer.current[side].finishTime = finishTime;
 		if (!timer.current[`${side}Pr`] || finishTime < timer.current[`${side}Pr`]!) {
 			timer.current[`${side}Pr`] = finishTime;
+			timer.current[`${side}PrCps`] = [...timer.current[`${side}cps`]];
 		}
 		Object.assign(timer.current[`${side}cps`], { finish: finishTime });
 	}
