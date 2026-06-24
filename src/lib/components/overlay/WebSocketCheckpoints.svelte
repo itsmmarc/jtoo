@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { csToTime, timer } from '$lib/websocket.svelte';
-	import { items, overlay, settings } from '$lib/storage.svelte';
+	import { overlay, settings } from '$lib/storage.svelte';
 	import { slide, fade } from 'svelte/transition';
 	import { getFiltersStyle } from '$lib/filters.svelte';
 
+	let leftCps = timer.current.leftcps;
+	let rightCps = timer.current.rightcps;
+	leftCps[2] = 38.19;
 	let bestCps = $derived(getBestCheckpoints());
 	let bestSideCps = $derived(getBestSideCheckpoints());
 	let bestSide: 'left' | 'right' | '' = $derived(getBestSide());
@@ -37,17 +40,14 @@
 		let bestCps: number[] = [];
 
 		for (let i = 0; i < size; i++) {
-			if (!timer.current.leftcps[i] && !timer.current.rightcps[i]) {
+			if (!leftCps[i] && !rightCps[i]) {
 				break;
-			} else if (timer.current.leftcps[i] && !timer.current.rightcps[i]) {
-				bestCps[i] = timer.current.leftcps[i];
-			} else if (!timer.current.leftcps[i] && timer.current.rightcps[i]) {
-				bestCps[i] = timer.current.rightcps[i];
+			} else if (leftCps[i] && !rightCps[i]) {
+				bestCps[i] = leftCps[i];
+			} else if (!leftCps[i] && rightCps[i]) {
+				bestCps[i] = rightCps[i];
 			} else {
-				bestCps[i] =
-					timer.current.leftcps[i] < timer.current.rightcps[i]
-						? timer.current.leftcps[i]
-						: timer.current.rightcps[i];
+				bestCps[i] = leftCps[i] < rightCps[i] ? leftCps[i] : rightCps[i];
 			}
 		}
 
@@ -97,7 +97,7 @@
 		>
 			<!-- left comparison -->
 			<div class="justify-self-end text-right">
-				{#each timer.current.leftcps as time, i (i)}
+				{#each leftCps as time, i (i)}
 					{#if cps && cps[i]}
 						{@const diff = time - cps[i]}
 						{@const speed: 'faster' | 'same' | 'slower' = diff < 0 ? 'faster' : diff == 0 ? 'same' : diff > 0 ? 'slower' : 'same'}
@@ -128,7 +128,7 @@
 
 			<!-- right comparison -->
 			<div class="justify-self-start text-left">
-				{#each timer.current.rightcps as time, i (i)}
+				{#each rightCps as time, i (i)}
 					{#if cps && cps[i]}
 						{@const diff = time - cps[i]}
 						{@const speed: 'faster' | 'same' | 'slower' = diff < 0 ? 'faster' : diff == 0 ? 'same' : diff > 0 ? 'slower' : 'same'}
