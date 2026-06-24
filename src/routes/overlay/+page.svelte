@@ -219,9 +219,10 @@
 				{/each}
 				<!-- PRs -->
 				<div
-					class="mr-2 ml-2 flex max-w-55 flex-wrap {sideKey === 'rightPlayer'
+					class="-mt-4 mr-2 ml-2 flex h-16 max-w-55 flex-wrap items-center
+                                        {sideKey === 'rightPlayer'
 						? 'flex-row-reverse'
-						: ''} {settings.current.monoFont} -mt-3"
+						: ''} {settings.current.monoFont} "
 				>
 					{#if settings.current.enablePRs && settings.current.useWebSocket}
 						<div class="flex gap-2">
@@ -240,7 +241,7 @@
 							<span class="text-3xl">{overlay.current[sideKey].pr}</span>
 						</div>
 					{/if}
-					{#if settings.current.enablePRs && tempusPR}
+					{#if settings.current.enablePRs && tempusPR && tempusPR.time}
 						<div class="flex gap-2">
 							<span class="text-xl">tpn pr</span>
 							<span class="text-xl">{tempusPR.time}</span>
