@@ -40,23 +40,14 @@
 	function getBestCheckpoints() {
 		let bestCps: number[] = [];
 
-		console.log('getbestcps');
-		console.log(`bestside ${bestSide}`);
-		console.log(leftCps);
-		console.log(rightCps);
-
 		for (let i = 0; i < size; i++) {
 			if (!leftCps[i] && !rightCps[i]) {
-				console.log('(!leftCps[i] && !rightCps[i])');
 				break;
 			} else if (leftCps[i] && !rightCps[i]) {
-				console.log('(leftCps[i] && !rightCps[i])');
 				bestCps[i] = leftCps[i];
 			} else if (!leftCps[i] && rightCps[i]) {
-				console.log('(!leftCps[i] && rightCps[i])');
 				bestCps[i] = rightCps[i];
 			} else {
-				console.log('both have cps');
 				bestCps[i] = leftCps[i] < rightCps[i] ? leftCps[i] : rightCps[i];
 			}
 		}
@@ -150,10 +141,12 @@
                                                         {size > 14 ? 'text-xl' : 'text-2xl'}"
 					>
 						{speed == 'same'
-							? 'new cp'
+							? '-'
 							: speed == 'slower'
 								? `+${diff.toFixed(2)}`
-								: diff.toFixed(2)}
+								: speed == 'faster'
+									? diff.toFixed(2)
+									: ''}
 					</span>
 				</div>
 			{/if}
