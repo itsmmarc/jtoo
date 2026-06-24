@@ -212,6 +212,7 @@ function timer_finish(side: Side, finishTime: number) {
 			timer.current[`${side}PrCps`] = [...timer.current[`${side}cps`]];
 		}
 		Object.assign(timer.current[`${side}cps`], { finish: finishTime });
+		resetCheckpoints();
 	}
 }
 

@@ -4,9 +4,8 @@
 	import { slide, fade } from 'svelte/transition';
 	import { getFiltersStyle } from '$lib/filters.svelte';
 
-	let leftCps = timer.current.leftcps;
-	let rightCps = timer.current.rightcps;
-	leftCps[2] = 38.19;
+	let leftCps = $derived(timer.current.leftcps);
+	let rightCps = $derived(timer.current.rightcps);
 	let bestCps = $derived(getBestCheckpoints());
 	let bestSideCps = $derived(getBestSideCheckpoints());
 	let bestSide: 'left' | 'right' | '' = $derived(getBestSide());
@@ -31,7 +30,9 @@
 	function getBestSideCheckpoints() {
 		let bestSideCps: number[] = [];
 
-		bestSideCps = timer.current[`${bestSide}PrCps`];
+		if (bestSide) {
+			bestSideCps = timer.current[`${bestSide}PrCps`];
+		}
 
 		return bestSideCps;
 	}
@@ -39,14 +40,23 @@
 	function getBestCheckpoints() {
 		let bestCps: number[] = [];
 
+		console.log('getbestcps');
+		console.log(`bestside ${bestSide}`);
+		console.log(leftCps);
+		console.log(rightCps);
+
 		for (let i = 0; i < size; i++) {
 			if (!leftCps[i] && !rightCps[i]) {
+				console.log('(!leftCps[i] && !rightCps[i])');
 				break;
 			} else if (leftCps[i] && !rightCps[i]) {
+				console.log('(leftCps[i] && !rightCps[i])');
 				bestCps[i] = leftCps[i];
 			} else if (!leftCps[i] && rightCps[i]) {
+				console.log('(!leftCps[i] && rightCps[i])');
 				bestCps[i] = rightCps[i];
 			} else {
+				console.log('both have cps');
 				bestCps[i] = leftCps[i] < rightCps[i] ? leftCps[i] : rightCps[i];
 			}
 		}
@@ -54,6 +64,9 @@
 		return bestCps;
 	}
 </script>
+
+{$inspect(bestSide)}
+{$inspect(bestCps)}
 
 {#key bestSide}
 	{@const cps = bestSide ? bestSideCps : bestCps}
@@ -96,26 +109,7 @@
                 {size > 14 ? 'gap-y-1 text-2xl' : 'gap-y-3 text-3xl'}"
 		>
 			<!-- left comparison -->
-			<div class="justify-self-end text-right">
-				{#each leftCps as time, i (i)}
-					{#if cps && cps[i]}
-						{@const diff = time - cps[i]}
-						{@const speed: 'faster' | 'same' | 'slower' = diff < 0 ? 'faster' : diff == 0 ? 'same' : diff > 0 ? 'slower' : 'same'}
-						<div>
-							<span
-								transition:fade|global
-								class="rounded-lg px-2.5
-                                                        {speed == 'slower'
-									? 'bg-ctp-blue-950/40'
-									: 'bg-ctp-blue-800/55'}
-                                                        {size > 14 ? 'text-xl' : 'text-2xl'}"
-							>
-								{speed != 'faster' ? '+' : ''}{diff.toFixed(2)}
-							</span>
-						</div>
-					{/if}
-				{/each}
-			</div>
+			{@render Comparison(cps, 'left')}
 
 			<!-- best pr cps -->
 			<div class="justify-self-center text-center">
@@ -127,26 +121,44 @@
 			</div>
 
 			<!-- right comparison -->
-			<div class="justify-self-start text-left">
-				{#each rightCps as time, i (i)}
-					{#if cps && cps[i]}
-						{@const diff = time - cps[i]}
-						{@const speed: 'faster' | 'same' | 'slower' = diff < 0 ? 'faster' : diff == 0 ? 'same' : diff > 0 ? 'slower' : 'same'}
-						<div>
-							<span
-								transition:fade|global
-								class="rounded-lg px-2.5
-                                                        {speed == 'slower'
-									? 'bg-ctp-red-950/40'
-									: 'bg-ctp-red-800/55'}
-                                                        {size > 14 ? 'text-xl' : 'text-2xl'}"
-							>
-								{speed != 'faster' ? '+' : ''}{diff.toFixed(2)}
-							</span>
-						</div>
-					{/if}
-				{/each}
-			</div>
+			{@render Comparison(cps, 'right')}
 		</div>
 	</div>
 {/key}
+
+{#snippet Comparison(cps: number[], side: 'left' | 'right')}
+	<div class={side == 'left' ? 'justify-self-end text-right' : 'justify-self-start text-left'}>
+		{#each timer.current[`${side}cps`] as time, i (i)}
+			{#if cps && cps[i]}
+				{@const diff = time - cps[i]}
+				{@const speed: 'faster' | 'same' | 'slower' = diff < 0 ? 'faster' : diff == 0 ? 'same' : diff > 0 ? 'slower' : 'same'}
+				{@const clr = {
+					faster: side == 'left' ? 'bg-ctp-blue-800/55' : 'bg-ctp-red-800/55',
+					slower: side == 'left' ? 'bg-ctp-blue-950/40' : 'bg-ctp-red-950/40',
+					same: 'bg-ctp-teal-950/55'
+				}}
+
+				<div>
+					<span
+						transition:fade|global
+						class="rounded-lg px-2.5
+                                                {speed == 'slower'
+							? clr.slower
+							: speed == 'faster'
+								? clr.faster
+								: speed == 'same'
+									? clr.same
+									: ''}
+                                                        {size > 14 ? 'text-xl' : 'text-2xl'}"
+					>
+						{speed == 'same'
+							? 'new cp'
+							: speed == 'slower'
+								? `+${diff.toFixed(2)}`
+								: diff.toFixed(2)}
+					</span>
+				</div>
+			{/if}
+		{/each}
+	</div>
+{/snippet}
