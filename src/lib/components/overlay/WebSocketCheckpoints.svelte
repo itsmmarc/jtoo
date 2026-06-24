@@ -72,36 +72,34 @@
 	{@const cps = bestSide ? bestSideCps : bestCps}
 	<div class="absolute right-0 left-0 m-auto mt-2 w-[25%] {settings.current.monoFont}">
 		<!-- header -->
-		{#if bestSide}
-			<div class="grid grid-cols-3 items-center justify-center gap-x-4 text-center text-3xl">
-				<div class="justify-self-end">
-					{#if bestSide == 'left'}
-						<img
-							in:fade
-							src={overlay.current.leftPlayer.avatarURL}
-							alt=""
-							class="size-13 rounded-xl object-cover object-center"
-							draggable="false"
-						/>
-					{/if}
-				</div>
-				<div>
-					{csToTime(timer.current[`${bestSide}Pr`]! * 100)}
-				</div>
-				<div>
-					{#if bestSide == 'right'}
-						<img
-							in:fade
-							src={overlay.current.rightPlayer.avatarURL}
-							alt=""
-							class="size-13 rounded-xl object-cover object-center"
-							draggable="false"
-						/>
-					{/if}
-				</div>
-				<hr class="col-span-full m-2 h-0.5 border-none bg-obs-padding" />
+		<div class="grid grid-cols-3 items-center justify-center gap-x-4 text-center text-3xl">
+			<div class="justify-self-end">
+				{#if bestSide == 'left'}
+					<img
+						in:fade
+						src={overlay.current.leftPlayer.avatarURL}
+						alt=""
+						class="size-13 rounded-xl object-cover object-center"
+						draggable="false"
+					/>
+				{/if}
 			</div>
-		{/if}
+			<div>
+				{bestSide ? csToTime(timer.current[`${bestSide}Pr`]! * 100) : '---'}
+			</div>
+			<div>
+				{#if bestSide == 'right'}
+					<img
+						in:fade
+						src={overlay.current.rightPlayer.avatarURL}
+						alt=""
+						class="size-13 rounded-xl object-cover object-center"
+						draggable="false"
+					/>
+				{/if}
+			</div>
+			<hr class="col-span-full m-2 h-0.5 border-none bg-obs-padding" />
+		</div>
 
 		<!-- cps -->
 		<div
