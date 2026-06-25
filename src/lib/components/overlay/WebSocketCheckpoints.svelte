@@ -11,6 +11,8 @@
 	let bestSide: 'left' | 'right' | '' = $derived(getBestSide());
 	let size = $derived(timer.current.checkpoints.length);
 
+	bestSide = 'left';
+
 	function getBestSide() {
 		let betterSide: 'left' | 'right' | '';
 
@@ -75,8 +77,10 @@
 					/>
 				{/if}
 			</div>
-			<div>
-				{bestSide ? csToTime(timer.current[`${bestSide}Pr`]! * 100) : '---'}
+			<div class="mt-2 h-11">
+				<span>
+					{bestSide ? csToTime(timer.current[`${bestSide}Pr`]! * 100) : '---'}
+				</span>
 			</div>
 			<div>
 				{#if bestSide == 'right'}
