@@ -96,11 +96,12 @@
 
 		<!-- cps -->
 		<div
-			class="grid h-83 grid-cols-3 justify-center gap-x-4
-                {size > 14 ? 'gap-y-1 text-2xl' : 'gap-y-3 text-3xl'}"
+			class="grid h-83 grid-cols-3 justify-center gap-x-4 {size > 14
+				? 'gap-y-1 text-2xl'
+				: 'gap-y-3 text-3xl'}"
 		>
 			<!-- left comparison -->
-			{@render Comparison(cps, 'left')}
+			<!-- {@render Comparison(cps, 'left')} -->
 
 			<!-- best pr cps -->
 			<div class="justify-self-center text-center">
@@ -112,7 +113,7 @@
 			</div>
 
 			<!-- right comparison -->
-			{@render Comparison(cps, 'right')}
+			<!-- {@render Comparison(cps, 'right')} -->
 		</div>
 	</div>
 {/key}
