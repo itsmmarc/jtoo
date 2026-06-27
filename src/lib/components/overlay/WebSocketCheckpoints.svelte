@@ -77,7 +77,7 @@
 			</div>
 			<div class="mt-2 h-11">
 				<span>
-					<!-- {bestSide ? csToTime(timer.current[`${bestSide}Pr`] * 100) : '---'} -->
+					{bestSide ? csToTime(timer.current[`${bestSide}Pr`]! * 100) : '---'}
 				</span>
 			</div>
 			<div>
@@ -98,8 +98,8 @@
 		<div
 			class="grid h-83 grid-cols-3 justify-center gap-x-4 {size > 14
 				? 'gap-y-1 text-2xl'
-				: 'gap-y-3 text-3xl'}"
-		>
+				: 'gap-y-3 text-3xl'}">
+                                
 			{@render Comparison(cps, 'left')}
 
 			<!-- best pr cps -->
