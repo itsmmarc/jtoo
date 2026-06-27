@@ -11,8 +11,6 @@
 	let bestSide: 'left' | 'right' | '' = $derived(getBestSide());
 	let size = $derived(timer.current.checkpoints.length);
 
-	bestSide = 'left';
-
 	function getBestSide() {
 		let betterSide: 'left' | 'right' | '';
 
