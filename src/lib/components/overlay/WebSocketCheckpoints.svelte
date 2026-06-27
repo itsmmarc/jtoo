@@ -32,14 +32,6 @@
 	function getBestSideCheckpoints() {
 		let bestSideCps: number[] = [];
 
-		if (timer.current.leftPr && timer.current.rightPr) {
-			return bestSideCps;
-		}
-
-		if (timer.current.leftPr && timer.current.rightPr) {
-			return bestSideCps;
-		}
-
 		if (bestSide) {
 			bestSideCps = timer.current[`${bestSide}PrCps`];
 		}
