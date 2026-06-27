@@ -12,19 +12,19 @@
 	let size = $derived(timer.current.checkpoints.length);
 
 	function getBestSide() {
-		let betterSide: 'left' | 'right' | '';
+		let bestSide: 'left' | 'right' | '';
 
 		if (!timer.current.leftPr && !timer.current.rightPr) {
-			betterSide = '';
+			bestSide = '';
 		} else if (timer.current.leftPr && !timer.current.rightPr) {
-			betterSide = 'left';
+			bestSide = 'left';
 		} else if (!timer.current.leftPr && timer.current.rightPr) {
-			betterSide = 'right';
+			bestSide = 'right';
 		} else {
-			betterSide = timer.current.leftPr! < timer.current.rightPr! ? 'left' : 'right';
+			bestSide = timer.current.leftPr! < timer.current.rightPr! ? 'left' : 'right';
 		}
 
-		return betterSide;
+		return bestSide;
 	}
 
 	function getBestSideCheckpoints() {
@@ -77,7 +77,7 @@
 			</div>
 			<div class="mt-2 h-11">
 				<span>
-					{bestSide ? csToTime(timer.current[`${bestSide}Pr`]! * 100) : '---'}
+					<!-- {bestSide ? csToTime(timer.current[`${bestSide}Pr`] * 100) : '---'} -->
 				</span>
 			</div>
 			<div>
