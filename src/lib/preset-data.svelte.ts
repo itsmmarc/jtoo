@@ -763,14 +763,14 @@ const demoPlayoffs2026Bracket: Bracket4 = {
 		QuarterFinals: [
 			{
 				A: getPlayer('vice', undefined, demoPlayoffs2026.players),
-				B: getPlayer('cander', undefined, demoPlayoffs2026.players),
+				B: getPlayer('nNameee', undefined, demoPlayoffs2026.players),
 				winner: '',
 				winDest: ['Upper', 'SemiFinal', 0, 'A'],
 				loseDest: ['Lower', 'SemiFinal', 0, 'A']
 			},
 			{
-				A: getPlayer('newjuls', undefined, demoPlayoffs2026.players),
-				B: getPlayer('nNameee', undefined, demoPlayoffs2026.players),
+				A: getPlayer('cander', undefined, demoPlayoffs2026.players),
+				B: getPlayer('newjuls', undefined, demoPlayoffs2026.players),
 				winner: '',
 				winDest: ['Upper', 'SemiFinal', 0, 'B'],
 				loseDest: ['Lower', 'SemiFinal', 0, 'B']
