@@ -56,9 +56,6 @@
 	}
 </script>
 
-{$inspect(bestSide)}
-{$inspect(bestCps)}
-
 {#key bestSide}
 	{@const cps = bestSide ? bestSideCps : bestCps}
 	<div class="absolute right-0 left-0 m-auto mt-2 w-[25%] {settings.current.monoFont}">
@@ -98,8 +95,8 @@
 		<div
 			class="grid h-83 grid-cols-3 justify-center gap-x-4 {size > 14
 				? 'gap-y-1 text-2xl'
-				: 'gap-y-3 text-3xl'}">
-                                
+				: 'gap-y-3 text-3xl'}"
+		>
 			{@render Comparison(cps, 'left')}
 
 			<!-- best pr cps -->
