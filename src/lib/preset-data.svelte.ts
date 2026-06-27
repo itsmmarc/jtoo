@@ -56,9 +56,9 @@ export const soldierPlayoffs2026: {
 			},
 			WRs: 158,
 			TTs: 891,
-			bestRun: 'phobos',
+			bestRun: 'zero',
 			note: '-cg',
-			favouriteMap: 'baqu',
+			favouriteMap: 'triplepre',
 			score: 0
 		},
 		{
@@ -517,9 +517,9 @@ export const demoPlayoffs2026: {
 			},
 			WRs: 56,
 			TTs: 217,
-			bestRun: '',
+			bestRun: 'scorpion',
 			note: '',
-			favouriteMap: '',
+			favouriteMap: 'lithium',
 			score: 0
 		},
 		{
@@ -542,9 +542,9 @@ export const demoPlayoffs2026: {
 			},
 			WRs: 219,
 			TTs: 362,
-			bestRun: '',
-			note: '',
-			favouriteMap: '',
+			bestRun: 'achlys',
+			note: '-cg',
+			favouriteMap: 'lanc',
 			score: 0
 		},
 		{
