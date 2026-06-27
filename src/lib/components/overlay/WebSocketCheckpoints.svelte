@@ -102,9 +102,11 @@
 			<!-- best pr cps -->
 			<div class="justify-self-center text-center">
 				{#each cps as cp, i (i)}
-					<div>
-						{csToTime(cp * 100)}
-					</div>
+					{#if cp && cp != 0}
+						<div>
+							{csToTime(cp * 100)}
+						</div>
+					{/if}
 				{/each}
 			</div>
 
@@ -117,7 +119,7 @@
 {#snippet Comparison(cps: number[], side: 'left' | 'right')}
 	<div class={side == 'left' ? 'justify-self-end text-right' : 'justify-self-start text-left'}>
 		{#each timer.current[`${side}cps`] as time, i (i)}
-			{#if cps && cps[i]}
+			{#if cps && cps[i] && cps[i] != 0}
 				{@const diff = time - cps[i]}
 				{@const speed: 'faster' | 'same' | 'slower' = diff < 0 ? 'faster' : diff == 0 ? 'same' : diff > 0 ? 'slower' : 'same'}
 				{@const clr = {
