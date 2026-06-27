@@ -567,9 +567,9 @@ export const demoPlayoffs2026: {
 			},
 			WRs: 7,
 			TTs: 224,
-			bestRun: '',
-			note: '',
-			favouriteMap: '',
+			bestRun: 'junior',
+			note: 'play osu',
+			favouriteMap: 'legocroc',
 			score: 0
 		},
 		{
