@@ -41,7 +41,9 @@
 		}
 	});
 
-	function getMaxPlayers(format: '' | 'DoubleElim4Player' | 'DoubleElim8Player' | 'AllOutRoyale') {
+	function getMaxPlayers(
+		format: '' | 'DoubleElim4Player' | 'DoubleElim8Player' | 'AllOutRoyale' | 'Leaderboard'
+	) {
 		return format == 'DoubleElim4Player' ? 4 : format == 'DoubleElim8Player' ? 8 : 999;
 	}
 
@@ -170,6 +172,10 @@
 						case 'DoubleElim8Player':
 							tournament.bracket = new Bracket8();
 							maxPlayers = 8;
+							break;
+						case 'Leaderboard':
+							tournament.bracket = undefined;
+							maxPlayers = 999;
 							break;
 						case 'AllOutRoyale':
 						case '':

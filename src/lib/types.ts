@@ -83,7 +83,8 @@ export interface PlayerPoints {
 export const TournamentFormats = [
 	'DoubleElim4Player',
 	'DoubleElim8Player',
-	'AllOutRoyale'
+	'AllOutRoyale',
+        'Leaderboard' // TODO name this something that makes snese
 ] as const;
 export type TournamentFormat = (typeof TournamentFormats)[number];
 

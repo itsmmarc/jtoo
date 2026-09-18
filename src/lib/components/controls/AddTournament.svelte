@@ -185,6 +185,10 @@
 							tournament.bracket = new Bracket8();
 							maxPlayers = 8;
 							break;
+						case 'Leaderboard':
+							tournament.bracket = undefined;
+							maxPlayers = 999;
+							break;
 						case 'AllOutRoyale':
 						case '':
 							console.log(`using not properly implemented tournament format: ${tournament.format}`);
