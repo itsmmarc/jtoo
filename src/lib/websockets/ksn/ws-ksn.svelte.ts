@@ -1,18 +1,13 @@
 import { PersistentState } from '@friendofsvelte/state';
 import { settings, overlay } from '../../storage.svelte';
-import {
-	type BaseTimerEvent,
-	type MessageTypes,
-	defaultMessages,
-	type CompetitionSessionPlayerEnd
-} from './ws-tf-types';
+import { KSN } from './ws-ksn-types';
 import { ProxyWebSocket } from '../../ProxyWebSocket';
 import { indexOf } from 'underscore';
 
 export let ws: ProxyWebSocket;
 export const wsState = new PersistentState('wsState', { state: 0 }, 'sessionStorage');
 let competitionTimer: NodeJS.Timeout;
-export const messages = new PersistentState('messages', defaultMessages);
+export const messages = new PersistentState('messages', KSN.defaultMessages);
 const defaultPickedMaps: [{ mapID: string; steamID3: string }] = [];
 export const pickedMaps = new PersistentState('pickedMaps', defaultPickedMaps);
 
@@ -36,10 +31,10 @@ export function initializeTfWebSocket() {
 
 	console.log('initializing websocket');
 
-	messages.current = defaultMessages;
+	messages.current = KSN.defaultMessages;
 
 	ws = new ProxyWebSocket(
-		`https://console.jumpfortress.tf/?token=${settings.current.tfWebSocketToken}`
+		`https://console.jumpfortress.tf/?token=${settings.current.ksnWebSocketToken}`
 	);
 
 	ws.state.subscribe((s) => {
@@ -47,7 +42,7 @@ export function initializeTfWebSocket() {
 	});
 
 	ws.onmessage = function (event) {
-		const data: MessageTypes = JSON.parse(event.data);
+		const data: KSN.MessageTypes = JSON.parse(event.data);
 		console.log(data);
 		console.log(event.data);
 
@@ -146,7 +141,7 @@ export const timer = new PersistentState('timer', defaultTimerStore);
 
 type Side = 'left' | 'right' | '';
 
-function checkTimerSide(data: BaseTimerEvent): Side {
+function checkTimerSide(data: KSN.BaseTimerEvent): Side {
 	return data.steamid == overlay.current.leftPlayer.steamID3
 		? 'left'
 		: data.steamid == overlay.current.rightPlayer.steamID3
@@ -154,7 +149,9 @@ function checkTimerSide(data: BaseTimerEvent): Side {
 			: '';
 }
 
-function checkTimerSide_competitive_session_player_ended(data: CompetitionSessionPlayerEnd): Side {
+function checkTimerSide_competitive_session_player_ended(
+	data: KSN.CompetitionSessionPlayerEnd
+): Side {
 	return parseInt(data.steamAccountId) == overlay.current.leftPlayer.steamID3
 		? 'left'
 		: parseInt(data.steamAccountId) == overlay.current.rightPlayer.steamID3

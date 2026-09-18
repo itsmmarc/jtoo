@@ -84,7 +84,7 @@ export const TournamentFormats = [
 	'DoubleElim4Player',
 	'DoubleElim8Player',
 	'AllOutRoyale',
-        'Leaderboard' // TODO name this something that makes snese
+	'Leaderboard' // TODO name this something that makes snese
 ] as const;
 export type TournamentFormat = (typeof TournamentFormats)[number];
 
@@ -187,7 +187,7 @@ export type Settings = {
 	enableSinglePOV: boolean;
 	enablePOVGuide: boolean;
 	useShortMapNames: boolean;
-	tfWebSocketToken: string;
+	ksnWebSocketToken: string;
 	overlayScene: OverlayScene;
 	obsWsIp: string;
 	obsWsPw: string;

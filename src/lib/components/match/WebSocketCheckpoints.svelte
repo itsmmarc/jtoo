@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { csToTime, timer } from '$lib/websockets/tf/ws-tf.svelte';
+	import { csToTime, timer } from '$lib/websockets/ksn/ws-ksn.svelte';
 	import { overlay, settings } from '$lib/storage.svelte';
 	import { slide, fade } from 'svelte/transition';
 	import { getFiltersStyle } from '$lib/filters.svelte';

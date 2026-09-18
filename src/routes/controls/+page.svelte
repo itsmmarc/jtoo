@@ -22,7 +22,7 @@
 		clearTimer,
 		initializeTfWebSocket,
 		wsState
-	} from '$lib/websockets/tf/ws-tf.svelte';
+	} from '$lib/websockets/ksn/ws-ksn.svelte';
 
 	import { obsConnect, setScene } from '$lib/websockets/obs/ws-obs';
 	import ManageTournaments from '$lib/components/controls/ManageTournaments.svelte';
@@ -116,17 +116,17 @@
 				>
 			</div>
 		</Accordion>
-		<Accordion title="tf2 server websocket" defaultstate="closed">
+		<Accordion title="ksn server websocket" defaultstate="closed">
 			<div class="flex gap-2">
 				<label for="input-websocket">token: </label>
 				<input
 					type="password"
 					class="input w-60"
 					id="input-websocket"
-					value={settings.current.tfWebSocketToken}
+					value={settings.current.ksnWebSocketToken}
 					onchange={(e) => {
 						let target = e.target as HTMLInputElement;
-						settings.current.tfWebSocketToken = target.value;
+						settings.current.ksnWebSocketToken = target.value;
 					}}
 				/>
 				<button

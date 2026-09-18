@@ -44,7 +44,7 @@ export const defaultSettings: Settings = {
 	enableSinglePOV: false,
 	enablePOVGuide: false,
 	useShortMapNames: true,
-	tfWebSocketToken: '',
+	ksnWebSocketToken: '',
 	overlayScene: 'MatchScene',
 	obsWsIp: '',
 	obsWsPw: '',

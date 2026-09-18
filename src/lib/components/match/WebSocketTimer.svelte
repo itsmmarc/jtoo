@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { timer, resetTimer, resetPulse, csToTime } from '$lib/websockets/tf/ws-tf.svelte';
+	import { timer, resetTimer, resetPulse, csToTime } from '$lib/websockets/ksn/ws-ksn.svelte';
 	import { settings } from '$lib/storage.svelte';
 	let leftCs = $state(0);
 	let rightCs = $state(0);

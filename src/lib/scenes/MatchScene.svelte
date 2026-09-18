@@ -5,8 +5,8 @@
 	import { fade, slide } from 'svelte/transition';
 	import WebSocketCheckpoints from '$lib/components/match/WebSocketCheckpoints.svelte';
 	import WebSocketTimer from '$lib/components/match/WebSocketTimer.svelte';
-	import { pickedMaps, timer } from '$lib/websockets/tf/ws-tf.svelte';
-	import { csToTime } from '$lib/websockets/tf/ws-tf.svelte';
+	import { pickedMaps, timer } from '$lib/websockets/ksn/ws-ksn.svelte';
+	import { csToTime } from '$lib/websockets/ksn/ws-ksn.svelte';
 	import Flag from '$lib/components/util/Flag.svelte';
 
 	function getPlayerFromPickActor(steamID3: string): Player | null {
@@ -27,7 +27,7 @@
 
 <!-- MARK: top bar -->
 <div class="relative z-20 flex h-32 w-full justify-between p-4">
-	{#if settings.current.tfWebSocketToken !== '' && overlay.current.leftPlayer.steamID3 && overlay.current.rightPlayer.steamID3}
+	{#if settings.current.ksnWebSocketToken !== '' && overlay.current.leftPlayer.steamID3 && overlay.current.rightPlayer.steamID3}
 		<WebSocketTimer />
 	{/if}
 	{#if settings.current.enableGradient}
@@ -89,7 +89,7 @@
 		{/key}
 	</div>
 
-	{#if settings.current.tfWebSocketToken !== '' && overlay.current.leftPlayer.steamID3 && overlay.current.rightPlayer.steamID3}
+	{#if settings.current.ksnWebSocketToken !== '' && overlay.current.leftPlayer.steamID3 && overlay.current.rightPlayer.steamID3}
 		<WebSocketCheckpoints />
 	{/if}
 	<!-- map -->

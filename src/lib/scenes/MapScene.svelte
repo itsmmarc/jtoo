@@ -2,8 +2,8 @@
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { settings, items, overlay } from '$lib/storage.svelte';
 	import { fade, slide } from 'svelte/transition';
-	import { messages, pickedMaps } from '$lib/websockets/tf/ws-tf.svelte';
-	import { type PickBansSessionStateEvent } from '$lib/websockets/tf/ws-tf-types';
+	import { messages, pickedMaps } from '$lib/websockets/ksn/ws-ksn.svelte';
+	import { type PickBansSessionStateEvent } from '$lib/websockets/ksn/ws-ksn-types';
 	import { TFMap } from '$lib/types';
 
 	let progress = $state(0);
