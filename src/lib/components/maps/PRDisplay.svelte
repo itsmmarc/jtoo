@@ -3,7 +3,6 @@
 	import { TFMap, type MapRun } from '$lib/types';
 	import { fade } from 'svelte/transition';
 	import { getFiltersStyle } from '$lib/filters.svelte';
-	import { csToTime, pickedMaps } from '$lib/websockets/ksn/ws-ksn.svelte';
 
 	function getPlayerFromPickActor(steamID3: string): string | null {
 		const playerA = overlay.current.leftPlayer.steamID3;

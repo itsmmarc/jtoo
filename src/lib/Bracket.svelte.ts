@@ -1,9 +1,8 @@
-import { items, overlay } from './storage.svelte';
-import { Player } from './types';
+import { Player, type SteamID3 } from './types';
 
 export type Match = {
-	A: Player;
-	B: Player;
+	A: SteamID3 | undefined;
+	B: SteamID3 | undefined;
 	winner: 'A' | 'B' | '';
 	winDest: Array<string | number> | null;
 	loseDest: Array<string | number> | null;
@@ -24,29 +23,29 @@ export class Bracket8 extends Bracket {
 		this.Upper = {
 			QuarterFinals: [
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Upper', 'SemiFinals', 0, 'A'],
 					loseDest: ['Lower', 'Round1', 0, 'A']
 				},
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Upper', 'SemiFinals', 0, 'B'],
 					loseDest: ['Lower', 'Round1', 0, 'B']
 				},
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Upper', 'SemiFinals', 1, 'A'],
 					loseDest: ['Lower', 'Round1', 1, 'A']
 				},
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Upper', 'SemiFinals', 1, 'B'],
 					loseDest: ['Lower', 'Round1', 1, 'B']
@@ -54,15 +53,15 @@ export class Bracket8 extends Bracket {
 			],
 			SemiFinals: [
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Upper', 'Final', 0, 'A'],
 					loseDest: ['Lower', 'QuarterFinals', 0, 'B']
 				},
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Upper', 'Final', 0, 'B'],
 					loseDest: ['Lower', 'QuarterFinals', 1, 'B']
@@ -70,8 +69,8 @@ export class Bracket8 extends Bracket {
 			],
 			Final: [
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Upper', 'GrandFinal', 0, 'A'],
 					loseDest: ['Lower', 'Final', 0, 'B']
@@ -79,8 +78,8 @@ export class Bracket8 extends Bracket {
 			],
 			GrandFinal: [
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: null,
 					loseDest: null
@@ -90,15 +89,15 @@ export class Bracket8 extends Bracket {
 		this.Lower = {
 			Round1: [
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Lower', 'QuarterFinals', 0, 'A'],
 					loseDest: null
 				},
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Lower', 'QuarterFinals', 1, 'A'],
 					loseDest: null
@@ -106,15 +105,15 @@ export class Bracket8 extends Bracket {
 			],
 			QuarterFinals: [
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Lower', 'SemiFinal', 0, 'A'],
 					loseDest: null
 				},
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Lower', 'SemiFinal', 0, 'B'],
 					loseDest: null
@@ -122,8 +121,8 @@ export class Bracket8 extends Bracket {
 			],
 			SemiFinal: [
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Lower', 'Final', 0, 'A'],
 					loseDest: null
@@ -131,8 +130,8 @@ export class Bracket8 extends Bracket {
 			],
 			Final: [
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Upper', 'GrandFinal', 0, 'B'],
 					loseDest: null
@@ -152,15 +151,15 @@ export class Bracket4 extends Bracket {
 		this.Upper = {
 			QuarterFinals: [
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Upper', 'SemiFinal', 0, 'A'],
 					loseDest: ['Lower', 'SemiFinal', 0, 'A']
 				},
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Upper', 'SemiFinal', 0, 'B'],
 					loseDest: ['Lower', 'SemiFinal', 0, 'B']
@@ -168,8 +167,8 @@ export class Bracket4 extends Bracket {
 			],
 			SemiFinal: [
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Upper', 'GrandFinal', 0, 'A'],
 					loseDest: ['Lower', 'Final', 0, 'B']
@@ -177,8 +176,8 @@ export class Bracket4 extends Bracket {
 			],
 			GrandFinal: [
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: null,
 					loseDest: null
@@ -188,8 +187,8 @@ export class Bracket4 extends Bracket {
 		this.Lower = {
 			SemiFinal: [
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Lower', 'Final', 0, 'A'],
 					loseDest: null
@@ -197,8 +196,8 @@ export class Bracket4 extends Bracket {
 			],
 			Final: [
 				{
-					A: new Player(),
-					B: new Player(),
+					A: undefined,
+					B: undefined,
 					winner: '',
 					winDest: ['Upper', 'GrandFinal', 0, 'B'],
 					loseDest: null
@@ -225,15 +224,15 @@ export function setMatchWinner(bracket: Bracket, m: Match, w: 'A' | 'B' | '') {
 	}
 
 	// progress players
-	if (m.A.name && m.B.name) {
+	if (m.A && m.B) {
 		m.winner = w;
 		if (m.winDest) {
-			bracket[m.winDest[0]][m.winDest[1]][m.winDest[2]][m.winDest[3]] = w ? m[w] : new Player();
+			bracket[m.winDest[0]][m.winDest[1]][m.winDest[2]][m.winDest[3]] = w ? m[w] : undefined;
 		}
 		if (m.loseDest) {
 			bracket[m.loseDest[0]][m.loseDest[1]][m.loseDest[2]][m.loseDest[3]] = w
 				? m[w == 'A' ? 'B' : 'A']
-				: new Player();
+				: undefined;
 		}
 	}
 
@@ -252,12 +251,12 @@ export function clearMatchWinner(bracket: Bracket, m: Match) {
 	}
 
 	// progress
-	if (m.A.name && m.B.name) {
+	if (m.A && m.B) {
 		if (m.winDest) {
-			bracket[m.winDest[0]][m.winDest[1]][m.winDest[2]][m.winDest[3]] = new Player();
+			bracket[m.winDest[0]][m.winDest[1]][m.winDest[2]][m.winDest[3]] = undefined;
 		}
 		if (m.loseDest) {
-			bracket[m.loseDest[0]][m.loseDest[1]][m.loseDest[2]][m.loseDest[3]] = new Player();
+			bracket[m.loseDest[0]][m.loseDest[1]][m.loseDest[2]][m.loseDest[3]] = undefined;
 		}
 	}
 }

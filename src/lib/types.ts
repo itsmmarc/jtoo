@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { type Bracket4, type Bracket8 } from './Bracket.svelte';
 import type { Tempus2 } from './api/tempus2/api-tempus2';
 import { counters } from './storage.svelte';
@@ -10,6 +11,9 @@ export type Rank = { points: number; rank: number; title: string | null };
 
 export const Divisions = ['wood', 'steel', 'bronze', 'silver', 'gold', 'platinum', 'diamond'];
 export type Division = (typeof Divisions)[number];
+
+export type SteamID3 = number;
+export type MapFileName = string;
 
 export class Player {
 	name: string = '';
@@ -42,7 +46,7 @@ export type MapRun = {
 };
 
 export class TFMap {
-	fileName: string = '';
+	fileName: MapFileName = '';
 	shortName: string = '';
 	mapZoneId: number = 0;
 	intendedClass: Record<Exclude<TFClass, 'overall'>, boolean> = { soldier: false, demoman: false };
@@ -94,7 +98,7 @@ interface Prize {
 }
 
 export class Tournament {
-	id: number;
+	id: string;
 	format: TournamentFormat | '';
 	info: {
 		name: string;
@@ -102,13 +106,14 @@ export class Tournament {
 		prizePool: Prize[];
 		class: TFClass;
 	};
-	players: Player[];
-	maps: TFMap[];
+	players: SteamID3[];
+	// playerScores: {};
+	maps: MapFileName[];
 	bracket?: Bracket4 | Bracket8; // used for elim formats
 	playerPoints?: PlayerPoints[]; // used for all out royale format
 
 	constructor() {
-		this.id = counters.current.tournamentId++;
+		this.id = uuidv4();
 		this.format = '';
 		this.info = { name: '', imageUrl: '', prizePool: [], class: 'soldier' };
 		this.players = [];
@@ -184,21 +189,18 @@ export type Settings = {
 	enableFlags: boolean;
 	enableGradient: boolean;
 	enableTeamColors: boolean;
-	enableSinglePOV: boolean;
 	enablePOVGuide: boolean;
 	useShortMapNames: boolean;
-	ksnWebSocketToken: string;
 	overlayScene: OverlayScene;
+	ksnWebSocketToken: string;
 	obsWsIp: string;
 	obsWsPw: string;
-	steamApiKey: string;
 };
 
 export type Overlay = {
 	bestOf: number;
-	leftPlayer: Player;
-	rightPlayer: Player;
-	map: TFMap;
+	players: Array<SteamID3 | undefined>;
+	map: MapFileName;
 	stage: string;
 	tournament: Tournament;
 };
@@ -207,6 +209,6 @@ export type Items = {
 	players: Player[];
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	maps: TFMap[];
-	stages: Array<string>;
+	stages: string[];
 	tournaments: Tournament[];
 };

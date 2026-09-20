@@ -5,30 +5,19 @@
 	import { fade, slide } from 'svelte/transition';
 	import WebSocketCheckpoints from '$lib/components/match/WebSocketCheckpoints.svelte';
 	import WebSocketTimer from '$lib/components/match/WebSocketTimer.svelte';
-	import { pickedMaps, timer } from '$lib/websockets/ksn/ws-ksn.svelte';
-	import { csToTime } from '$lib/websockets/ksn/ws-ksn.svelte';
 	import Flag from '$lib/components/util/Flag.svelte';
+	import { getContext } from 'svelte';
+	import type { KSNWebSocket } from '$lib/websockets/ksn/ws-ksn.svelte';
+	import { getPlayer } from '$lib/util';
+	import { Steam } from '$lib/api/steam/api-steam';
 
-	function getPlayerFromPickActor(steamID3: string): Player | null {
-		const playerA = overlay.current.leftPlayer.steamID3;
-		const playerB = overlay.current.rightPlayer.steamID3;
-
-		let pickActor: RegExpMatchArray | null | number = steamID3.match('\\d{2,12}');
-		if (!pickActor) return null;
-		pickActor = parseInt(pickActor[0]);
-
-		return pickActor == playerA
-			? overlay.current.leftPlayer
-			: pickActor == playerB
-				? overlay.current.rightPlayer
-				: null;
-	}
+	let ksnWs: KSNWebSocket = getContext('ksnWs');
 </script>
 
 <!-- MARK: top bar -->
 <div class="relative z-20 flex h-32 w-full justify-between p-4">
-	{#if settings.current.ksnWebSocketToken !== '' && overlay.current.leftPlayer.steamID3 && overlay.current.rightPlayer.steamID3}
-		<WebSocketTimer />
+	{#if settings.current.ksnWebSocketToken !== '' && overlay.current.players[0] && overlay.current.players[1]}
+		<WebSocketTimer numPlayers={2} />
 	{/if}
 	{#if settings.current.enableGradient}
 		<!-- gradients -->
@@ -47,33 +36,31 @@
 		<div class="absolute top-0 left-0 size-full bg-black/35"></div>
 	{/if}
 
-	{@render OverlayPlayer('leftPlayer')}
-	{@render OverlayPlayer('rightPlayer')}
+	{@render OverlayPlayer(overlay.current.players[0], 0)}
+	{@render OverlayPlayer(overlay.current.players[1], 1)}
 </div>
 <!-- isolated border filter -->
 <div class="border-b-4 border-ctp-lavender/50" style:filter={getFiltersStyle()}></div>
 
 <!-- MARK: POVs -->
-{#if !settings.current.enableSinglePOV}
+<div
+	transition:slide
+	class="flex w-full border-b-4 border-ctp-lavender/50"
+	style:filter={getFiltersStyle()}
+>
 	<div
-		transition:slide
-		class="flex w-full border-b-4 border-ctp-lavender/50"
-		style:filter={getFiltersStyle()}
-	>
-		<div
-			class="aspect-video w-full
+		class="aspect-video w-full
   {settings.current.enablePOVGuide
-				? 'border-r-2 border-dashed border-ctp-lavender/50 bg-ctp-lavender/25'
-				: ''}"
-		></div>
-		<div
-			class="aspect-video w-full
+			? 'border-r-2 border-dashed border-ctp-lavender/50 bg-ctp-lavender/25'
+			: ''}"
+	></div>
+	<div
+		class="aspect-video w-full
   {settings.current.enablePOVGuide
-				? 'border-l-2 border-dashed border-ctp-lavender/50 bg-ctp-lavender/25'
-				: ''}"
-		></div>
-	</div>
-{/if}
+			? 'border-l-2 border-dashed border-ctp-lavender/50 bg-ctp-lavender/25'
+			: ''}"
+	></div>
+</div>
 
 <!-- MARK: bottom bar -->
 <div class="flex h-16 w-full justify-between" style:filter={getFiltersStyle()}>
@@ -89,8 +76,8 @@
 		{/key}
 	</div>
 
-	{#if settings.current.ksnWebSocketToken !== '' && overlay.current.leftPlayer.steamID3 && overlay.current.rightPlayer.steamID3}
-		<WebSocketCheckpoints />
+	{#if settings.current.ksnWebSocketToken !== '' && overlay.current.players[0] && overlay.current.players[1]}
+		<WebSocketCheckpoints numPlayers={2} />
 	{/if}
 	<!-- map -->
 	<div
@@ -108,9 +95,9 @@
 </div>
 <!-- MARK: map picks -->
 <div class="absolute bottom-4 left-4 z-1 flex w-200 flex-wrap gap-4">
-	{#if pickedMaps.current.length > 1}
-		{#each pickedMaps.current as pickedMap, i (i)}
-			{@const player = getPlayerFromPickActor(pickedMap.steamID3)}
+	{#if ksnWs.pickedMaps.length > 1}
+		{#each ksnWs.pickedMaps as pickedMap, i (i)}
+			{@const player = getPlayer(Steam.convertSteamId(pickedMap.steamID3, 'SteamID3') as number)}
 			{@const mapId = TFMap.fileNameToTfId(overlay.current.map.fileName)}
 			{@const isCurrent = pickedMap.mapID == mapId}
 			{@const map = () => {
@@ -163,17 +150,17 @@
 </div>
 
 <!-- MARK: OverlayPlayer -->
-{#snippet OverlayPlayer(sideKey: 'leftPlayer' | 'rightPlayer')}
-	{@const flag = overlay.current[sideKey].flag}
-	{@const avatarURL = overlay.current[sideKey].avatarURL}
-	{@const tag = overlay.current[sideKey].tag}
-	{@const name = overlay.current[sideKey].name}
-	{@const tempusPR = overlay.current[sideKey].tempusPrs
+{#snippet OverlayPlayer(steamID3: number | undefined, playerNum: number)}
+	{@const player = getPlayer(steamID3)}
+	{@const flag = player.flag}
+	{@const avatarURL = player.avatarURL}
+	{@const tag = player.tag}
+	{@const name = player.name}
+	{@const playerTimer = steamID3 ? ksnWs.timer.getPlayerTimerBySteamId3(steamID3) : undefined}
+	<!-- {@const tempusPR = overlay.current[sideKey].tempusPrs
 		? overlay.current[sideKey].tempusPrs[overlay.current.map.shortName]
-		: ''}
-	<div
-		class="relative z-10 flex h-full gap-4 {sideKey === 'rightPlayer' ? 'flex-row-reverse' : ''}"
-	>
+		: ''} -->
+	<div class="relative z-10 flex h-full gap-4 {playerNum === 1 ? 'flex-row-reverse' : ''}">
 		<!-- flag -->
 		{#if settings.current.enableFlags && flag}
 			{#key flag}
@@ -192,7 +179,7 @@
 			{/key}
 		{/if}
 		<div
-			class="flex flex-col {sideKey === 'rightPlayer' ? 'items-end' : 'items-start'}"
+			class="flex flex-col {playerNum === 1 ? 'items-end' : 'items-start'}"
 			style:filter={getFiltersStyle()}
 		>
 			<div class="mb-3 flex gap-2">
@@ -210,46 +197,43 @@
 			<!-- score -->
 			<div
 				class="flex gap-2 text-ctp-text/75
-                                {sideKey === 'rightPlayer' ? 'flex-row-reverse' : ''}"
+                                {playerNum === 1 ? 'flex-row-reverse' : ''}"
 			>
-				{#each { length: overlay.current[sideKey].score }}
+				<!-- {#each { length: overlay.current[sideKey].score }}
 					<span
 						class="size-8 border-4 border-ctp-text bg-ctp-lavender transition-all duration-1000 starting:border-ctp-text/50 starting:bg-ctp-lavender/0"
 					></span>
-				{/each}
-				{#each { length: (overlay.current.bestOf + 1) / 2 - overlay.current[sideKey].score }}
+				{/each} -->
+				<!-- {#each { length: (overlay.current.bestOf + 1) / 2 - overlay.current[sideKey].score }}
 					<span class="size-8 border-4 border-ctp-text/50"></span>
-				{/each}
+				{/each} -->
 				<!-- PRs -->
 				<div
 					class="-mt-4 mr-2 ml-2 flex h-16 max-w-55 flex-wrap items-center
-                                        {sideKey === 'rightPlayer'
-						? 'flex-row-reverse'
-						: ''} {settings.current.monoFont} "
+                                        {playerNum === 1 ? 'flex-row-reverse' : ''} {settings
+						.current.monoFont} "
 				>
 					{#if settings.current.enablePRs}
 						<div class="flex gap-2">
 							<span class="text-2xl">pr</span>
-							<span class="text-3xl"
-								>{sideKey == 'leftPlayer'
-									? csToTime(Math.trunc(timer.current.leftPr! * 100))
-									: sideKey == 'rightPlayer'
-										? csToTime(Math.trunc(timer.current.rightPr! * 100))
-										: ''}</span
-							>
+							<span class="text-3xl">
+								{#if playerTimer}
+									{playerTimer.prFormatted}
+								{/if}
+							</span>
 						</div>
-					{:else if settings.current.enablePRs && overlay.current[sideKey].pr !== ''}
+					{:else if settings.current.enablePRs && playerTimer && playerTimer.prCs}
 						<div class="flex gap-2">
 							<span class="text-2xl">pr</span>
-							<span class="text-3xl">{overlay.current[sideKey].pr}</span>
+							<span class="text-3xl">{playerTimer.prFormatted}</span>
 						</div>
 					{/if}
-					{#if settings.current.enablePRs && tempusPR && tempusPR.time}
+					<!-- {#if settings.current.enablePRs && tempusPR && tempusPR.time}
 						<div class="flex gap-2">
 							<span class="text-xl">tpn pr</span>
 							<span class="text-xl">{tempusPR.time}</span>
 						</div>
-					{/if}
+					{/if} -->
 				</div>
 			</div>
 		</div>

@@ -12,20 +12,22 @@
 	import ManageMaps from '$lib/components/controls/ManageMaps.svelte';
 	import AddTournament from '$lib/components/controls/AddTournament.svelte';
 
-	import Player from '$lib/components/controls/Player.svelte';
+	import PlayerControl from '$lib/components/controls/PlayerControl.svelte';
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { settings, overlay, items, defaultStages, defaultSettings } from '$lib/storage.svelte';
 	import { Fonts, MonoFonts, OverlayScenes } from '$lib/types';
 	import * as _ from 'underscore';
-	import {
-		clearPicksAndBans,
-		clearTimer,
-		initializeTfWebSocket,
-		wsState
-	} from '$lib/websockets/ksn/ws-ksn.svelte';
 
 	import { obsConnect, setScene } from '$lib/websockets/obs/ws-obs';
 	import ManageTournaments from '$lib/components/controls/ManageTournaments.svelte';
+
+	import { KSNWebSocket } from '$lib/websockets/ksn/ws-ksn.svelte';
+	import { getMap } from '$lib/util';
+
+	let ksnWs = $state(new KSNWebSocket());
+	if (settings.current.ksnWebSocketToken) {
+		ksnWs.connect(settings.current.ksnWebSocketToken);
+	}
 
 	$effect(() => {
 		if (settings.current.overlayScene) {
@@ -52,8 +54,11 @@
 
 <!-- presets -->
 <div class="relative m-2 flex w-full max-w-lg justify-center gap-4 self-center">
-	<button class="button-remove" onclick={() => clearTimer()}>clear timers and checkpoints</button>
-	<button class="button-remove" onclick={() => clearPicksAndBans()}>clear map picks and bans</button
+	<button class="button-remove" onclick={() => ksnWs.clearTimers()}
+		>clear timers and checkpoints</button
+	>
+	<button class="button-remove" onclick={() => ksnWs.clearPicksAndBans()}
+		>clear map picks and bans</button
 	>
 </div>
 
@@ -73,10 +78,9 @@
 
 <Accordion title="scenes">
 	<span>scene</span>
-	<RadioInputs name="scenes" opts={[...OverlayScenes]} bind:value={settings.current.overlayScene} />
+	<RadioInputs opts={[...OverlayScenes]} bind:value={settings.current.overlayScene} />
 	<span>tournament</span>
 	<RadioInputs
-		name="tournaments"
 		opts={[...items.current.tournaments]}
 		labelkey={['info', 'name']}
 		bind:value={overlay.current.tournament}
@@ -131,7 +135,7 @@
 				/>
 				<button
 					class="button button-unselected hover:button-selected"
-					onclick={() => initializeTfWebSocket()}>connect</button
+					onclick={() => ksnWs.connect(settings.current.ksnWebSocketToken)}>connect</button
 				>
 				<!-- <div class="flex gap-2">
                                 <p>status:</p>
@@ -171,9 +175,9 @@
 		}}>reset to default</button
 	>
 	<span>font</span>
-	<RadioInputs name="fonts" opts={[...Fonts]} bind:value={settings.current.font} />
+	<RadioInputs opts={[...Fonts]} bind:value={settings.current.font} />
 	<span>mono font</span>
-	<RadioInputs name="mono fonts" opts={[...MonoFonts]} bind:value={settings.current.monoFont} />
+	<RadioInputs opts={[...MonoFonts]} bind:value={settings.current.monoFont} />
 
 	<!-- color -->
 	<span>theme</span>
@@ -192,13 +196,10 @@
 
 	<Checkbox desc="use moving background" setting="enableMovingBG" />
 	<Checkbox desc="use short map names" setting="useShortMapNames" />
-	<Checkbox desc="use single POV" setting="enableSinglePOV" />
-	{#if !settings.current.enableSinglePOV}
-		<Checkbox desc="show POV guide" setting="enablePOVGuide" />
-		<Checkbox desc="use gradient" setting="enableGradient" />
-		{#if settings.current.enableGradient}
-			<Checkbox desc="use red & blue team colors" setting="enableTeamColors" />
-		{/if}
+	<Checkbox desc="show POV guide" setting="enablePOVGuide" />
+	<Checkbox desc="use gradient" setting="enableGradient" />
+	{#if settings.current.enableGradient}
+		<Checkbox desc="use red & blue team colors" setting="enableTeamColors" />
 	{/if}
 	<Checkbox desc="use player PRs" setting="enablePRs" />
 	<Checkbox desc="use avatars" setting="enableAvatars" />
@@ -208,19 +209,18 @@
 <!-- overlay -->
 <div class="relative mb-2 flex w-full max-w-lg justify-center gap-1 self-center">
 	<span class="absolute left-0">best of</span>
-	<RadioInputs
-		name="best of"
-		opts={[1, 3, 5, 7, 9]}
-		bind:value={overlay.current.bestOf}
-		log={true}
-	/>
+	<RadioInputs opts={[1, 3, 5, 7, 9]} bind:value={overlay.current.bestOf} log={true} />
 </div>
 
 <!-- players -->
 <div class="flex w-full max-w-lg justify-evenly self-center">
-	<Player side="left" />
+	<PlayerControl player={overlay.current.players[0]} playerNum={0} />
 	<hr class="hr" />
-	<Player side="right" />
+	<PlayerControl player={overlay.current.players[1]} playerNum={1} />
+	<hr class="hr" />
+	<PlayerControl player={overlay.current.players[2]} playerNum={2} />
+	<hr class="hr" />
+	<PlayerControl player={overlay.current.players[3]} playerNum={3} />
 </div>
 
 <div class="max-w-lg self-center">
@@ -228,9 +228,10 @@
 
 	<span>map</span>
 	<RadioInputs
-		name="maps"
 		opts={overlay.current.tournament.maps}
-		labelkey={settings.current.useShortMapNames ? 'shortName' : 'fileName'}
+		optlabels={settings.current.useShortMapNames
+			? overlay.current.tournament.maps.map((m) => getMap(m).shortName)
+			: undefined}
 		bind:value={overlay.current.map}
 	/>
 
@@ -244,5 +245,5 @@
 			}}>reset to default</button
 		>
 	</div>
-	<RadioInputs name="stages" opts={[...items.current.stages]} bind:value={overlay.current.stage} />
+	<RadioInputs opts={[...items.current.stages]} bind:value={overlay.current.stage} />
 </div>

@@ -1,106 +1,55 @@
 <script lang="ts">
-	import { timer, resetTimer, resetPulse, csToTime } from '$lib/websockets/ksn/ws-ksn.svelte';
-	import { settings } from '$lib/storage.svelte';
-	let leftCs = $state(0);
-	let rightCs = $state(0);
-	let leftTime = $derived(csToTime(leftCs));
-	let rightTime = $derived(csToTime(rightCs));
-	const updateInterval = 77;
+	import { overlay, settings } from '$lib/storage.svelte';
+	import { csToTime } from '$lib/util';
+	import type { KSNWebSocket, PlayerTimer } from '$lib/websockets/ksn/ws-ksn.svelte';
+	import { getContext } from 'svelte';
 
-	let leftTimerStart = $derived(timer.current.left.timer_start);
-	let rightTimerStart = $derived(timer.current.right.timer_start);
-	let leftTimerStop = $derived(timer.current.left.timer_stop);
-	let rightTimerStop = $derived(timer.current.right.timer_stop);
+	let ksnWs: KSNWebSocket = getContext('ksnWs');
 
-	$effect(() => {
-		// console.log('$effect resetPulse.state');
-		if (resetPulse.state) {
-			// console.log('true');
-			leftCs = 0;
-			rightCs = 0;
-			resetTimer('left');
-			resetTimer('right');
-			resetPulse.state = false;
-		}
-	});
+	type Props = { numPlayers: number };
+	let { numPlayers }: Props = $props();
+	let playerTimers = $derived(getPlayerTimers(ksnWs));
+	let competitionTimer = $derived(ksnWs.timer.competition);
 
-	$effect(() => {
-		// console.log('$effect timer.current.left.timer_start');
-		// run is ongoing
-		if (leftTimerStart) {
-			// console.log('true');
-			const startDate = Math.floor(Date.now() / 10);
-			const leftTimer = setInterval(() => {
-				leftCs = Math.floor(Date.now() / 10 - startDate);
-			}, updateInterval);
-
-			return () => {
-				clearInterval(leftTimer);
-			};
-		}
-	});
-
-	$effect(() => {
-		// console.log('$effect timer.current.right.timer_start');
-		// run is ongoing
-		if (rightTimerStart) {
-			// console.log('true');
-			const startDate = Date.now() / 10;
-			const rightTimer = setInterval(() => {
-				rightCs = Math.floor(Date.now() / 10 - startDate);
-			}, updateInterval);
-
-			return () => {
-				clearInterval(rightTimer);
-			};
-		}
-	});
-
-	$effect(() => {
-		// console.log('$effect timer.current.left.timer_stop');
-		if (leftTimerStop) {
-			// console.log('true');
-			leftCs = 0;
-		}
-	});
-
-	$effect(() => {
-		// console.log('$effect timer.current.right.timer_stop');
-		if (rightTimerStop) {
-			// console.log('true');
-			rightCs = 0;
-		}
-	});
+	function getPlayerTimers(ksnWs: KSNWebSocket) {
+		let timers: Array<PlayerTimer | undefined> = [];
+		overlay.current.players.every((steamID3) => {
+			if (!steamID3) {
+				timers.push(undefined);
+			} else {
+				timers.push(ksnWs.timer.getPlayerTimerBySteamId3(steamID3));
+			}
+		});
+		return timers;
+	}
 </script>
 
-<div
-	class="absolute left-0 flex h-32 w-full items-center justify-center gap-60 {settings.current
-		.monoFont}"
->
-	<span
-		class="{!timer.current.left.timer_start
-			? 'text-palewhite/40'
-			: 'text-palewhite'} font-chivomono text-center text-5xl transition-colors duration-1000"
-		>{!timer.current.left.timer_finish
-			? leftTime
-			: csToTime(Math.trunc(timer.current.left.finishTime * 100))}</span
+{#if numPlayers == 2}
+	<div
+		class="absolute left-0 flex h-32 w-full items-center justify-center gap-60
+                {settings.current.monoFont}"
 	>
-	<span
-		class="{!timer.current.right.timer_start
-			? 'text-palewhite/40'
-			: 'text-palewhite'} font-chivomono text-center text-5xl transition-colors duration-1000"
-		>{!timer.current.right.timer_finish
-			? rightTime
-			: csToTime(Math.trunc(timer.current.right.finishTime * 100))}</span
-	>
-	<div class="absolute top-5 flex flex-col">
-		{#if timer.current.competition.timeLeftSeconds > 0}
-			<div class="text-palewhite/40 text-center text-5xl">
-				{csToTime(Math.trunc(timer.current.competition.timeLeftSeconds * 100), 'seconds')}
-			</div>
-		{/if}
-		{#if timer.current.competition.overtime}
-			<div class="text-palewhite/40 text-center text-4xl">OVERTIME</div>
-		{/if}
+		<span
+			class="text-palewhite font-chivomono text-center text-5xl transition-colors duration-1000
+                                {playerTimers[0] && !playerTimers[0].isRunning ? 'opacity-40' : ''}"
+		>
+			{playerTimers[0] ? playerTimers[0].timeFormatted : csToTime(0)}
+		</span>
+		<span
+			class="text-palewhite font-chivomono text-center text-5xl transition-colors duration-1000
+                                {playerTimers[1] && !playerTimers[1].isRunning ? 'opacity-40' : ''}"
+		>
+			{playerTimers[1] ? playerTimers[1].timeFormatted : csToTime(0)}
+		</span>
+		<div class="absolute top-5 flex flex-col">
+			{#if competitionTimer.timeLeftSeconds > 0}
+				<div class="text-palewhite/40 text-center text-5xl">
+					{competitionTimer.getTimeLeftFormatted('seconds')}
+				</div>
+			{/if}
+			{#if competitionTimer.overtimeStatus}
+				<div class="text-palewhite/40 text-center text-4xl">OVERTIME</div>
+			{/if}
+		</div>
 	</div>
-</div>
+{/if}

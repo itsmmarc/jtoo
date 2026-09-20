@@ -7,9 +7,17 @@
 		state: 'open' | 'closed';
 		container?: boolean;
 		clearfn?: Function;
+		onopen?: Function;
 	};
 
-	let { title, children, state = $bindable('closed'), container = true, clearfn }: Props = $props();
+	let {
+		title,
+		children,
+		state = $bindable('closed'),
+		container = true,
+		clearfn,
+		onopen
+	}: Props = $props();
 </script>
 
 <section class={container ? 'relative' : ''}>
@@ -17,6 +25,7 @@
 		class="button"
 		onclick={() => {
 			state = 'open';
+			if (onopen) onopen();
 		}}>{title}</button
 	>
 </section>

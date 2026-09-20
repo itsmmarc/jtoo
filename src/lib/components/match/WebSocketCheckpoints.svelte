@@ -1,129 +1,96 @@
 <script lang="ts">
-	import { csToTime, timer } from '$lib/websockets/ksn/ws-ksn.svelte';
+	import { getPlayer } from '$lib/util';
 	import { overlay, settings } from '$lib/storage.svelte';
-	import { slide, fade } from 'svelte/transition';
-	import { getFiltersStyle } from '$lib/filters.svelte';
+	import { fade } from 'svelte/transition';
+	import { getContext } from 'svelte';
+	import { KSNWebSocket, PlayerTimer } from '$lib/websockets/ksn/ws-ksn.svelte';
 
-	let leftCps = $derived(timer.current.leftcps);
-	let rightCps = $derived(timer.current.rightcps);
-	let bestCps = $derived(getBestCheckpoints());
-	let bestSideCps = $derived(getBestSideCheckpoints());
-	let bestSide: 'left' | 'right' | '' = $derived(getBestSide());
-	let size = $derived(timer.current.checkpoints.length);
+	let ksnWs: KSNWebSocket = getContext('ksnWs');
 
-	function getBestSide() {
-		let bestSide: 'left' | 'right' | '';
+	type Props = { numPlayers: number };
+	let { numPlayers }: Props = $props();
+	let playerTimers = $derived(getPlayerTimers(ksnWs));
 
-		if (!timer.current.leftPr && !timer.current.rightPr) {
-			bestSide = '';
-		} else if (timer.current.leftPr && !timer.current.rightPr) {
-			bestSide = 'left';
-		} else if (!timer.current.leftPr && timer.current.rightPr) {
-			bestSide = 'right';
-		} else {
-			bestSide = timer.current.leftPr! < timer.current.rightPr! ? 'left' : 'right';
-		}
-
-		return bestSide;
+	function getPlayerTimers(ksnWs: KSNWebSocket) {
+		let timers: Array<PlayerTimer | undefined> = [];
+		overlay.current.players.every((steamID3) => {
+			if (!steamID3) {
+				timers.push(undefined);
+			} else {
+				timers.push(ksnWs.timer.getPlayerTimerBySteamId3(steamID3));
+			}
+		});
+		return timers;
 	}
 
-	function getBestSideCheckpoints() {
-		let bestSideCps: number[] = [];
-
-		if (bestSide) {
-			bestSideCps = timer.current[`${bestSide}PrCps`];
-		}
-
-		return bestSideCps;
+	let leftCps = $derived(playerTimers[0]?.currentCheckpointsCs);
+	let rightCps = $derived(playerTimers[1]?.currentCheckpointsCs);
+	let bestCps = $derived(ksnWs.timer.getLeaderCheckpoints());
+	let leader = $derived(getLeader());
+	function getLeader() {
+		ksnWs.timer.sortPlayers();
+		return ksnWs.timer.players[ksnWs.timer.players.length - 1].steamID3;
 	}
-
-	function getBestCheckpoints() {
-		let newBestCps: number[] = [];
-
-		let cpOps: number[] = [];
-
-		for (let i = 0; i < size; i++) {
-			cpOps = [];
-			if (leftCps[i]) cpOps.push(leftCps[i]);
-			if (rightCps[i]) cpOps.push(rightCps[i]);
-			if (bestCps[i]) cpOps.push(bestCps[i]);
-
-			newBestCps[i] = Math.min(...cpOps);
-		}
-
-		return newBestCps;
-	}
+	let numCps = $derived(ksnWs.timer.checkpoints.length);
 </script>
 
-{#key bestSide}
-	{@const cps = bestSide ? bestSideCps : bestCps}
+{#key leader}
+	{@const cps = ksnWs.timer.getLeaderCheckpoints()}
+	{@const cpsFormatted = ksnWs.timer.getPlayerTimerBySteamId3(leader).prCheckpointsFormatted}
 	<div class="absolute right-0 left-0 m-auto mt-2 w-[25%] {settings.current.monoFont}">
 		<!-- header -->
 		<div class="grid grid-cols-3 items-center justify-center gap-x-4 text-center text-3xl">
 			<div class="justify-self-end">
-				{#if bestSide == 'left'}
-					<img
-						in:fade
-						src={overlay.current.leftPlayer.avatarURL}
-						alt=""
-						class="size-13 rounded-xl object-cover object-center"
-						draggable="false"
-					/>
-				{/if}
+				<img
+					in:fade
+					src={getPlayer(leader).avatarURL}
+					alt=""
+					class="size-13 rounded-xl object-cover object-center"
+					draggable="false"
+				/>
 			</div>
-			<div class="mt-2 h-11">
+			<div class="col-span-2 mt-2 h-11">
 				<span>
-					{bestSide ? csToTime(timer.current[`${bestSide}Pr`]! * 100) : '---'}
+					{ksnWs.timer.getPlayerTimerBySteamId3(leader).prFormatted}
 				</span>
-			</div>
-			<div>
-				{#if bestSide == 'right'}
-					<img
-						in:fade
-						src={overlay.current.rightPlayer.avatarURL}
-						alt=""
-						class="size-13 rounded-xl object-cover object-center"
-						draggable="false"
-					/>
-				{/if}
 			</div>
 			<hr class="hr" />
 		</div>
 
 		<!-- cps -->
 		<div
-			class="grid h-83 grid-cols-3 justify-center gap-x-4 {size > 14
-				? 'gap-y-1 text-2xl'
-				: 'gap-y-3 text-3xl'}"
+			class="grid h-83 grid-cols-3 justify-center gap-x-4
+                        {numCps > 14 ? 'gap-y-1 text-2xl' : 'gap-y-3 text-3xl'}"
 		>
-			{@render Comparison(cps, 'left')}
+			{@render Comparison(cps, overlay.current.players[0], 0)}
 
 			<!-- best pr cps -->
 			<div class="justify-self-center text-center">
-				{#each cps as cp, i (i)}
-					{#if cp && cp != 0}
+				{#each cpsFormatted as cp, i (i)}
+					{#if cp}
 						<div>
-							{csToTime(cp * 100)}
+							{cp}
 						</div>
 					{/if}
 				{/each}
 			</div>
 
 			<!-- right comparison -->
-			{@render Comparison(cps, 'right')}
+			{@render Comparison(cps, overlay.current.players[1], 1)}
 		</div>
 	</div>
 {/key}
 
-{#snippet Comparison(cps: number[], side: 'left' | 'right')}
-	<div class={side == 'left' ? 'justify-self-end text-right' : 'justify-self-start text-left'}>
-		{#each timer.current[`${side}cps`] as time, i (i)}
-			{#if cps && cps[i] && cps[i] != 0}
-				{@const diff = time - cps[i]}
-				{@const speed: 'faster' | 'same' | 'slower' = diff < 0 ? 'faster' : diff == 0 ? 'same' : diff > 0 ? 'slower' : 'same'}
+{#snippet Comparison(leaderCps: number[], steamID3: number | undefined, playerNum: number)}
+	{@const playerCps: number[] = steamID3 ? ksnWs.timer.getPlayerTimerBySteamId3(steamID3).currentCheckpointsCs : []}
+	<div class={playerNum == 0 ? 'justify-self-end text-right' : 'justify-self-start text-left'}>
+		{#each leaderCps as time, i (i)}
+			{#if leaderCps && leaderCps[i]}
+				{@const diff = time - playerCps[i]}
+				{@const speed: 'faster' | 'same' | 'slower' = diff > 0 ? 'faster' : diff < 0 ? 'slower' : 'same'}
 				{@const clr = {
-					faster: side == 'left' ? 'bg-ctp-blue-800/55' : 'bg-ctp-red-800/55',
-					slower: side == 'left' ? 'bg-ctp-blue-950/40' : 'bg-ctp-red-950/40',
+					faster: playerNum == 0 ? 'bg-ctp-blue-800/55' : 'bg-ctp-red-800/55',
+					slower: playerNum == 0 ? 'bg-ctp-blue-950/40' : 'bg-ctp-red-950/40',
 					same: 'bg-ctp-teal-950/55'
 				}}
 
@@ -138,7 +105,7 @@
 								: speed == 'same'
 									? clr.same
 									: ''}
-                                                        {size > 14 ? 'text-xl' : 'text-2xl'}"
+                                                        {numCps > 14 ? 'text-xl' : 'text-2xl'}"
 					>
 						{speed == 'same'
 							? '-'

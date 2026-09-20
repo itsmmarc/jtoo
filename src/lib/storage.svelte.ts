@@ -41,20 +41,17 @@ export const defaultSettings: Settings = {
 	enableFlags: true,
 	enableGradient: true,
 	enableTeamColors: true,
-	enableSinglePOV: false,
 	enablePOVGuide: false,
 	useShortMapNames: true,
 	ksnWebSocketToken: '',
 	overlayScene: 'MatchScene',
 	obsWsIp: '',
-	obsWsPw: '',
-	steamApiKey: ''
+	obsWsPw: ''
 };
 
 export const defaultOverlay: Overlay = {
 	bestOf: 3,
-	leftPlayer: new Player(),
-	rightPlayer: new Player(),
+	players: [undefined, undefined, undefined, undefined],
 	map: new TFMap(),
 	stage: '',
 	tournament: new Tournament()
@@ -75,6 +72,8 @@ export const overlay = new PersistentState('overlay', defaultOverlay);
 
 // overlay items
 export const items = new PersistentState('items', defaultItems);
+
+export const wsState = new PersistentState('wsState', { state: 0 }, 'sessionStorage');
 
 export function fullReset() {
 	counters.current = defaultCounters;

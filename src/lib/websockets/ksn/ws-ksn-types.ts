@@ -216,14 +216,16 @@ export namespace KSN {
 
 	export type Messages = {
 		mapPicks: PickBansSessionStateEvent;
-		timer: BaseTimerEvent | null;
-		competition: BaseCompetitionEvent | null;
+		mapPicksPrevious: PickBansSessionStateEvent;
+		timer: BaseTimerEvent | undefined;
+		competition: BaseCompetitionEvent | undefined;
 	};
 
 	export const defaultMessages = {
 		mapPicks: { type: 'pickbans_session_state', session: null },
-		timer: null,
-		competition: null
+		mapPicksPrevious: { type: 'pickbans_session_state', session: null },
+		timer: undefined,
+		competition: undefined
 	} as Messages;
 
 	// test checkpoint object - {"type": "timer_checkpoint","steamid": 50734103,"track": 0,"style": 1,"formattedCheckpoint": "Checkpoint 1","time": 6.25499963760376,"timestamp": 1780761188,"tick": 2428}

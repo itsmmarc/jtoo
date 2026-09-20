@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { items } from '$lib/storage.svelte';
 	import { Tournament } from '$lib/types';
-	import EditTournament from './EditTournament.svelte';
+	import AddTournament from './AddTournament.svelte';
 	import PopOver from './PopOver.svelte';
 
 	let popoverState: 'open' | 'closed' = $state('closed');
@@ -26,7 +26,7 @@
 					{/if}
 				</div>
 				<div>{tournament.info.name}</div>
-				<div><EditTournament {tournament} /></div>
+				<div><AddTournament {tournament} /></div>
 				<div>
 					<button class="button-remove" onclick={() => deleteTournament(tournament)}>delete</button>
 				</div>

@@ -1,15 +1,18 @@
 <script lang="ts">
 	import _ from 'underscore';
+	import { v4 as uuidv4 } from 'uuid';
 
 	type Props = {
 		opts: any[];
 		labelkey?: string | string[];
-		name: string;
+		optlabels?: string[];
 		value: any;
 		log?: boolean;
 		onchange?: Function;
 	};
-	let { opts, labelkey, name, log = false, value = $bindable(), onchange }: Props = $props();
+	let { opts, labelkey, optlabels, log = false, value = $bindable(), onchange }: Props = $props();
+
+	let name = uuidv4();
 
 	function onSelect() {
 		if (log) console.log(`${name}: ${value}`);
@@ -17,7 +20,10 @@
 		if (onchange) onchange();
 	}
 
-	function getOptionLabel(opt: any, labelkey: string | string[] | undefined) {
+	function getOptionLabel(opt: any, labelkey: string | string[] | undefined, index: number) {
+		if (optlabels && optlabels.length > index) {
+			return optlabels[index];
+		}
 		if (typeof labelkey == 'undefined') {
 			return opt;
 		}
@@ -46,12 +52,12 @@
 
 <div class="button-container">
 	{#each opts as opt, i (i)}
-		{@render RadioButton(opt)}
+		{@render RadioButton(opt, i)}
 	{/each}
 </div>
 
-{#snippet RadioButton(opt: any)}
-	{@const optlabel = getOptionLabel(opt, labelkey)}
+{#snippet RadioButton(opt: any, index: number)}
+	{@const optlabel = getOptionLabel(opt, labelkey, index)}
 	<label
 		class="button button-unselected flex cursor-pointer flex-col select-none has-checked:border-ctp-lavender-950 has-checked:bg-ctp-lavender
                 {labelkey && _.isEqual(opt, value)

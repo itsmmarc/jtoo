@@ -10,6 +10,12 @@
 	import TournamentInfoScene from '$lib/scenes/TournamentInfoScene.svelte';
 	import { OverlayScenes, type OverlayScene } from '$lib/types';
 
+	import { KSNWebSocket } from '$lib/websockets/ksn/ws-ksn.svelte';
+	import { setContext } from 'svelte';
+
+	let ksnWs = $state(new KSNWebSocket());
+	setContext('ksnWs', ksnWs);
+
 	let sceneComponents: Record<Exclude<OverlayScene, ''>, any> = {
 		MatchScene,
 		MapScene,

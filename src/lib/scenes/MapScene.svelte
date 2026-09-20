@@ -1,68 +1,15 @@
 <script lang="ts">
+	import MapPickProgressBar from '../components/maps/MapPickProgressBar.svelte';
+
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { settings, items, overlay } from '$lib/storage.svelte';
 	import { fade, slide } from 'svelte/transition';
-	import { messages, pickedMaps } from '$lib/websockets/ksn/ws-ksn.svelte';
-	import { type PickBansSessionStateEvent } from '$lib/websockets/ksn/ws-ksn-types';
 	import { TFMap } from '$lib/types';
+	import { getContext } from 'svelte';
+	import type { KSNWebSocket } from '$lib/websockets/ksn/ws-ksn.svelte';
+	import { KSN } from '$lib/websockets/ksn/ws-ksn-types';
 
-	let progress = $state(0);
-	let increment = 0;
-	let timeout: NodeJS.Timeout;
-	let mapPicks = $derived(messages.current.mapPicks);
-	let mapPicksOld: PickBansSessionStateEvent | null = null;
-
-	$effect(() => {
-		// if no session exists, ignore
-		if (!mapPicks.session) {
-			return;
-		}
-
-		// if this is the first session, set up old session
-		if (!mapPicksOld) {
-			mapPicksOld = { ...mapPicks };
-		} else if (
-			// if the new session matches the old session, ignore
-			mapPicksOld.session &&
-			mapPicks.session.currentTurn?.turnId == mapPicksOld.session.currentTurn?.turnId
-		) {
-			return;
-		}
-
-		pickedMaps.current = [];
-		for (const turn of mapPicks.session.history) {
-			if (turn.action == 'pick') {
-				let actor = mapPicks.session[`player${turn.actor}`].steamId3;
-				pickedMaps.current = [...pickedMaps.current, { mapID: turn.mapId, steamID3: actor }];
-			}
-		}
-
-		startTurnTimer();
-		mapPicksOld = { ...mapPicks };
-	});
-
-	function startTurnTimer() {
-		clearTimeout(timeout);
-		progress = 0;
-
-		let m: PickBansSessionStateEvent = messages.current.mapPicks;
-
-		if (m && m.session?.config.turnTimeLimitSeconds) {
-			let timelimit = (m.session.config.turnTimeLimitSeconds + 2) * 1000;
-			let fps = 30;
-			let interval = 1000 / fps;
-			increment = (interval / timelimit) * 100;
-
-			timeout = setInterval(timer, interval);
-		}
-	}
-
-	function timer() {
-		progress += increment;
-		if (progress > 100) {
-			progress = 0;
-		}
-	}
+	let ksnWs: KSNWebSocket = getContext('ksnWs');
 </script>
 
 <!-- isolated border filter -->
@@ -88,10 +35,10 @@
 	<section class="flex flex-wrap justify-around gap-5 p-10">
 		{#each overlay.current.tournament.maps as map, i (i)}
 			{#if !map.fileName}
-				{@const m: PickBansSessionStateEvent | null = messages.current.mapPicks ? messages.current.mapPicks : null}
+				{@const m: KSN.PickBansSessionStateEvent | null = ksnWs.messages.mapPicks ? ksnWs.messages.mapPicks : null}
 				<div class="@container relative mb-2 h-65 w-130 text-4xl">
 					{#if m && 'session' in m && m.session}
-						{@const pickNum = pickedMaps.current.findIndex(
+						{@const pickNum = ksnWs.pickedMaps.findIndex(
 							(p) => p.mapID == TFMap.fileNameToTfId(map.fileName)
 						)}
 						{#if pickNum >= 0}
@@ -145,24 +92,5 @@
 			{/if}
 		{/each}
 	</section>
-	<section class="m-auto flex w-[90%] flex-col gap-3 self-center pb-3">
-		{#if messages.current.mapPicks && messages.current.mapPicks}
-			{@const m: PickBansSessionStateEvent = messages.current.mapPicks}
-			{#if m && 'session' in m && m.session}
-				{@const step = m.session.steps[m.session.currentStepIndex]}
-				{#if step}
-					<div class="text-4xl">
-						{step.actor == 'A' ? m.session.playerA.displayName : m.session.playerB.displayName} is {step.action ==
-						'pick'
-							? 'picking'
-							: 'banning'}
-					</div>
-					<div
-						class="h-5 rounded-xl bg-ctp-lavender"
-						style="width: {progress}%; {getFiltersStyle()}"
-					></div>
-				{/if}
-			{/if}
-		{/if}
-	</section>
+	<MapPickProgressBar />
 </section>

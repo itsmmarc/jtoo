@@ -7,27 +7,42 @@
 		TFMap,
 		Tournament,
 		TournamentFormats,
+		type MapFileName,
+		type SteamID3,
 		type TFClass
 	} from '$lib/types';
 	import _ from 'underscore';
 	import RadioInputs from './RadioInputs.svelte';
-	import Importplayer from './ImportPlayer.svelte';
-	import Importmap from './ImportMap.svelte';
+	import ImportPlayer from './ImportPlayer.svelte';
+	import ImportMap from './ImportMap.svelte';
 	import { Bracket4, Bracket8 } from '$lib/Bracket.svelte';
 	import AddBracket from './AddBracket.svelte';
 	import DraggablePlayerList from '../DraggablePlayerList.svelte';
+	import { getMap, getPlayer } from '$lib/util';
 
 	type Error = { state: boolean; msg: string };
 
-	let maxPlayers = $state(999);
+	type Props = { tournament?: Tournament };
+	let { tournament = new Tournament() }: Props = $props();
+
+	let mode: 'add' | 'edit' = $state(tournament.format == '' ? 'add' : 'edit');
+
 	let playerSeachTerm = $state('');
 	let mapSeachTerm = $state('');
 	let playerSearchResults: Player[] = $state([]);
 	let mapSearchResults: TFMap[] = $state([]);
 
-	let formatChosen = $state(false);
+	let formatChosen = $derived(testIfFormatChosen(tournament));
+	function testIfFormatChosen(tournament: Tournament) {
+		return tournament.format != '' ? true : false;
+	}
+	let maxPlayers = $derived(formatChosen ? getMaxPlayers(tournament.format) : 999);
+	function getMaxPlayers(
+		format: '' | 'DoubleElim4Player' | 'DoubleElim8Player' | 'AllOutRoyale' | 'Leaderboard'
+	) {
+		return format == 'DoubleElim4Player' ? 4 : format == 'DoubleElim8Player' ? 8 : 999;
+	}
 	let popoverState: 'open' | 'closed' = $state('closed');
-	let tournament = $state(new Tournament());
 	let error = $state({
 		invalidTempusID: { state: false, msg: 'error: invalid tempus id' } as Error,
 		noName: { state: false, msg: 'error: no name entered' } as Error,
@@ -51,7 +66,25 @@
 			return;
 		}
 
-		items.current.tournaments = [...items.current.tournaments, tournament];
+		switch (mode) {
+			case 'add':
+				items.current.tournaments.push(tournament);
+				break;
+			case 'edit':
+				for (let i of items.current.tournaments.keys()) {
+					if (items.current.tournaments[i].id == tournament.id) {
+						items.current.tournaments[i] = tournament;
+						console.log('updated tournament:');
+						console.log(tournament);
+					}
+				}
+				break;
+			default:
+				break;
+		}
+
+		items.current.tournaments = [...items.current.tournaments];
+
 		console.log('added tournament:');
 		console.log(tournament);
 
@@ -81,7 +114,9 @@
 			return;
 		}
 
-		formatChosen = true;
+		tournament = { ...tournament };
+
+		console.log(formatChosen);
 	}
 
 	function clearErrors() {
@@ -93,7 +128,6 @@
 	function clear() {
 		tournament = new Tournament();
 		clearErrors();
-		formatChosen = false;
 		playerSeachTerm = '';
 		playerSearchResults = [];
 		mapSeachTerm = '';
@@ -107,7 +141,7 @@
 		mapSearchResults = items.current.maps.filter((m) => m.fileName.includes(searchTerm));
 	}
 
-	function importplayer(player: Player) {
+	function importPlayer(player: SteamID3) {
 		if (tournament.players.length < maxPlayers) {
 			tournament = {
 				...tournament,
@@ -117,7 +151,7 @@
 		}
 		error.maxPlayers.state = true;
 	}
-	function importMap(map: TFMap) {
+	function importMap(map: MapFileName) {
 		console.log('adding map to tournament');
 		console.log(map);
 		tournament = {
@@ -128,16 +162,16 @@
 	}
 
 	function removePlayer(player: Player) {
-		tournament.players = tournament.players.filter((p) => p.tempusID != player.tempusID);
+		tournament.players = tournament.players.filter((p) => p != player.steamID3);
 		error.maxPlayers.state = false;
 	}
-	function removeMap(map: TFMap) {
-		tournament.maps = tournament.maps.filter((m) => m.mapZoneId != map.mapZoneId);
+	function removeMap(map: MapFileName) {
+		tournament.maps = tournament.maps.filter((m) => m != map);
 	}
 
 	function isPlayerInTournament(player: Player) {
 		for (const p of tournament.players) {
-			if (p.tempusID == player.tempusID) {
+			if (p == player.steamID3) {
 				return true;
 			}
 		}
@@ -145,7 +179,7 @@
 	}
 	function isMapInTournament(map: TFMap) {
 		for (const m of tournament.maps) {
-			if (m.mapZoneId == map.mapZoneId) {
+			if (m == map.fileName) {
 				return true;
 			}
 		}
@@ -158,15 +192,15 @@
 		});
 	}
 
-	function sortMaps(maps: TFMap[], tfClass: TFClass): TFMap[] {
+	function sortMaps(maps: MapFileName[], tfClass: TFClass): MapFileName[] {
 		return maps.sort((a, b) => {
 			if (tfClass == 'overall') tfClass = 'soldier';
-			return b.tier[tfClass] - a.tier[tfClass];
+			return getMap(b).tier[tfClass] - getMap(a).tier[tfClass];
 		});
 	}
 </script>
 
-<PopOver title="add tournament" bind:state={popoverState} clearfn={clear}>
+<PopOver title="{mode} tournament" bind:state={popoverState} clearfn={clear}>
 	<section class="grid grid-cols-12 gap-2">
 		<!-- MARK: Format -->
 		<div class="col-span-full flex flex-col">
@@ -178,11 +212,9 @@
 				onchange={() => {
 					switch (tournament.format) {
 						case 'DoubleElim4Player':
-							tournament.bracket = new Bracket4();
 							maxPlayers = 4;
 							break;
 						case 'DoubleElim8Player':
-							tournament.bracket = new Bracket8();
 							maxPlayers = 8;
 							break;
 						case 'Leaderboard':
@@ -202,12 +234,14 @@
 			/>
 			<label for="tfclass" class="col-span-4">class</label>
 			<RadioInputs name="tfclass" bind:value={tournament.info.class} opts={[...TFClasses]} />
-			<button
-				class="button col-span-4 mt-2 max-w-30 justify-self-center"
-				onclick={() => {
-					onCreate();
-				}}>create</button
-			>
+			{#if mode == 'add'}
+				<button
+					class="button col-span-4 mt-2 max-w-30 justify-self-center"
+					onclick={() => {
+						onCreate();
+					}}>create</button
+				>
+			{/if}
 		</div>
 
 		<hr class="hr" />
@@ -288,7 +322,7 @@
 								<button
 									class="button col-span-3"
 									onclick={() => {
-										importplayer(player);
+										importPlayer(player.steamID3);
 
 										playerSearchResults = [];
 										playerSeachTerm = '';
@@ -300,7 +334,7 @@
 				{/if}
 
 				<div class="col-span-full">
-					<Importplayer container={false} oncreate={(player) => importplayer(player)} />
+					<ImportPlayer container={false} oncreate={(player) => importPlayer(player.steamID3)} />
 				</div>
 			{/if}
 
@@ -340,21 +374,21 @@
 
 			{#if mapSearchResults.length > 0}
 				<div class="col-span-full grid grid-cols-12 gap-2">
-					{#each mapSearchResults as map, i (i)}
-						{#if map.fileName && !isMapInTournament(map)}
+					{#each mapSearchResults as mapObj, i (i)}
+						{#if mapObj.fileName && !isMapInTournament(mapObj)}
 							<div class="col-span-3">
 								<img
-									src={map.imageURL}
+									src={mapObj.imageURL}
 									alt=""
 									class="size-12 rounded-xl object-cover object-center"
 									draggable="false"
 								/>
 							</div>
-							<div class="col-span-6">{map.fileName}</div>
+							<div class="col-span-6">{mapObj.fileName}</div>
 							<button
 								class="button col-span-3"
 								onclick={() => {
-									importMap(map);
+									importMap(mapObj.fileName);
 									mapSearchResults = [];
 									mapSeachTerm = '';
 									console.log(tournament.maps);
@@ -366,19 +400,20 @@
 			{/if}
 
 			<div class="col-span-full">
-				<Importmap container={false} oncreate={(map) => importMap(map)} />
+				<ImportMap container={false} oncreate={(mapObj) => importMap(mapObj.fileName)} />
 			</div>
 
 			{#each tournament.maps as map, i (i)}
+				{@const mapObj = getMap(map)}
 				<div class="col-span-3">
 					<img
-						src={map.imageURL}
+						src={mapObj.imageURL}
 						alt=""
 						class="size-12 rounded-xl object-cover object-center"
 						draggable="false"
 					/>
 				</div>
-				<div class="col-span-6">{map.fileName}</div>
+				<div class="col-span-6">{mapObj.fileName}</div>
 				<div class="col-span-3">
 					<button
 						class="button-remove"
@@ -401,7 +436,7 @@
 						container={false}
 						format={tournament.format}
 						players={tournament.players}
-						bind:value={tournament.bracket}
+						bind:bracket={tournament.bracket}
 					/>
 				</div>
 
@@ -412,7 +447,7 @@
 				class="button col-span-6"
 				onclick={() => {
 					addTournament(tournament);
-				}}>add tournament</button
+				}}>{mode == 'add' ? 'add' : 'update'} tournament</button
 			>
 		{/if}
 

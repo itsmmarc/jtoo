@@ -1,18 +1,60 @@
 <script lang="ts">
-	import type { Player, SteamID3 } from '$lib/types';
+	import type { Bracket4, Bracket8 } from '$lib/Bracket.svelte';
+	import type { Player, SteamID3, TournamentFormat } from '$lib/types';
 	import { getPlayer } from '$lib/util';
+	import { onMount } from 'svelte';
 
 	let itemAIndex = $state(-1);
 	let itemBIndex = $state(-1);
 
 	type Props = {
-		players: SteamID3[];
-		onremove: Function;
+		bracket: Bracket4 | Bracket8;
+		tournamentFormat: TournamentFormat;
 		onchange?: Function;
 		debug?: boolean;
 		class?: string;
 	};
-	let { players = $bindable(), onchange, onremove, debug, class: styleClass }: Props = $props();
+	let {
+		bracket = $bindable(),
+		tournamentFormat,
+		onchange,
+		debug,
+		class: styleClass
+	}: Props = $props();
+
+	let players: SteamID3[] = $state([]);
+
+	onMount(() => {
+		players = getStartingMatches(bracket, tournamentFormat);
+	});
+
+	function getStartingMatches(bracket: Bracket4 | Bracket8, format: TournamentFormat): SteamID3[] {
+		let list: SteamID3[] = [];
+
+		let maxPlayers = format == 'DoubleElim4Player' ? 4 : format == 'DoubleElim8Player' ? 8 : 0;
+		for (let i = 0; i < maxPlayers / 2; i++) {
+			list.push(bracket.Upper.QuarterFinals[i].A!);
+			list.push(bracket.Upper.QuarterFinals[i].B!);
+		}
+		return list;
+	}
+
+	function syncBracket(
+		players: SteamID3[],
+		bracket: Bracket4 | Bracket8,
+		format: TournamentFormat
+	) {
+		let maxPlayers = format == 'DoubleElim4Player' ? 4 : 8;
+		for (let i = 0; i < maxPlayers; i++) {
+			let actor: 'A' | 'B' = i % 2 == 0 ? 'A' : 'B';
+			let matchIndex: number = Math.floor(i / 2);
+			bracket.Upper.QuarterFinals[matchIndex][actor] = players[i];
+			console.log(`Match ${matchIndex} Actor ${actor} changed to ${players[i]}`);
+			console.log(bracket.Upper.QuarterFinals[matchIndex][actor]);
+			console.log(bracket);
+		}
+		// bracket = { ...bracket };
+	}
 
 	let playerObjs = $derived(getPlayerObjs(players));
 
@@ -22,10 +64,6 @@
 			list.push(getPlayer(p));
 		}
 		return list;
-	}
-
-	function removePlayer(player: SteamID3) {
-		players = players.filter((p) => p != player);
 	}
 
 	function swapPlayers(aIndex: number, bIndex: number) {
@@ -39,6 +77,8 @@
 		// place dragged item in location of dragover
 		players.splice(bIndex, 0, temp);
 
+		syncBracket(players, bracket, tournamentFormat);
+
 		if (onchange) onchange();
 
 		players = [...players];
@@ -51,11 +91,11 @@
 </script>
 
 <div class="bg-obs-background {styleClass}">
-	<ul class="flex flex-col gap-2">
+	<ul class="flex flex-col">
 		{#each players as player, i (i)}
 			{@const playerObj = playerObjs[i]}
 			<li
-				class="grid grid-cols-12 bg-obs-padding"
+				class="grid grid-cols-12 bg-obs-padding {i % 2 ? 'mb-2' : ''}"
 				draggable={true}
 				ondragstart={() => {
 					itemAIndex = i;
@@ -77,16 +117,7 @@
 						draggable="false"
 					/>
 				</div>
-				<div class="col-span-6">{playerObj.name}</div>
-				<div class="col-span-2">
-					<button
-						class="button-remove"
-						onclick={() => {
-							removePlayer(player);
-							onremove();
-						}}>remove</button
-					>
-				</div>
+				<div class="col-span-8">{playerObj.name}</div>
 				<div class="col-span-2 flex flex-col">
 					<button
 						class="button {i == 0 ? 'pointer-events-none opacity-20' : ''}"
