@@ -2,7 +2,6 @@
 	import type { Bracket4, Bracket8 } from '$lib/Bracket.svelte';
 	import type { Player, SteamID3, TournamentFormat } from '$lib/types';
 	import { getPlayer } from '$lib/util';
-	import { onMount } from 'svelte';
 
 	let itemAIndex = $state(-1);
 	let itemBIndex = $state(-1);
@@ -22,11 +21,7 @@
 		class: styleClass
 	}: Props = $props();
 
-	let players: SteamID3[] = $state([]);
-
-	onMount(() => {
-		players = getStartingMatches(bracket, tournamentFormat);
-	});
+	let players: SteamID3[] = $derived(getStartingMatches(bracket, tournamentFormat));
 
 	function getStartingMatches(bracket: Bracket4 | Bracket8, format: TournamentFormat): SteamID3[] {
 		let list: SteamID3[] = [];

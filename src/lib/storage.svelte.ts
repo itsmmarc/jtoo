@@ -52,7 +52,7 @@ export const defaultSettings: Settings = {
 export const defaultOverlay: Overlay = {
 	bestOf: 3,
 	players: [undefined, undefined, undefined, undefined],
-	map: new TFMap(),
+	map: '',
 	stage: '',
 	tournament: new Tournament()
 };
@@ -72,8 +72,6 @@ export const overlay = new PersistentState('overlay', defaultOverlay);
 
 // overlay items
 export const items = new PersistentState('items', defaultItems);
-
-export const wsState = new PersistentState('wsState', { state: 0 }, 'sessionStorage');
 
 export function fullReset() {
 	counters.current = defaultCounters;

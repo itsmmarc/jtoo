@@ -17,7 +17,7 @@
 			if (!steamID3) {
 				timers.push(undefined);
 			} else {
-				timers.push(ksnWs.timer.getPlayerTimerBySteamId3(steamID3));
+				timers.push(ksnWs.timer.getPlayerTimer(steamID3));
 			}
 		});
 		return timers;
@@ -25,25 +25,43 @@
 
 	let leftCps = $derived(playerTimers[0]?.currentCheckpointsCs);
 	let rightCps = $derived(playerTimers[1]?.currentCheckpointsCs);
-	let bestCps = $derived(ksnWs.timer.getLeaderCheckpoints());
-	let leader = $derived(getLeader());
-	function getLeader() {
-		ksnWs.timer.sortPlayers();
-		return ksnWs.timer.players[ksnWs.timer.players.length - 1].steamID3;
-	}
+	let bestCps = $derived(ksnWs.timer.leaderCheckpoints);
+
 	let numCps = $derived(ksnWs.timer.checkpoints.length);
+
+	$effect(() => {
+		if (overlay.current.players) {
+			for (const p of overlay.current.players)
+				if (p) {
+					ksnWs.timer.verifyPlayerAdded(p);
+				}
+		}
+	});
+
+        function test(){
+                console.log(ksnWs)
+                console.log(ksnWs.timer)
+                console.log(ksnWs.timer.leader)
+                console.log(ksnWs.timer.getPlayerTimer(
+		ksnWs.timer.leader!
+	))
+                return 1
+        }
 </script>
 
-{#key leader}
-	{@const cps = ksnWs.timer.getLeaderCheckpoints()}
-	{@const cpsFormatted = ksnWs.timer.getPlayerTimerBySteamId3(leader).prCheckpointsFormatted}
+{#if ksnWs.timer.leader}
+        {@const cps = ksnWs.timer.leaderCheckpoints}
+        {const x = test()}
+        {@const cpsFormatted = ksnWs.timer.getPlayerTimer(
+                ksnWs.timer.leader
+        )!.prCheckpointsFormatted}
 	<div class="absolute right-0 left-0 m-auto mt-2 w-[25%] {settings.current.monoFont}">
 		<!-- header -->
 		<div class="grid grid-cols-3 items-center justify-center gap-x-4 text-center text-3xl">
 			<div class="justify-self-end">
 				<img
 					in:fade
-					src={getPlayer(leader).avatarURL}
+					src={getPlayer(ksnWs.timer.leader).avatarURL}
 					alt=""
 					class="size-13 rounded-xl object-cover object-center"
 					draggable="false"
@@ -51,7 +69,7 @@
 			</div>
 			<div class="col-span-2 mt-2 h-11">
 				<span>
-					{ksnWs.timer.getPlayerTimerBySteamId3(leader).prFormatted}
+					{ksnWs.timer.getPlayerTimer(ksnWs.timer.leader)!.prFormatted}
 				</span>
 			</div>
 			<hr class="hr" />
@@ -79,10 +97,10 @@
 			{@render Comparison(cps, overlay.current.players[1], 1)}
 		</div>
 	</div>
-{/key}
+{/if}
 
 {#snippet Comparison(leaderCps: number[], steamID3: number | undefined, playerNum: number)}
-	{@const playerCps: number[] = steamID3 ? ksnWs.timer.getPlayerTimerBySteamId3(steamID3).currentCheckpointsCs : []}
+	{@const playerCps: number[] = steamID3 ? ksnWs.timer.getPlayerTimer(steamID3)!.currentCheckpointsCs : []}
 	<div class={playerNum == 0 ? 'justify-self-end text-right' : 'justify-self-start text-left'}>
 		{#each leaderCps as time, i (i)}
 			{#if leaderCps && leaderCps[i]}

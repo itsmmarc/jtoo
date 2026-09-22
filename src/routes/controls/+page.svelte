@@ -34,6 +34,10 @@
 			setScene(settings.current.overlayScene);
 		}
 	});
+
+	if (settings.current.ksnWebSocketToken) {
+		ksnWs.connect(settings.current.ksnWebSocketToken);
+	}
 </script>
 
 <span class="self-center">jtoo controls</span>
@@ -96,6 +100,7 @@
 					type="text"
 					class="input"
 					id="input-websocket-obs"
+					placeholder="ws://localhost:4455"
 					value={settings.current.obsWsIp}
 					onchange={(e) => {
 						let target = e.target as HTMLInputElement;

@@ -1,8 +1,9 @@
-import { settings, wsState } from '../../storage.svelte';
+import { settings } from '../../storage.svelte';
 import { KSN } from './ws-ksn-types';
 import { ProxyWebSocket } from '../../ProxyWebSocket';
 import { indexOf } from 'underscore';
 import { csToTime } from '$lib/util';
+import type { SteamID3 } from '$lib/types';
 
 type PickedMaps = Array<{ mapID: String; steamID3: string }>;
 class RunTimer {
@@ -12,11 +13,12 @@ class RunTimer {
 
 	constructor() {
 		this._timeout = undefined;
-		this._time = 0;
+		this._time = $state(0);
 		this._isRunning = false;
 	}
 
 	start() {
+		console.log('starting run timer');
 		this._time = 0;
 		clearTimeout(this._timeout);
 		this._isRunning = true;
@@ -51,7 +53,7 @@ class RunTimer {
 	}
 }
 export class PlayerTimer {
-	private _steamID3: number;
+	private readonly _steamID3: number;
 	private _timer: RunTimer;
 	private _pr: number | undefined;
 	private _prCps: number[];
@@ -59,10 +61,10 @@ export class PlayerTimer {
 
 	constructor(steamID3: number) {
 		this._steamID3 = steamID3;
-		this._timer = new RunTimer();
-		this._pr = undefined;
-		this._prCps = [];
-		this._currentCps = [];
+		this._timer = $state(new RunTimer());
+		this._pr = $state(undefined);
+		this._prCps = $state([]);
+		this._currentCps = $state([]);
 	}
 
 	startTimer() {
@@ -76,7 +78,7 @@ export class PlayerTimer {
 		this.stopTimer();
 
 		if (!this._pr || finishTime < this._pr) {
-			this._pr = finishTime;
+			this._pr = finishTime * 100; // convert from seconds to centiseconds
 			this._prCps = [...this._currentCps];
 		}
 	}
@@ -141,8 +143,8 @@ class CompetitionTimer {
 	constructor() {
 		this._timeout = undefined;
 		this._durationSeconds = 0;
-		this._timeLeftSeconds = 0;
-		this._overtimeStatus = false;
+		this._timeLeftSeconds = $state(0);
+		this._overtimeStatus = $state(false);
 	}
 
 	startCountdownTimer(durationSeconds: number) {
@@ -199,81 +201,65 @@ class CompetitionTimer {
 }
 class KSNTimer {
 	private _competition: CompetitionTimer;
-	private _players: PlayerTimer[];
+	private _players: Map<SteamID3, PlayerTimer>;
 	private _checkpoints: string[];
 
 	constructor() {
-		this._competition = new CompetitionTimer();
-		this._players = [];
-		this._checkpoints = [];
+		this._competition = $state(new CompetitionTimer());
+		this._players = $state(new Map<SteamID3, PlayerTimer>());
+		this._checkpoints = $state([]);
 	}
 
-	getPlayerIndex(steamID3: number): number {
-		for (let i = 0; i < this._players.length; i++) {
-			if (this._players[i].steamID3 == steamID3) {
-				return i;
-			}
+	verifyPlayerAdded(steamID3: SteamID3) {
+		if (!this.getPlayerTimer(steamID3)) {
+			this._players.set(steamID3, new PlayerTimer(steamID3));
 		}
-		this._players.push(new PlayerTimer(steamID3));
-		return this._players.length - 1;
-	}
-	playerIndexIsValid(playerIndex: number): boolean {
-		return playerIndex > 0 && playerIndex < this._players.length;
 	}
 
 	clearAllTimers() {
 		this.clearAllPlayerTimers();
 		this._competition.clear();
 	}
-	startPlayerTimer(playerIndex: number) {
-		if (this.playerIndexIsValid(playerIndex)) {
-			this._players[playerIndex].startTimer();
-		}
+	startPlayerTimer(steamID3: SteamID3) {
+		this.getPlayerTimer(steamID3)?.startTimer();
 	}
-	stopPlayerTimer(playerIndex: number) {
-		if (this.playerIndexIsValid(playerIndex)) {
-			this._players[playerIndex].stopTimer();
-		}
+	stopPlayerTimer(steamID3: SteamID3) {
+		this.getPlayerTimer(steamID3)?.stopTimer();
 	}
-	finishPlayerTimer(playerIndex: number, finishTime: number) {
-		if (this.playerIndexIsValid(playerIndex)) {
-			this._players[playerIndex].finishTimer(finishTime);
-		}
+	finishPlayerTimer(steamID3: SteamID3, finishTime: number) {
+		this.getPlayerTimer(steamID3)?.finishTimer(finishTime);
 	}
-	clearPlayerPr(playerIndex: number) {
-		if (this.playerIndexIsValid(playerIndex)) {
-			this._players[playerIndex].clearPr();
-		}
+	clearPlayerPr(steamID3: SteamID3) {
+		this.getPlayerTimer(steamID3)?.clearPr();
 	}
-	pushCheckpointPlayerTimer(playerIndex: number, checkpointName: string, checkpointTime: number) {
+	pushCheckpointPlayerTimer(steamID3: SteamID3, checkpointName: string, checkpointTime: number) {
 		if (this._checkpoints && !this._checkpoints.includes(checkpointName)) {
 			this._checkpoints.push(checkpointName);
 		}
 
 		const checkpointIndex = indexOf(this._checkpoints, checkpointName);
 
-		if (this.playerIndexIsValid(playerIndex)) {
-			this._players[playerIndex].pushCheckpoint(checkpointTime, checkpointIndex);
-		}
+		this.getPlayerTimer(steamID3)?.pushCheckpoint(checkpointTime, checkpointIndex);
 	}
-	resetPlayerTimer(playerIndex: number) {
-		if (this.playerIndexIsValid(playerIndex)) {
-			this._players[playerIndex].resetTimer();
-			this._players[playerIndex].resetCheckpoints();
-		}
+	resetPlayerTimer(steamID3: SteamID3) {
+		this.getPlayerTimer(steamID3)?.resetTimer();
+		this.getPlayerTimer(steamID3)?.resetCheckpoints();
 	}
 
 	stopAllPlayerTimers() {
-		this._players.every((_, index) => this.stopPlayerTimer(index));
+		this._players.forEach((player) => player.stopTimer());
 	}
 	resetAllPlayerCheckpoints() {
-		this._players.every((player, _) => player.resetCheckpoints());
+		this._players.forEach((player) => player.resetCheckpoints());
 	}
 	clearAllPlayerTimers() {
-		this._players.every((_, index) => this.resetPlayerTimer(index));
+		this._players.forEach((player) => {
+			player.resetTimer();
+			player.resetCheckpoints;
+		});
 	}
 	clearAllPlayerPrs() {
-		this._players.every((_, index) => this.clearPlayerPr(index));
+		this._players.forEach((player) => player.clearPr());
 	}
 
 	fullClear() {
@@ -282,55 +268,76 @@ class KSNTimer {
 	}
 
 	sortPlayers() {
+		let temp = Array.from(this._players);
 		// sort by pr
-		this._players.sort((a, b) => {
-			if (a.prCs && b.prCs) {
-				return a.prCs < b.prCs ? -1 : 1;
+		temp.sort((a, b) => {
+			if (a[1].prCs && b[1].prCs) {
+				return a[1].prCs < b[1].prCs ? -1 : 1;
 			}
-			if (a.prCs && !b.prCs) {
+			if (a[1].prCs && !b[1].prCs) {
 				return -1;
 			}
-			if (!a.prCs && b.prCs) {
+			if (!a[1].prCs && b[1].prCs) {
 				return 1;
 			}
 			return 0;
 		});
 
 		// sort players without a pr by number of checkpoints
-		this._players.sort((a, b) => {
-			if (a.prCs || b.prCs) {
+		temp.sort((a, b) => {
+			if (a[1].prCs || b[1].prCs) {
 				return 0;
 			}
-			if (a.checkpointsCollected > b.checkpointsCollected) {
+			if (a[1].checkpointsCollected > b[1].checkpointsCollected) {
 				return 1;
 			}
-			if (a.checkpointsCollected < b.checkpointsCollected) {
+			if (a[1].checkpointsCollected < b[1].checkpointsCollected) {
 				return -1;
 			}
 			if (
-				a.currentCheckpointsCs[a.checkpointsCollected - 1] <
-				b.currentCheckpointsCs[b.checkpointsCollected - 1]
+				a[1].currentCheckpointsCs[a[1].checkpointsCollected - 1] <
+				b[1].currentCheckpointsCs[b[1].checkpointsCollected - 1]
 			) {
 				return -1;
 			} else {
 				return 1;
 			}
 		});
+
+		this._players = new Map(temp);
 	}
 
 	// getters
-	getPlayerTimerBySteamId3(steamID3: number) {
-		return this._players[this.getPlayerIndex(steamID3)];
+	/**
+	 * @param steamID3
+	 * @returns player index if exists, else undefined
+	 * call verifyPlayerAdded if this returns undefined
+	 */
+	getPlayerTimer(steamID3: number): PlayerTimer | undefined {
+		return this._players.get(steamID3);
 	}
 
-	getLeaderCheckpoints() {
-		this.sortPlayers();
-		if (this._players[this._players.length - 1].prCs) {
-			return this._players[this._players.length - 1].prCheckpointsCs;
-		}
-		return this._players[this._players.length - 1].currentCheckpointsCs;
+	get leaderCheckpoints() {
+		if (this.players.size == 0) return [];
+
+		let leaderTimer = this._players.values().next().value;
+
+		if (!leaderTimer) return [];
+
+		if (!leaderTimer.prCs) return leaderTimer.currentCheckpointsCs;
+
+		return leaderTimer.prCheckpointsCs;
 	}
 
+	get leader(): SteamID3 | undefined {
+		if (this.players.size == 0) return undefined;
+
+		let leader = this._players.keys().next().value;
+
+		if (!leader) return undefined;
+
+		return leader;
+	}
 	// get checkpoints of hypothetical "sum of best" run. probably going to be too expensive to run often when we have large player counts
 	// getBestCheckpoints() {
 	// 	let newBestCps: number[] = [];
@@ -362,7 +369,7 @@ class KSNTimer {
 export class KSNWebSocket {
 	private _ws: ProxyWebSocket | undefined;
 	private _channel: BroadcastChannel;
-	private _messages: KSN.Messages;
+	private _messages: KSN.Messages; // probably not necessary, really only need previousMapPicks
 	private _pickedMaps: PickedMaps;
 	private _timer: KSNTimer;
 
@@ -370,27 +377,29 @@ export class KSNWebSocket {
 		this._ws = undefined;
 		this._channel = new BroadcastChannel('ksnTimer');
 		this._messages = KSN.defaultMessages;
-		this._pickedMaps = [] as PickedMaps;
-		this._timer = new KSNTimer();
+		this._pickedMaps = $state([]) as PickedMaps;
+		this._timer = $state(new KSNTimer());
 
+		this._channel.postMessage({ type: 'welcome', value: 'hello world' });
 		this._channel.onmessage = (event) => this.onBcMessage(event);
 	}
 
 	private onBcMessage(event: MessageEvent) {
-		const data: KSNBCMessageType = JSON.parse(event.data);
+		// const data: KSNBCMessageType = JSON.parse(event.data);
+		const data: KSNBCMessageType = event.data;
 
 		console.log(data);
 		console.log(event.data);
 
 		switch (data.type) {
 			case 'connect':
-				this.connect(data.value);
+				this._connect(data.value);
 				break;
 			case 'clearPicksAndBans':
-				this.clearPicksAndBans();
+				this._clearPicksAndBans();
 				break;
 			case 'clearTimers':
-				this.clearTimers();
+				this._clearTimers();
 				break;
 			default:
 				break;
@@ -402,7 +411,7 @@ export class KSNWebSocket {
 		console.log(data);
 		console.log(event.data);
 
-		let playerIndex: number | undefined;
+		// let playerTimer: PlayerTimer | undefined;
 
 		switch (data.type) {
 			case 'pickbans_session_state':
@@ -410,20 +419,22 @@ export class KSNWebSocket {
 				this.processMapPick();
 				break;
 			case 'timer_start':
-				playerIndex = this.timer.getPlayerIndex(data.steamid);
-				this.timer.startPlayerTimer(playerIndex);
+				this.timer.verifyPlayerAdded(data.steamid);
+				this.timer.startPlayerTimer(data.steamid);
 				break;
 			case 'timer_stop':
-				playerIndex = this.timer.getPlayerIndex(data.steamid);
-				this.timer.stopPlayerTimer(playerIndex);
+				this.timer.verifyPlayerAdded(data.steamid);
+				this.timer.stopPlayerTimer(data.steamid);
 				break;
 			case 'timer_finish':
-				playerIndex = this.timer.getPlayerIndex(data.steamid);
-				this.timer.finishPlayerTimer(playerIndex, data.time);
+				this.timer.verifyPlayerAdded(data.steamid);
+				this.timer.finishPlayerTimer(data.steamid, data.time);
+				this.timer.sortPlayers();
 				break;
 			case 'timer_checkpoint':
-				playerIndex = this.timer.getPlayerIndex(data.steamid);
-				this.timer.pushCheckpointPlayerTimer(playerIndex, data.formattedCheckpoint, data.time);
+				this.timer.verifyPlayerAdded(data.steamid);
+				this.timer.pushCheckpointPlayerTimer(data.steamid, data.formattedCheckpoint, data.time);
+				this.timer.sortPlayers();
 				break;
 			case 'competition_session_live':
 				this.timer.fullClear();
@@ -432,19 +443,29 @@ export class KSNWebSocket {
 			case 'competition_session_end':
 				this.timer.competition.stopCountdownTimer();
 				this.timer.stopAllPlayerTimers();
+				this.timer.sortPlayers();
 				break;
 			case 'competition_session_overtime':
 				this.timer.competition.activateOvertime();
 				break;
 			case 'competition_session_player_ended':
-				playerIndex = this.timer.getPlayerIndex(parseInt(data.steamAccountId));
-				this.timer.stopPlayerTimer(playerIndex);
+				this.timer.verifyPlayerAdded(parseInt(data.steamAccountId));
+				this.timer.stopPlayerTimer(parseInt(data.steamAccountId));
+				this.timer.sortPlayers();
 				break;
 			default:
 				return;
 		}
 	}
 	connect(wsToken: string) {
+		this._connect(wsToken);
+
+		this._channel.postMessage({
+			type: 'connect',
+			value: wsToken
+		});
+	}
+	private _connect(wsToken: string) {
 		if (this._ws && this._ws.readyState == ProxyWebSocket.OPEN) {
 			console.log('closing web socket connection...');
 			this._ws.close();
@@ -458,40 +479,33 @@ export class KSNWebSocket {
 		// connect to websocket
 		this._ws = new ProxyWebSocket(`https://console.jumpfortress.tf/?token=${wsToken}`);
 
-		/**
-		 * subscribe to update persistent store with state changes
-		 * used to display ws state on the controls page while this object runs on the overlay page
-		 */
-		this._ws.state.subscribe((s) => {
-			wsState.current.state = s;
-		});
-
 		// handle websocket messages
 		this._ws.onmessage = (event) => {
 			this.onWsMessage(event);
 		};
-
-		this._channel.postMessage({
-			type: 'connect',
-			value: wsToken
-		});
 	}
 
 	clearPicksAndBans() {
-		this._messages.mapPicks = { type: 'pickbans_session_state', session: null };
-		this._pickedMaps = [];
+		this._clearPicksAndBans();
 
 		this._channel.postMessage({
 			type: 'clearPicksAndBans'
 		});
 	}
+	private _clearPicksAndBans() {
+		this._messages.mapPicks = { type: 'pickbans_session_state', session: null };
+		this._pickedMaps = [];
+	}
 
 	clearTimers() {
-		this._timer.fullClear();
+		this._clearTimers();
 
 		this._channel.postMessage({
 			type: 'clearTimers'
 		});
+	}
+	private _clearTimers() {
+		this._timer.fullClear();
 	}
 
 	// map picks
@@ -531,6 +545,9 @@ export class KSNWebSocket {
 	}
 	get messages(): KSN.Messages {
 		return this._messages;
+	}
+	get wsState() {
+		return this._ws?.state;
 	}
 }
 interface BaseKSNBCMessage {

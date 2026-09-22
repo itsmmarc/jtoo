@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { settings } from '$lib/storage.svelte';
+	import { overlay, settings } from '$lib/storage.svelte';
 
 	import MatchScene from '$lib/scenes/MatchScene.svelte';
 	import MapScene from '$lib/scenes/MapScene.svelte';
@@ -15,6 +15,14 @@
 
 	let ksnWs = $state(new KSNWebSocket());
 	setContext('ksnWs', ksnWs);
+
+	if (settings.current.ksnWebSocketToken) {
+		ksnWs.connect(settings.current.ksnWebSocketToken);
+	}
+	for (const p of overlay.current.players) {
+		console.log(`verifying player ${p}`);
+		if (p) ksnWs.timer.verifyPlayerAdded(p);
+	}
 
 	let sceneComponents: Record<Exclude<OverlayScene, ''>, any> = {
 		MatchScene,

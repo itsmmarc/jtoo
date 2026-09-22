@@ -8,7 +8,7 @@
 	import Flag from '$lib/components/util/Flag.svelte';
 	import { getContext } from 'svelte';
 	import type { KSNWebSocket } from '$lib/websockets/ksn/ws-ksn.svelte';
-	import { getPlayer } from '$lib/util';
+	import { getMap, getPlayer } from '$lib/util';
 	import { Steam } from '$lib/api/steam/api-steam';
 
 	let ksnWs: KSNWebSocket = getContext('ksnWs');
@@ -76,19 +76,19 @@
 		{/key}
 	</div>
 
-	{#if settings.current.ksnWebSocketToken !== '' && overlay.current.players[0] && overlay.current.players[1]}
+	<!-- {#if settings.current.ksnWebSocketToken !== '' && overlay.current.players[0] && overlay.current.players[1]}
 		<WebSocketCheckpoints numPlayers={2} />
-	{/if}
+	{/if} -->
 	<!-- map -->
 	<div
 		class="relative -right-6 flex h-full skew-x-30 items-center justify-end rounded-bl-xl border-b-4 border-l-4 border-ctp-lavender/50 bg-ctp-lavender/25
-                {overlay.current.map.shortName === '' ? 'opacity-0' : ''}"
+                {overlay.current.map === '' ? 'opacity-0' : ''}"
 	>
 		{#key overlay.current.stage}
 			<span in:fade class="relative right-2 -skew-x-30 px-8 text-3xl text-ctp-text/75"
 				>{settings.current.useShortMapNames
-					? overlay.current.map.shortName
-					: overlay.current.map.fileName}</span
+					? getMap(overlay.current.map).shortName
+					: overlay.current.map}</span
 			>
 		{/key}
 	</div>
@@ -98,7 +98,7 @@
 	{#if ksnWs.pickedMaps.length > 1}
 		{#each ksnWs.pickedMaps as pickedMap, i (i)}
 			{@const player = getPlayer(Steam.convertSteamId(pickedMap.steamID3, 'SteamID3') as number)}
-			{@const mapId = TFMap.fileNameToTfId(overlay.current.map.fileName)}
+			{@const mapId = TFMap.fileNameToTfId(overlay.current.map)}
 			{@const isCurrent = pickedMap.mapID == mapId}
 			{@const map = () => {
 				for (const map of items.current.maps) {
@@ -156,7 +156,7 @@
 	{@const avatarURL = player.avatarURL}
 	{@const tag = player.tag}
 	{@const name = player.name}
-	{@const playerTimer = steamID3 ? ksnWs.timer.getPlayerTimerBySteamId3(steamID3) : undefined}
+	{@const playerTimer = steamID3 ? ksnWs.timer.getPlayerTimer(steamID3) : undefined}
 	<!-- {@const tempusPR = overlay.current[sideKey].tempusPrs
 		? overlay.current[sideKey].tempusPrs[overlay.current.map.shortName]
 		: ''} -->
