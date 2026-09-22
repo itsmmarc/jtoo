@@ -4,6 +4,7 @@
 	import { getPlayer } from '$lib/util';
 	import { fade } from 'svelte/transition';
 	import { getContext } from 'svelte';
+	import { SvelteMap } from 'svelte/reactivity';
 
 	let ksnWs: KSNWebSocket = getContext('ksnWs');
 
@@ -66,18 +67,21 @@
 </div>
 
 {#snippet Comparison(
-	leaderCps: Map<string, number>,
+	leaderCps: SvelteMap<string, number>,
 	steamID3: number | undefined,
 	playerNum: number
 )}
-	{@const playerCps: Map<string, number> = steamID3 ? ksnWs.timer.getPlayerTimer(steamID3)!.currentCheckpointsCs : new Map()}
+	{@const playerCps: SvelteMap<string, number> = steamID3 ? ksnWs.timer.getPlayerTimer(steamID3)!.currentCheckpointsCs : new SvelteMap()}
 	<div class={playerNum == 0 ? 'justify-self-end text-right' : 'justify-self-start text-left'}>
 		{#each leaderCps as [cpName, leaderCpTime], i (i)}
 			{@const playerCpTime = playerCps.get(cpName)}
+			{console.log(`playernum: ${playerNum}`)}
+			{console.log(`playercp: ${playerCpTime}`)}
+			{console.log(`leadercp: ${leaderCpTime}`)}
 			<div>
 				{#if playerCpTime}
-					{@const diff = leaderCpTime - playerCpTime}
-					{@const speed: 'faster' | 'same' | 'slower' = diff > 0 ? 'faster' : diff < 0 ? 'slower' : 'same'}
+					{@const diff = (playerCpTime - leaderCpTime) / 100}
+					{@const speed: 'faster' | 'same' | 'slower' = diff < 0 ? 'faster' : diff > 0 ? 'slower' : 'same'}
 					{@const clr = {
 						faster: playerNum == 0 ? 'bg-ctp-blue-800/55' : 'bg-ctp-red-800/55',
 						slower: playerNum == 0 ? 'bg-ctp-blue-950/40' : 'bg-ctp-red-950/40',

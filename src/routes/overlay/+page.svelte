@@ -17,7 +17,7 @@
 	setContext('ksnWs', ksnWs);
 
 	if (settings.current.ksnWebSocketToken) {
-		ksnWs.connect(settings.current.ksnWebSocketToken);
+		ksnWs.connectNoBroadcast(settings.current.ksnWebSocketToken);
 	}
 	for (const p of overlay.current.players) {
 		if (p) ksnWs.timer.verifyPlayerAdded(p);

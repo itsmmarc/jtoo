@@ -1,9 +1,8 @@
-import { settings } from '../../storage.svelte';
 import { KSN } from './ws-ksn-types';
 import { ProxyWebSocket } from '../../ProxyWebSocket';
-import { indexOf } from 'underscore';
 import { csToTime } from '$lib/util';
 import type { SteamID3 } from '$lib/types';
+import { SvelteMap } from 'svelte/reactivity';
 
 type PickedMaps = Array<{ mapID: String; steamID3: string }>;
 class RunTimer {
@@ -14,7 +13,7 @@ class RunTimer {
 	constructor() {
 		this._timeout = undefined;
 		this._time = $state(0);
-		this._isRunning = false;
+		this._isRunning = $state(false);
 	}
 
 	start() {
@@ -56,15 +55,15 @@ export class PlayerTimer {
 	private readonly _steamID3: number;
 	private _timer: RunTimer;
 	private _pr: number | undefined;
-	private _prCps: Map<string, number>;
-	private _currentCps: Map<string, number>;
+	private _prCps: SvelteMap<string, number>;
+	private _currentCps: SvelteMap<string, number>;
 
 	constructor(steamID3: number) {
 		this._steamID3 = steamID3;
 		this._timer = $state(new RunTimer());
 		this._pr = $state(undefined);
-		this._prCps = $state(new Map<string, number>());
-		this._currentCps = $state(new Map<string, number>());
+		this._prCps = $state(new SvelteMap<string, number>());
+		this._currentCps = $state(new SvelteMap<string, number>());
 	}
 
 	startTimer() {
@@ -79,7 +78,7 @@ export class PlayerTimer {
 
 		if (!this._pr || finishTime < this._pr) {
 			this._pr = finishTime * 100; // convert from seconds to centiseconds
-			this._prCps = { ...this._currentCps };
+			this._prCps = new SvelteMap(this._currentCps);
 		}
 	}
 	pushCheckpoint(checkpointTime: number, checkpointName: string) {
@@ -115,21 +114,21 @@ export class PlayerTimer {
 		}
 		return undefined;
 	}
-	get prCheckpointsCs(): Map<string, number> {
+	get prCheckpointsCs(): SvelteMap<string, number> {
 		return this._prCps;
 	}
-	get prCheckpointsFormatted(): Map<string, string> {
-		let result = new Map<string, string>();
+	get prCheckpointsFormatted(): SvelteMap<string, string> {
+		let result = new SvelteMap<string, string>();
 		this._prCps.forEach((cpTime, cpName) => {
 			result.set(cpName, csToTime(cpTime));
 		});
 		return result;
 	}
-	get currentCheckpointsCs(): Map<string, number> {
+	get currentCheckpointsCs(): SvelteMap<string, number> {
 		return this._currentCps;
 	}
-	get currentCheckpointsFormatted(): Map<string, string> {
-		let result = new Map<string, string>();
+	get currentCheckpointsFormatted(): SvelteMap<string, string> {
+		let result = new SvelteMap<string, string>();
 		this._currentCps.forEach((cpTime, cpName) => {
 			result.set(cpName, csToTime(cpTime));
 		});
@@ -209,12 +208,12 @@ class CompetitionTimer {
 }
 class KSNTimer {
 	private _competition: CompetitionTimer;
-	private _players: Map<SteamID3, PlayerTimer>;
+	private _players: SvelteMap<SteamID3, PlayerTimer>;
 	private _checkpoints: string[];
 
 	constructor() {
 		this._competition = $state(new CompetitionTimer());
-		this._players = $state(new Map<SteamID3, PlayerTimer>());
+		this._players = $state(new SvelteMap<SteamID3, PlayerTimer>());
 		this._checkpoints = $state([]);
 	}
 
@@ -316,7 +315,7 @@ class KSNTimer {
 			}
 		});
 
-		this._players = new Map(temp);
+		this._players = new SvelteMap(temp);
 		console.log(this._players);
 	}
 
@@ -330,19 +329,19 @@ class KSNTimer {
 		return this._players.get(steamID3);
 	}
 
-	get leaderCheckpointsCs(): Map<string, number> {
-		if (this.players.size == 0) return new Map();
+	get leaderCheckpointsCs(): SvelteMap<string, number> {
+		if (this.players.size == 0) return new SvelteMap();
 
 		let leaderTimer = this._players.values().next().value;
 
-		if (!leaderTimer) return new Map();
+		if (!leaderTimer) return new SvelteMap();
 
 		if (!leaderTimer.prCs) return leaderTimer.currentCheckpointsCs;
 
 		return leaderTimer.prCheckpointsCs;
 	}
 	get leaderCheckpointsFormatted() {
-		let result = new Map<string, string>();
+		let result = new SvelteMap<string, string>();
 		this.leaderCheckpointsCs.forEach((cpTime, cpName) => {
 			result.set(cpName, csToTime(cpTime));
 		});
@@ -355,6 +354,10 @@ class KSNTimer {
 		let leader = this._players.keys().next().value;
 
 		if (!leader) return undefined;
+
+		let leaderTimer = this.getPlayerTimer(leader);
+
+		if (!leaderTimer!.prCs && !leaderTimer!.checkpointsCollected) return undefined;
 
 		return leader;
 	}
@@ -405,11 +408,9 @@ export class KSNWebSocket {
 	}
 
 	private onBcMessage(event: MessageEvent) {
-		// const data: KSNBCMessageType = JSON.parse(event.data);
 		const data: KSNBCMessageType = event.data;
 
 		console.log(data);
-		console.log(event.data);
 
 		switch (data.type) {
 			case 'connect':
@@ -429,7 +430,6 @@ export class KSNWebSocket {
 		const data: KSN.MessageTypes = JSON.parse(event.data);
 
 		console.log(data);
-		console.log(event.data);
 
 		// let playerTimer: PlayerTimer | undefined;
 
@@ -488,6 +488,9 @@ export class KSNWebSocket {
 			type: 'connect',
 			value: wsToken
 		});
+	}
+	connectNoBroadcast(wsToken: string) {
+		this._connect(wsToken);
 	}
 	private _connect(wsToken: string) {
 		if (this._ws && this._ws.readyState == ProxyWebSocket.OPEN) {

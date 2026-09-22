@@ -26,7 +26,7 @@
 
 	let ksnWs = $state(new KSNWebSocket());
 	if (settings.current.ksnWebSocketToken) {
-		ksnWs.connect(settings.current.ksnWebSocketToken);
+		ksnWs.connectNoBroadcast(settings.current.ksnWebSocketToken);
 	}
 
 	$effect(() => {
@@ -34,10 +34,6 @@
 			setScene(settings.current.overlayScene);
 		}
 	});
-
-	if (settings.current.ksnWebSocketToken) {
-		ksnWs.connect(settings.current.ksnWebSocketToken);
-	}
 </script>
 
 <span class="self-center">jtoo controls</span>

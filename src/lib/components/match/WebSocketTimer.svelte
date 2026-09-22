@@ -28,9 +28,7 @@
 		{console.log(playerTimer)}
 		<span
 			class="text-palewhite font-chivomono text-center text-5xl transition-colors duration-1000
-                                {!playerTimer || (playerTimer && !playerTimer.isRunning)
-				? 'opacity-40'
-				: ''}"
+                                {!playerTimer || !playerTimer.isRunning ? 'opacity-40' : ''}"
 		>
 			{#if playerTimer && playerTimer.timeFormatted}
 				{playerTimer ? playerTimer.timeFormatted : csToTime(0)}
