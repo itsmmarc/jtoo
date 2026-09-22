@@ -20,7 +20,6 @@
 		ksnWs.connect(settings.current.ksnWebSocketToken);
 	}
 	for (const p of overlay.current.players) {
-		console.log(`verifying player ${p}`);
 		if (p) ksnWs.timer.verifyPlayerAdded(p);
 	}
 

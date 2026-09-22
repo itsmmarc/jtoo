@@ -56,15 +56,15 @@ export class PlayerTimer {
 	private readonly _steamID3: number;
 	private _timer: RunTimer;
 	private _pr: number | undefined;
-	private _prCps: number[];
-	private _currentCps: number[];
+	private _prCps: Map<string, number>;
+	private _currentCps: Map<string, number>;
 
 	constructor(steamID3: number) {
 		this._steamID3 = steamID3;
 		this._timer = $state(new RunTimer());
 		this._pr = $state(undefined);
-		this._prCps = $state([]);
-		this._currentCps = $state([]);
+		this._prCps = $state(new Map<string, number>());
+		this._currentCps = $state(new Map<string, number>());
 	}
 
 	startTimer() {
@@ -79,21 +79,21 @@ export class PlayerTimer {
 
 		if (!this._pr || finishTime < this._pr) {
 			this._pr = finishTime * 100; // convert from seconds to centiseconds
-			this._prCps = [...this._currentCps];
+			this._prCps = { ...this._currentCps };
 		}
 	}
-	pushCheckpoint(checkpointTime: number, checkpointIndex: number) {
-		this._currentCps[checkpointIndex] = checkpointTime;
+	pushCheckpoint(checkpointTime: number, checkpointName: string) {
+		this._currentCps.set(checkpointName, checkpointTime);
 	}
 	resetTimer() {
 		this._timer.reset();
 	}
 	resetCheckpoints() {
-		this._currentCps = [];
+		this._currentCps.clear();
 	}
 	clearPr() {
 		this._pr = undefined;
-		this._prCps = [];
+		this._prCps.clear();
 	}
 
 	// getters
@@ -115,23 +115,31 @@ export class PlayerTimer {
 		}
 		return undefined;
 	}
-	get prCheckpointsCs(): number[] {
+	get prCheckpointsCs(): Map<string, number> {
 		return this._prCps;
 	}
-	get prCheckpointsFormatted(): string[] {
-		return this._prCps.map((cp) => csToTime(cp));
+	get prCheckpointsFormatted(): Map<string, string> {
+		let result = new Map<string, string>();
+		this._prCps.forEach((cpTime, cpName) => {
+			result.set(cpName, csToTime(cpTime));
+		});
+		return result;
 	}
-	get currentCheckpointsCs(): number[] {
+	get currentCheckpointsCs(): Map<string, number> {
 		return this._currentCps;
 	}
-	get currentCheckpointsFormatted(): string[] {
-		return this._currentCps.map((cp) => csToTime(cp));
+	get currentCheckpointsFormatted(): Map<string, string> {
+		let result = new Map<string, string>();
+		this._currentCps.forEach((cpTime, cpName) => {
+			result.set(cpName, csToTime(cpTime));
+		});
+		return result;
 	}
 	get isRunning(): boolean {
 		return this._timer.isRunning;
 	}
 	get checkpointsCollected(): number {
-		return this._currentCps.length;
+		return this._currentCps.size;
 	}
 }
 class CompetitionTimer {
@@ -237,9 +245,7 @@ class KSNTimer {
 			this._checkpoints.push(checkpointName);
 		}
 
-		const checkpointIndex = indexOf(this._checkpoints, checkpointName);
-
-		this.getPlayerTimer(steamID3)?.pushCheckpoint(checkpointTime, checkpointIndex);
+		this.getPlayerTimer(steamID3)?.pushCheckpoint(checkpointTime, checkpointName);
 	}
 	resetPlayerTimer(steamID3: SteamID3) {
 		this.getPlayerTimer(steamID3)?.resetTimer();
@@ -268,6 +274,7 @@ class KSNTimer {
 	}
 
 	sortPlayers() {
+		console.log('sorting players');
 		let temp = Array.from(this._players);
 		// sort by pr
 		temp.sort((a, b) => {
@@ -285,26 +292,32 @@ class KSNTimer {
 
 		// sort players without a pr by number of checkpoints
 		temp.sort((a, b) => {
+			// if either has a pr, they were already sorted
 			if (a[1].prCs || b[1].prCs) {
 				return 0;
 			}
+			// if neither a nor b has collected a checkpoint
+			if (a[1].checkpointsCollected == 0 && b[1].checkpointsCollected == 0) {
+				return 0;
+			}
+			// if a has more checkpoints than b
 			if (a[1].checkpointsCollected > b[1].checkpointsCollected) {
-				return 1;
+				return -1;
 			}
+			// if b has more checkpoints than a
 			if (a[1].checkpointsCollected < b[1].checkpointsCollected) {
-				return -1;
-			}
-			if (
-				a[1].currentCheckpointsCs[a[1].checkpointsCollected - 1] <
-				b[1].currentCheckpointsCs[b[1].checkpointsCollected - 1]
-			) {
-				return -1;
-			} else {
 				return 1;
+			}
+			// if a's last checkpoint is faster than b's last checkpoint
+			if ([...a[1].currentCheckpointsCs].pop()?.[1]! < [...b[1].currentCheckpointsCs].pop()?.[1]!) {
+				return 1;
+			} else {
+				return -1;
 			}
 		});
 
 		this._players = new Map(temp);
+		console.log(this._players);
 	}
 
 	// getters
@@ -317,16 +330,23 @@ class KSNTimer {
 		return this._players.get(steamID3);
 	}
 
-	get leaderCheckpoints() {
-		if (this.players.size == 0) return [];
+	get leaderCheckpointsCs(): Map<string, number> {
+		if (this.players.size == 0) return new Map();
 
 		let leaderTimer = this._players.values().next().value;
 
-		if (!leaderTimer) return [];
+		if (!leaderTimer) return new Map();
 
 		if (!leaderTimer.prCs) return leaderTimer.currentCheckpointsCs;
 
 		return leaderTimer.prCheckpointsCs;
+	}
+	get leaderCheckpointsFormatted() {
+		let result = new Map<string, string>();
+		this.leaderCheckpointsCs.forEach((cpTime, cpName) => {
+			result.set(cpName, csToTime(cpTime));
+		});
+		return result;
 	}
 
 	get leader(): SteamID3 | undefined {
@@ -433,7 +453,11 @@ export class KSNWebSocket {
 				break;
 			case 'timer_checkpoint':
 				this.timer.verifyPlayerAdded(data.steamid);
-				this.timer.pushCheckpointPlayerTimer(data.steamid, data.formattedCheckpoint, data.time);
+				this.timer.pushCheckpointPlayerTimer(
+					data.steamid,
+					data.formattedCheckpoint,
+					data.time * 100
+				);
 				this.timer.sortPlayers();
 				break;
 			case 'competition_session_live':

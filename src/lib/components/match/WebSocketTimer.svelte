@@ -1,15 +1,14 @@
 <script lang="ts">
 	import { overlay, settings } from '$lib/storage.svelte';
-	import type { SteamID3 } from '$lib/types';
+	import { KSNWebSocket } from '$lib/websockets/ksn/ws-ksn.svelte';
+	import { type SteamID3 } from '$lib/types';
 	import { csToTime } from '$lib/util';
-	import type { KSNWebSocket, PlayerTimer } from '$lib/websockets/ksn/ws-ksn.svelte';
 	import { getContext } from 'svelte';
 
 	let ksnWs: KSNWebSocket = getContext('ksnWs');
 
 	type Props = { numPlayers: number };
 	let { numPlayers }: Props = $props();
-	let competitionTimer = $derived(ksnWs.timer.competition);
 </script>
 
 {#if numPlayers == 2}
@@ -26,7 +25,6 @@
 {#snippet PlayerStopwatch(player: SteamID3 | undefined)}
 	{#key ksnWs.timer.players.size}
 		{@const playerTimer = player ? ksnWs.timer.getPlayerTimer(player) : undefined}
-		{console.log('rerendering player stopwatch')}
 		{console.log(playerTimer)}
 		<span
 			class="text-palewhite font-chivomono text-center text-5xl transition-colors duration-1000
@@ -43,12 +41,12 @@
 
 {#snippet CompetitionTimer()}
 	<div class="absolute top-5 flex flex-col">
-		{#if competitionTimer.timeLeftSeconds > 0}
+		{#if ksnWs.timer.competition.timeLeftSeconds > 0}
 			<div class="text-palewhite/40 text-center text-5xl">
-				{competitionTimer.getTimeLeftFormatted('seconds')}
+				{ksnWs.timer.competition.getTimeLeftFormatted('seconds')}
 			</div>
 		{/if}
-		{#if competitionTimer.overtimeStatus}
+		{#if ksnWs.timer.competition.overtimeStatus}
 			<div class="text-palewhite/40 text-center text-4xl">OVERTIME</div>
 		{/if}
 	</div>
