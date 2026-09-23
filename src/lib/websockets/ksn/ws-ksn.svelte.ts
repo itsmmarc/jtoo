@@ -4,7 +4,7 @@ import { csToTime } from '$lib/util';
 import type { SteamID3 } from '$lib/types';
 import { SvelteMap } from 'svelte/reactivity';
 
-type PickedMaps = Array<{ mapID: String; steamID3: string }>;
+type PickedMaps = Array<{ mapID: string; steamID3: string }>;
 class RunTimer {
 	private _timeout: NodeJS.Timeout | undefined;
 	private _time: number;
@@ -118,7 +118,7 @@ export class PlayerTimer {
 		return this._prCps;
 	}
 	get prCheckpointsFormatted(): SvelteMap<string, string> {
-		let result = new SvelteMap<string, string>();
+		const result = new SvelteMap<string, string>();
 		this._prCps.forEach((cpTime, cpName) => {
 			result.set(cpName, csToTime(cpTime));
 		});
@@ -128,7 +128,7 @@ export class PlayerTimer {
 		return this._currentCps;
 	}
 	get currentCheckpointsFormatted(): SvelteMap<string, string> {
-		let result = new SvelteMap<string, string>();
+		const result = new SvelteMap<string, string>();
 		this._currentCps.forEach((cpTime, cpName) => {
 			result.set(cpName, csToTime(cpTime));
 		});
@@ -260,7 +260,7 @@ class KSNTimer {
 	clearAllPlayerTimers() {
 		this._players.forEach((player) => {
 			player.resetTimer();
-			player.resetCheckpoints;
+			player.resetCheckpoints();
 		});
 	}
 	clearAllPlayerPrs() {
@@ -274,7 +274,7 @@ class KSNTimer {
 
 	sortPlayers() {
 		console.log('sorting players');
-		let temp = Array.from(this._players);
+		const temp = Array.from(this._players);
 		// sort by pr
 		temp.sort((a, b) => {
 			if (a[1].prCs && b[1].prCs) {
@@ -308,7 +308,7 @@ class KSNTimer {
 				return 1;
 			}
 			// if a's last checkpoint is faster than b's last checkpoint
-			if ([...a[1].currentCheckpointsCs].pop()?.[1]! < [...b[1].currentCheckpointsCs].pop()?.[1]!) {
+			if ([...a[1].currentCheckpointsCs].pop()![1]! < [...b[1].currentCheckpointsCs].pop()![1]!) {
 				return 1;
 			} else {
 				return -1;
@@ -332,7 +332,7 @@ class KSNTimer {
 	get leaderCheckpointsCs(): SvelteMap<string, number> {
 		if (this.players.size == 0) return new SvelteMap();
 
-		let leaderTimer = this._players.values().next().value;
+		const leaderTimer = this._players.values().next().value;
 
 		if (!leaderTimer) return new SvelteMap();
 
@@ -341,7 +341,7 @@ class KSNTimer {
 		return leaderTimer.prCheckpointsCs;
 	}
 	get leaderCheckpointsFormatted() {
-		let result = new SvelteMap<string, string>();
+		const result = new SvelteMap<string, string>();
 		this.leaderCheckpointsCs.forEach((cpTime, cpName) => {
 			result.set(cpName, csToTime(cpTime));
 		});
@@ -351,11 +351,11 @@ class KSNTimer {
 	get leader(): SteamID3 | undefined {
 		if (this.players.size == 0) return undefined;
 
-		let leader = this._players.keys().next().value;
+		const leader = this._players.keys().next().value;
 
 		if (!leader) return undefined;
 
-		let leaderTimer = this.getPlayerTimer(leader);
+		const leaderTimer = this.getPlayerTimer(leader);
 
 		if (!leaderTimer!.prCs && !leaderTimer!.checkpointsCollected) return undefined;
 
@@ -556,7 +556,7 @@ export class KSNWebSocket {
 		this._pickedMaps = [];
 		for (const turn of this._messages.mapPicks.session.history) {
 			if (turn.action == 'pick') {
-				let actor = this._messages.mapPicks.session[`player${turn.actor}`].steamId3;
+				const actor = this._messages.mapPicks.session[`player${turn.actor}`].steamId3;
 				this._pickedMaps = [...this._pickedMaps, { mapID: turn.mapId, steamID3: actor }];
 			}
 		}
