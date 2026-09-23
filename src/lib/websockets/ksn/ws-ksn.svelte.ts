@@ -391,19 +391,24 @@ class KSNTimer {
 }
 export class KSNWebSocket {
 	private _ws: ProxyWebSocket | undefined;
+	private _wsState: number;
 	private _channel: BroadcastChannel;
 	private _messages: KSN.Messages; // probably not necessary, really only need previousMapPicks
 	private _pickedMaps: PickedMaps;
 	private _timer: KSNTimer;
 
-	constructor() {
+	constructor(broadcastChannel: string) {
 		this._ws = undefined;
-		this._channel = new BroadcastChannel('ksnTimer');
+		this._wsState = $state(WebSocket.CLOSED);
+		this._channel = new BroadcastChannel(broadcastChannel);
 		this._messages = KSN.defaultMessages;
 		this._pickedMaps = $state([]) as PickedMaps;
 		this._timer = $state(new KSNTimer());
 
-		this._channel.postMessage({ type: 'welcome', value: 'hello world' });
+		this._channel.postMessage({
+			type: 'welcome',
+			value: `KSN WebSocket Receiver listening to channel: ${this._channel.name}`
+		});
 		this._channel.onmessage = (event) => this.onBcMessage(event);
 	}
 
@@ -414,13 +419,16 @@ export class KSNWebSocket {
 
 		switch (data.type) {
 			case 'connect':
-				this._connect(data.value);
+				this.connect(data.value);
 				break;
 			case 'clearPicksAndBans':
-				this._clearPicksAndBans();
+				this.clearPicksAndBans();
 				break;
 			case 'clearTimers':
-				this._clearTimers();
+				this.clearTimers();
+				break;
+			case 'request-wsState':
+				this._channel.postMessage({ type: 'wsState', value: this.wsState });
 				break;
 			default:
 				break;
@@ -482,17 +490,6 @@ export class KSNWebSocket {
 		}
 	}
 	connect(wsToken: string) {
-		this._connect(wsToken);
-
-		this._channel.postMessage({
-			type: 'connect',
-			value: wsToken
-		});
-	}
-	connectNoBroadcast(wsToken: string) {
-		this._connect(wsToken);
-	}
-	private _connect(wsToken: string) {
 		if (this._ws && this._ws.readyState == ProxyWebSocket.OPEN) {
 			console.log('closing web socket connection...');
 			this._ws.close();
@@ -510,28 +507,21 @@ export class KSNWebSocket {
 		this._ws.onmessage = (event) => {
 			this.onWsMessage(event);
 		};
+
+		// broadcast state
+		this._ws.state?.subscribe((state) => {
+			console.log(`wsState: ${state}`);
+			this._wsState = state;
+			this._channel.postMessage({ type: 'wsState', value: state });
+		});
 	}
 
 	clearPicksAndBans() {
-		this._clearPicksAndBans();
-
-		this._channel.postMessage({
-			type: 'clearPicksAndBans'
-		});
-	}
-	private _clearPicksAndBans() {
 		this._messages.mapPicks = { type: 'pickbans_session_state', session: null };
 		this._pickedMaps = [];
 	}
 
 	clearTimers() {
-		this._clearTimers();
-
-		this._channel.postMessage({
-			type: 'clearTimers'
-		});
-	}
-	private _clearTimers() {
 		this._timer.fullClear();
 	}
 
@@ -573,12 +563,67 @@ export class KSNWebSocket {
 	get messages(): KSN.Messages {
 		return this._messages;
 	}
+	get wsState(): number {
+		return this._wsState;
+	}
+}
+
+export class KSNWebSocketController {
+	private _channel: BroadcastChannel;
+	private _wsState: number;
+
+	constructor(broadcastChannel: string) {
+		this._channel = new BroadcastChannel(broadcastChannel);
+		this._wsState = $state(WebSocket.CLOSED);
+
+		this._channel.postMessage({
+			type: 'welcome',
+			value: `KSN WebSocket Controller broadcasting to channel: ${this._channel.name}`
+		});
+		this._channel.postMessage({
+			type: 'request-wsState'
+		});
+
+		this._channel.onmessage = (event) => this.onBcMessage(event);
+	}
+	private onBcMessage(event: MessageEvent) {
+		const data: KSNBCMessageType = event.data;
+
+		console.log(data);
+
+		switch (data.type) {
+			case 'wsState':
+				this._wsState = data.value;
+				break;
+			default:
+				break;
+		}
+	}
+
+	connect(wsToken: string) {
+		this._channel.postMessage({
+			type: 'connect',
+			value: wsToken
+		});
+	}
+	clearPicksAndBans() {
+		this._channel.postMessage({
+			type: 'clearPicksAndBans'
+		});
+	}
+	clearTimers() {
+		this._channel.postMessage({
+			type: 'clearTimers'
+		});
+	}
+
+	// getters
 	get wsState() {
-		return this._ws?.state;
+		return this._wsState;
 	}
 }
 interface BaseKSNBCMessage {
-	type: 'connect' | 'clearPicksAndBans' | 'clearTimers';
+	type: 'connect' | 'clearPicksAndBans' | 'clearTimers' | 'wsState' | 'request-wsState';
 }
 interface KSNBCConnectMessage extends BaseKSNBCMessage {
 	type: 'connect';
@@ -590,5 +635,17 @@ interface KSNBCPickBanMessage extends BaseKSNBCMessage {
 interface KSNBCClearTimersMessage extends BaseKSNBCMessage {
 	type: 'clearTimers';
 }
+interface KSNBCWSStateMessage extends BaseKSNBCMessage {
+	type: 'wsState';
+	value: number;
+}
+interface KSNBCRequestWSStateMessage extends BaseKSNBCMessage {
+	type: 'request-wsState';
+}
 
-export type KSNBCMessageType = KSNBCConnectMessage | KSNBCClearTimersMessage | KSNBCPickBanMessage;
+export type KSNBCMessageType =
+	| KSNBCConnectMessage
+	| KSNBCClearTimersMessage
+	| KSNBCPickBanMessage
+	| KSNBCWSStateMessage
+	| KSNBCRequestWSStateMessage;

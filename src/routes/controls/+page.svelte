@@ -16,18 +16,15 @@
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { settings, overlay, items, defaultStages, defaultSettings } from '$lib/storage.svelte';
 	import { Fonts, MonoFonts, OverlayScenes } from '$lib/types';
-	import * as _ from 'underscore';
+	// import * as _ from 'underscore';
 
 	import { obsConnect, setScene } from '$lib/websockets/obs/ws-obs';
 	import ManageTournaments from '$lib/components/controls/ManageTournaments.svelte';
 
-	import { KSNWebSocket } from '$lib/websockets/ksn/ws-ksn.svelte';
+	import { KSNWebSocketController } from '$lib/websockets/ksn/ws-ksn.svelte';
 	import { getMap } from '$lib/util';
 
-	let ksnWs = $state(new KSNWebSocket());
-	if (settings.current.ksnWebSocketToken) {
-		ksnWs.connectNoBroadcast(settings.current.ksnWebSocketToken);
-	}
+	let ksnWs = $state(new KSNWebSocketController('ksnWs'));
 
 	$effect(() => {
 		if (settings.current.overlayScene) {
@@ -134,35 +131,28 @@
 						settings.current.ksnWebSocketToken = target.value;
 					}}
 				/>
+			</div>
+			<div class="flex gap-2">
 				<button
 					class="button button-unselected hover:button-selected"
-					onclick={() => ksnWs.connect(settings.current.ksnWebSocketToken)}>connect</button
+					onclick={() => ksnWs.connect(settings.current.ksnWebSocketToken.trim())}>connect</button
 				>
+				<!-- the websocket state keeps reverting to 'closed' even when the connection is still open -->
 				<!-- <div class="flex gap-2">
-                                <p>status:</p>
-                                <span
-                                        class={wsState.current.state === 0
-                                                ? 'text-yellow-200'
-                                                : wsState.current.state === 1
-                                                        ? 'text-green-300'
-                                                        : wsState.current.state === 2
-                                                                ? 'text-red-200'
-                                                                : wsState.current.state === 3
-                                                                        ? 'text-black'
-                                                                        : ''}
-                                >
-                                        {wsState.current.state === 0
-                                                ? 'opening...'
-                                                : wsState.current.state === 1
-                                                        ? 'connected'
-                                                        : wsState.current.state === 2
-                                                                ? 'closing...'
-                                                                : wsState.current.state === 3
-                                                                        ? 'closed'
-                                                                        : ''}
-                                </span>
-                                <span class="italic opacity-50">{wsState.current.state}</span>
-                                </div> -->
+					<p>status:</p>
+					{#key ksnWs.wsState}
+						{@const wsState: {state: string, color: string} =
+							// prettier-ignore
+							ksnWs.wsState == WebSocket.CONNECTING ? { state: 'connecting...', color: 'text-yellow-200'}
+							: ksnWs.wsState == WebSocket.OPEN ? { state: 'connected', color: 'text-green-300'}
+							: ksnWs.wsState == WebSocket.CLOSING ? { state: 'closing...', color: 'text-red-200'}
+							: ksnWs.wsState == WebSocket.CLOSED ? {state: 'closed', color:  'text-black'}
+							: {state: '', color: ''}}
+						<span class={wsState.color}>
+							{wsState.state}
+						</span>
+					{/key}
+				</div> -->
 			</div>
 		</Accordion>
 	</section>
