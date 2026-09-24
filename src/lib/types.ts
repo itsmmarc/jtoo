@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { type Bracket4, type Bracket8 } from './Bracket.svelte';
 import type { Tempus2 } from './api/tempus2/api-tempus2';
-import { counters } from './storage.svelte';
 
 // MARK: Types
 export const TFClasses = ['demoman', 'soldier', 'overall'] as const;
@@ -26,7 +25,6 @@ export class Player {
 	tag: string = '';
 	flag: string = '';
 	pr: string = ''; // only used for manual PRs
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	rank: Record<TFClass, Rank> = {
 		demoman: { points: 0, rank: 0, title: '' },
 		soldier: { points: 0, rank: 0, title: '' },
@@ -63,7 +61,7 @@ export class TFMap {
 	static fileNameToShortName(fileName: string): string {
 		if (fileName == 'jump_') return fileName;
 
-		let tmp = fileName.match(/(?<=_)[^_]+/); // match name after first '_' and before any subsequent '_', eg: 'beef' from 'jump_beef' or 'jump_beef_final'
+		const tmp = fileName.match(/(?<=_)[^_]+/); // match name after first '_' and before any subsequent '_', eg: 'beef' from 'jump_beef' or 'jump_beef_final'
 		return tmp ? tmp[0].trim() : '';
 	}
 
@@ -207,7 +205,6 @@ export type Overlay = {
 
 export type Items = {
 	players: Player[];
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	maps: TFMap[];
 	stages: string[];
 	tournaments: Tournament[];
