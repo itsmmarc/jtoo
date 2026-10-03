@@ -1,9 +1,14 @@
 import { Steam } from '$lib/api/steam/api-steam';
 import { json } from '@sveltejs/kit';
-import { STEAM_API_KEY } from '$env/static/private';
+// import { STEAM_API_KEY } from '$env/static/private';
+import type { RequestHandler } from './$types';
 
-export async function POST(request: Request) {
-	const body = await request.request.json();
+
+
+
+export const POST: RequestHandler = async({platform, request}) => {
+	let steamApiKey = platform?.env.STEAM_API_KEY;
+	const body = await request.json();
 	console.log('body:');
 	console.log(body);
 
@@ -21,7 +26,7 @@ export async function POST(request: Request) {
 		return json({}, { status: 400 });
 	}
 
-	const endpoint = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${STEAM_API_KEY}&steamids=${idParam}`;
+	const endpoint = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamApiKey}&steamids=${idParam}`;
 	console.log(endpoint);
 	const response = await fetch(endpoint);
 	let data: Steam.GetPlayerSummaries = await response.json();
