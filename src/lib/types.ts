@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { type Bracket4, type Bracket8 } from './Bracket.svelte';
 import type { Tempus2 } from './api/tempus2/api-tempus2';
-import { counters } from './storage.svelte';
+
 
 // MARK: Types
 export const TFClasses = ['demoman', 'soldier', 'overall'] as const;
@@ -175,7 +175,6 @@ export const OverlayScenes = [
 ] as const;
 export type OverlayScene = (typeof OverlayScenes)[number];
 
-export type Counters = { tournamentId: number };
 
 export type Settings = {
 	font: Font;

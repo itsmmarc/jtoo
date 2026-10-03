@@ -1,10 +1,10 @@
 import { PersistentState } from '@friendofsvelte/state';
 import {
-	type Counters,
-	type Items,
+		type Items,
 	type Overlay,
 	type Settings,
 	Player,
+	type SteamID3,
 	TFMap,
 	Tournament
 } from './types';
@@ -22,12 +22,7 @@ export const defaultStages: Array<string> = [
 	"Loser's Finals"
 ];
 
-export const defaultCounters: Counters = {
-	tournamentId: 0
-};
 
-// counters
-export const counters = new PersistentState('counters', defaultCounters);
 
 export const defaultSettings: Settings = {
 	font: 'font-space-grotesk',
@@ -75,8 +70,7 @@ export const overlay = new PersistentState('overlay', defaultOverlay);
 export const items = new PersistentState('items', defaultItems);
 
 export function fullReset() {
-	counters.current = defaultCounters;
-	settings.current = defaultSettings;
+		settings.current = defaultSettings;
 	overlay.current = defaultOverlay;
 	// items.current = defaultItems;
 }
