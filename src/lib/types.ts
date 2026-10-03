@@ -88,7 +88,7 @@ export const TournamentFormats = [
 	'DoubleElim4Player',
 	'DoubleElim8Player',
 	'AllOutRoyale',
-	'Leaderboard' // TODO name this something that makes snese
+	'MassRace'
 ] as const;
 export type TournamentFormat = (typeof TournamentFormats)[number];
 
