@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
+	import { OverlayScenes } from '$lib/types';
 	import { fade } from 'svelte/transition';
 
 	let copied = $state({});
@@ -30,6 +31,27 @@
 			<li>remove Custom CSS</li>
 		</ul>
 		{@render URLButton('match', 'overlay')}
+	</div>
+	<div>
+		<h2 class="mb-2 text-center text-3xl">Scenes</h2>
+		<hr class="hr" />
+		<ul class="m-auto mb-5 w-fit list-decimal italic">
+			<li>in OBS, add a scene for each of the following</li>
+			<div>
+				{#each OverlayScenes as scene, i (i)}
+					{#if scene}
+						<div class="ml-4 opacity-50">{scene}</div>
+					{/if}
+				{/each}
+			</div>
+			<li>in OBS, navigate to Tools -> WebSocket Server Settings -> Show Connect Info</li>
+
+			<li>
+				on the jtoo controls page under connections -> obs websocket, enter your websocket connect
+				info
+			</li>
+			<li>selecting a scene in jtoo will now also select the scene of the same name in OBS</li>
+		</ul>
 	</div>
 </main>
 

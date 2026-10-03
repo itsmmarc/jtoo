@@ -46,6 +46,7 @@ export const defaultSettings: Settings = {
 	ksnWebSocketToken: '',
 	overlayScene: 'MatchScene',
 	obsWsIp: '',
+	obsWsPort: 0,
 	obsWsPw: ''
 };
 

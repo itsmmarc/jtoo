@@ -194,6 +194,7 @@ export type Settings = {
 	overlayScene: OverlayScene;
 	ksnWebSocketToken: string;
 	obsWsIp: string;
+	obsWsPort: number;
 	obsWsPw: string;
 };
 
