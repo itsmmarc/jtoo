@@ -47,7 +47,6 @@
 </script>
 
 <PopOver title="add bracket" bind:state={popoverState} clearfn={clear} {onopen} {container}>
-	{$inspect(bracket)}
 	<section class="grid grid-cols-12 gap-2">
 		<!-- MARK: Bracket Display -->
 		{#if bracket}
@@ -62,8 +61,10 @@
 				class="button col-span-6"
 				onclick={() => {
 					popoverState = 'closed';
-				}}>save bracket</button
+				}}
 			>
+				save bracket
+			</button>
 		{/if}
 
 		<div class="col-span-6 flex flex-col">
