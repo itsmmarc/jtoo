@@ -30,13 +30,18 @@
 
 	import { KSNWebSocketController } from '$lib/websockets/ksn/ws-ksn.svelte';
 	import { getMap } from '$lib/util';
+	import { onMount } from 'svelte';
 
-	let ksnWs = $state(new KSNWebSocketController('ksnWs'));
+	let ksnWs: KSNWebSocketController | undefined = $state();
 
-	$effect(() => {
-		if (settings.current.overlayScene) {
-			setScene(settings.current.overlayScene);
-		}
+	onMount(() => {
+		ksnWs = new KSNWebSocketController('ksnWs');
+
+		$effect(() => {
+			if (settings.current.overlayScene) {
+				setScene(settings.current.overlayScene);
+			}
+		});
 	});
 
 	// if (!items.current.tournaments.filter((t) => t.info.name == 'BootcampTest')[0]) {
@@ -60,115 +65,117 @@
 	</a>
 </div>
 
-<!-- presets -->
-<div class="relative m-2 flex w-full max-w-lg justify-center gap-4 self-center">
-	<button class="button-remove" onclick={() => ksnWs.clearTimers()}
-		>clear timers and checkpoints</button
-	>
-	<button class="button-remove" onclick={() => ksnWs.clearPicksAndBans()}
-		>clear map picks and bans</button
-	>
-</div>
-
-<!-- items -->
-<Accordion title="items">
-	<div class="grid w-full grid-cols-2">
-		<Importplayer />
-		<ManagePlayers />
-		<ImportMap />
-		<ManageMaps />
-		<AddTournament />
-		<ManageTournaments />
+{#if ksnWs}
+	<!-- presets -->
+	<div class="relative m-2 flex w-full max-w-lg justify-center gap-4 self-center">
+		<button class="button-remove" onclick={() => ksnWs!.clearTimers()}
+			>clear timers and checkpoints</button
+		>
+		<button class="button-remove" onclick={() => ksnWs!.clearPicksAndBans()}
+			>clear map picks and bans</button
+		>
 	</div>
 
-	<ItemInput placeholder="add stage" item="stages" />
-</Accordion>
+	<!-- items -->
+	<Accordion title="items">
+		<div class="grid w-full grid-cols-2">
+			<Importplayer />
+			<ManagePlayers />
+			<ImportMap />
+			<ManageMaps />
+			<AddTournament />
+			<ManageTournaments />
+		</div>
 
-<Accordion title="scenes">
-	<span>scene</span>
-	<RadioInputs opts={[...OverlayScenes]} bind:value={settings.current.overlayScene} />
-	<span>tournament</span>
-	<RadioInputs
-		opts={[...items.current.tournaments]}
-		labelkey={['info', 'name']}
-		bind:value={overlay.current.tournament}
-	/>
-</Accordion>
+		<ItemInput placeholder="add stage" item="stages" />
+	</Accordion>
 
-<Accordion title="connections">
-	<section class="ml-5 w-[calc(100%-1.25rem)]">
-		<Accordion title="obs websocket" defaultstate="closed">
-			<div class="grid grid-cols-[auto_auto]">
-				<label for="input-websocket-obs">ip: </label>
-				<input
-					type="text"
-					class="input"
-					id="input-websocket-obs"
-					placeholder="192.168.1.101"
-					value={settings.current.obsWsIp}
-					onchange={(e) => {
-						let target = e.target as HTMLInputElement;
-						settings.current.obsWsIp = target.value;
-					}}
-				/>
-				<label for="input-websocket-obs">port: </label>
-				<input
-					type="number"
-					class="input remove-arrow"
-					id="input-websocket-obs"
-					placeholder="4455"
-					value={settings.current.obsWsPort}
-					onchange={(e) => {
-						let target = e.target as HTMLInputElement;
-						settings.current.obsWsPort = parseInt(target.value);
-					}}
-				/>
-				<label for="input-websocket-obs">password: </label>
-				<input
-					type="password"
-					class="input"
-					id="input-websocket-obs"
-					value={settings.current.obsWsPw}
-					onchange={(e) => {
-						let target = e.target as HTMLInputElement;
-						settings.current.obsWsPw = target.value;
-					}}
-				/>
-				<button
-					class="button button-unselected hover:button-selected"
-					onclick={() => {
-						if (settings.current.obsWsPort) {
-							obsConnect(
-								settings.current.obsWsIp,
-								settings.current.obsWsPort,
-								settings.current.obsWsPw
-							);
-						}
-					}}>connect</button
-				>
-			</div>
-		</Accordion>
-		<Accordion title="ksn server websocket" defaultstate="closed">
-			<div class="flex gap-2">
-				<label for="input-websocket">token: </label>
-				<input
-					type="password"
-					class="input w-60"
-					id="input-websocket"
-					value={settings.current.ksnWebSocketToken}
-					onchange={(e) => {
-						let target = e.target as HTMLInputElement;
-						settings.current.ksnWebSocketToken = target.value;
-					}}
-				/>
-			</div>
-			<div class="flex gap-2">
-				<button
-					class="button button-unselected hover:button-selected"
-					onclick={() => ksnWs.connect(settings.current.ksnWebSocketToken.trim())}>connect</button
-				>
-				<!-- the websocket state keeps reverting to 'closed' even when the connection is still open -->
-				<!-- <div class="flex gap-2">
+	<Accordion title="scenes">
+		<span>scene</span>
+		<RadioInputs opts={[...OverlayScenes]} bind:value={settings.current.overlayScene} />
+		<span>tournament</span>
+		<RadioInputs
+			opts={[...items.current.tournaments]}
+			labelkey={['info', 'name']}
+			bind:value={overlay.current.tournament}
+		/>
+	</Accordion>
+
+	<Accordion title="connections">
+		<section class="ml-5 w-[calc(100%-1.25rem)]">
+			<Accordion title="obs websocket" defaultstate="closed">
+				<div class="grid grid-cols-[auto_auto]">
+					<label for="input-websocket-obs">ip: </label>
+					<input
+						type="text"
+						class="input"
+						id="input-websocket-obs"
+						placeholder="192.168.1.101"
+						value={settings.current.obsWsIp}
+						onchange={(e) => {
+							let target = e.target as HTMLInputElement;
+							settings.current.obsWsIp = target.value;
+						}}
+					/>
+					<label for="input-websocket-obs">port: </label>
+					<input
+						type="number"
+						class="input remove-arrow"
+						id="input-websocket-obs"
+						placeholder="4455"
+						value={settings.current.obsWsPort}
+						onchange={(e) => {
+							let target = e.target as HTMLInputElement;
+							settings.current.obsWsPort = parseInt(target.value);
+						}}
+					/>
+					<label for="input-websocket-obs">password: </label>
+					<input
+						type="password"
+						class="input"
+						id="input-websocket-obs"
+						value={settings.current.obsWsPw}
+						onchange={(e) => {
+							let target = e.target as HTMLInputElement;
+							settings.current.obsWsPw = target.value;
+						}}
+					/>
+					<button
+						class="button button-unselected hover:button-selected"
+						onclick={() => {
+							if (settings.current.obsWsPort) {
+								obsConnect(
+									settings.current.obsWsIp,
+									settings.current.obsWsPort,
+									settings.current.obsWsPw
+								);
+							}
+						}}>connect</button
+					>
+				</div>
+			</Accordion>
+			<Accordion title="ksn server websocket" defaultstate="closed">
+				<div class="flex gap-2">
+					<label for="input-websocket">token: </label>
+					<input
+						type="password"
+						class="input w-60"
+						id="input-websocket"
+						value={settings.current.ksnWebSocketToken}
+						onchange={(e) => {
+							let target = e.target as HTMLInputElement;
+							settings.current.ksnWebSocketToken = target.value;
+						}}
+					/>
+				</div>
+				<div class="flex gap-2">
+					<button
+						class="button button-unselected hover:button-selected"
+						onclick={() => ksnWs!.connect(settings.current.ksnWebSocketToken.trim())}
+						>connect</button
+					>
+					<!-- the websocket state keeps reverting to 'closed' even when the connection is still open -->
+					<!-- <div class="flex gap-2">
 					<p>status:</p>
 					{#key ksnWs.wsState}
 						{@const wsState: {state: string, color: string} =
@@ -183,88 +190,89 @@
 						</span>
 					{/key}
 				</div> -->
-			</div>
-		</Accordion>
-	</section>
-</Accordion>
-<!-- settings -->
-<Accordion title="settings">
-	<button
-		class="button-remove absolute top-0 right-0"
-		onclick={() => {
-			settings.current = defaultSettings;
-		}}>reset to default</button
-	>
-	<span>font</span>
-	<RadioInputs opts={[...Fonts]} bind:value={settings.current.font} />
-	<span>mono font</span>
-	<RadioInputs opts={[...MonoFonts]} bind:value={settings.current.monoFont} />
-
-	<!-- color -->
-	<span>theme</span>
-	<div class="flex gap-2">
-		<div
-			class="size-12 border-4 border-ctp-text bg-ctp-lavender"
-			style:filter={getFiltersStyle()}
-		></div>
-		<div class="flex flex-col justify-evenly">
-			<RangeInput setting="hue" max={360} />
-			<RangeInput setting="saturation" max={200} />
-		</div>
-	</div>
-
-	<hr class="hr" />
-
-	<Checkbox desc="use moving background" setting="enableMovingBG" />
-	<Checkbox desc="use short map names" setting="useShortMapNames" />
-	<Checkbox desc="show POV guide" setting="enablePOVGuide" />
-	<Checkbox desc="use gradient" setting="enableGradient" />
-	{#if settings.current.enableGradient}
-		<Checkbox desc="use red & blue team colors" setting="enableTeamColors" />
-	{/if}
-	<Checkbox desc="use player PRs" setting="enablePRs" />
-	<Checkbox desc="use avatars" setting="enableAvatars" />
-	<Checkbox desc="use tags" setting="enableTags" />
-</Accordion>
-
-<!-- overlay -->
-<div class="relative mb-2 flex w-full max-w-lg justify-center gap-1 self-center">
-	<span class="absolute left-0">best of</span>
-	<RadioInputs opts={[1, 3, 5, 7, 9]} bind:value={overlay.current.bestOf} log={true} />
-</div>
-
-<!-- players -->
-<div class="flex w-full max-w-lg justify-evenly self-center">
-	<PlayerControl player={overlay.current.players[0]} playerNum={0} />
-	<hr class="hr" />
-	<PlayerControl player={overlay.current.players[1]} playerNum={1} />
-	<hr class="hr" />
-	<PlayerControl player={overlay.current.players[2]} playerNum={2} />
-	<hr class="hr" />
-	<PlayerControl player={overlay.current.players[3]} playerNum={3} />
-</div>
-
-<div class="max-w-lg self-center">
-	<!-- maps -->
-
-	<span>map</span>
-	<RadioInputs
-		opts={overlay.current.tournament.maps}
-		optlabels={settings.current.useShortMapNames
-			? overlay.current.tournament.maps.map((m) => getMap(m).shortName)
-			: undefined}
-		bind:value={overlay.current.map}
-	/>
-
-	<!-- stages -->
-	<div class="flex justify-between">
-		<span>stage</span>
+				</div>
+			</Accordion>
+		</section>
+	</Accordion>
+	<!-- settings -->
+	<Accordion title="settings">
 		<button
-			class="button-remove"
+			class="button-remove absolute top-0 right-0"
 			onclick={() => {
-				items.current.stages = defaultStages;
+				settings.current = defaultSettings;
 			}}>reset to default</button
 		>
+		<span>font</span>
+		<RadioInputs opts={[...Fonts]} bind:value={settings.current.font} />
+		<span>mono font</span>
+		<RadioInputs opts={[...MonoFonts]} bind:value={settings.current.monoFont} />
+
+		<!-- color -->
+		<span>theme</span>
+		<div class="flex gap-2">
+			<div
+				class="size-12 border-4 border-ctp-text bg-ctp-lavender"
+				style:filter={getFiltersStyle()}
+			></div>
+			<div class="flex flex-col justify-evenly">
+				<RangeInput setting="hue" max={360} />
+				<RangeInput setting="saturation" max={200} />
+			</div>
+		</div>
+
+		<hr class="hr" />
+
+		<Checkbox desc="use moving background" setting="enableMovingBG" />
+		<Checkbox desc="use short map names" setting="useShortMapNames" />
+		<Checkbox desc="show POV guide" setting="enablePOVGuide" />
+		<Checkbox desc="use gradient" setting="enableGradient" />
+		{#if settings.current.enableGradient}
+			<Checkbox desc="use red & blue team colors" setting="enableTeamColors" />
+		{/if}
+		<Checkbox desc="use player PRs" setting="enablePRs" />
+		<Checkbox desc="use avatars" setting="enableAvatars" />
+		<Checkbox desc="use tags" setting="enableTags" />
+	</Accordion>
+
+	<!-- overlay -->
+	<div class="relative mb-2 flex w-full max-w-lg justify-center gap-1 self-center">
+		<span class="absolute left-0">best of</span>
+		<RadioInputs opts={[1, 3, 5, 7, 9]} bind:value={overlay.current.bestOf} log={true} />
 	</div>
-	<RadioInputs opts={[...items.current.stages]} bind:value={overlay.current.stage} />
-</div>
+
+	<!-- players -->
+	<div class="flex w-full max-w-lg justify-evenly self-center">
+		<PlayerControl player={overlay.current.players[0]} playerNum={0} />
+		<hr class="hr" />
+		<PlayerControl player={overlay.current.players[1]} playerNum={1} />
+		<hr class="hr" />
+		<PlayerControl player={overlay.current.players[2]} playerNum={2} />
+		<hr class="hr" />
+		<PlayerControl player={overlay.current.players[3]} playerNum={3} />
+	</div>
+
+	<div class="max-w-lg self-center">
+		<!-- maps -->
+
+		<span>map</span>
+		<RadioInputs
+			opts={overlay.current.tournament.maps}
+			optlabels={settings.current.useShortMapNames
+				? overlay.current.tournament.maps.map((m) => getMap(m).shortName)
+				: undefined}
+			bind:value={overlay.current.map}
+		/>
+
+		<!-- stages -->
+		<div class="flex justify-between">
+			<span>stage</span>
+			<button
+				class="button-remove"
+				onclick={() => {
+					items.current.stages = defaultStages;
+				}}>reset to default</button
+			>
+		</div>
+		<RadioInputs opts={[...items.current.stages]} bind:value={overlay.current.stage} />
+	</div>
+{/if}

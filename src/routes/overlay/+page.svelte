@@ -11,17 +11,21 @@
 	import { OverlayScenes, type OverlayScene } from '$lib/types';
 
 	import { KSNWebSocket } from '$lib/websockets/ksn/ws-ksn.svelte';
-	import { setContext, type Component } from 'svelte';
+	import { onMount, setContext, type Component } from 'svelte';
 
-	let ksnWs = $state(new KSNWebSocket('ksnWs'));
-	setContext('ksnWs', ksnWs);
+	let ksnWs: KSNWebSocket | undefined = $state();
 
-	if (settings.current.ksnWebSocketToken) {
-		ksnWs.connect(settings.current.ksnWebSocketToken);
-	}
-	for (const p of overlay.current.players) {
-		if (p) ksnWs.timer.verifyPlayerAdded(p);
-	}
+	onMount(() => {
+		ksnWs = new KSNWebSocket('ksnWs');
+		setContext('ksnWs', ksnWs);
+
+		if (settings.current.ksnWebSocketToken) {
+			ksnWs.connect(settings.current.ksnWebSocketToken);
+		}
+		for (const p of overlay.current.players) {
+			if (p) ksnWs.timer.verifyPlayerAdded(p);
+		}
+	});
 
 	let sceneComponents: Record<Exclude<OverlayScene, ''>, Component> = {
 		MatchScene,
@@ -36,9 +40,11 @@
 	let page = $derived(settings.current.overlayScene);
 </script>
 
-{#each OverlayScenes as scene, i (i)}
-	{#if scene && page == scene}
-		{@const SvelteComponent = sceneComponents[scene]}
-		<SvelteComponent />
-	{/if}
-{/each}
+{#if ksnWs}
+	{#each OverlayScenes as scene, i (i)}
+		{#if scene && page == scene}
+			{@const SvelteComponent = sceneComponents[scene]}
+			<SvelteComponent />
+		{/if}
+	{/each}
+{/if}
