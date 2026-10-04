@@ -80,7 +80,7 @@ export function fullReset() {
 }
 
 const bootcampTestPlayers: TempusID[] = [
-        11459, 12754, 325297, 378025, 24856, 47849, 511949, 121553, 83019
+        11459, 12754, 325297, 378025, 24856, 47849, 511949, 121553, 83019, 597475
 ]
 
 async function addPlayersFromTempusID(tempusIds: TempusID[]) {
