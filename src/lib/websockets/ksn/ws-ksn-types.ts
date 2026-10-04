@@ -201,6 +201,73 @@ export namespace KSN {
 		steamAccountId: string;
 	}
 
+        // mass-multi is the relevant one for rookie cup
+        type MassMode = 'mass-single' | 'mass-multi'
+
+        type MassSessionState =
+        | 'armed'
+        | 'ended'
+
+        type MassServerState =
+        | 'pending'
+        | 'preparing'
+        | 'prepared'
+        | 'racing'
+        | 'overtime'
+        | 'ended'
+        | 'detached'
+
+        type MassPlayerState =
+        | 'prepared'
+        | 'racing'
+        | 'overtime'
+        | 'finished'
+        | 'withdrawn'
+        | 'disqualified'
+        | 'disconnected'
+        
+        
+        type MassParticipantFinishedReason =
+        | 'overtime_finished'       // finished main after window end
+        | 'overtime_terminated'     // run ended in overtime without a valid finish (non-death)
+        | 'window_expired'          // still Racing at endsAt but not on an active main run
+        | 'respawn_after_expiry'
+        | 'spectate'
+        | 'death'
+
+
+        export interface MassRaceSessionEvent {
+                type: 'mass_race_session'
+                session: {
+                        id: number
+                        mode: MassMode
+                        map: string
+                        class: 3 | 4             // TFClass Soldier=3, Demoman=4
+                        state: MassSessionState
+                        created_at: number        // Unix timestamp
+                        starts_at: number | null  // shared UTC go-time (countdown ended, round timer begins)
+                        ended_at: number | null
+                        active_slot: 1 | null     
+                        duration_seconds: number  // mass-multi window length; 0 for mass-single
+                        ends_at: number | null    // starts_at + duration_seconds (mass-multi); null for mass-single
+                        servers: Array<{
+                                session_id: number
+                                server_code: string     // e.g. "AU-SYD2"
+                                state: MassServerState
+                                detail: string
+                        }>
+                        players: Array<{
+                                session_id: number
+                                auth: number            // SteamID3, account portion
+                                server_code: string     // which participant server they were captured on
+                                display_name: string
+                                state: MassPlayerState
+                                reason: MassParticipantFinishedReason
+                                time: number | null     // best main-track time from competition_mass_results, if any
+                        }>
+                }
+        }
+
 	// MARK: Messages
 
 	export type MessageTypes =
@@ -212,7 +279,8 @@ export namespace KSN {
 		| CompetitionLiveEvent
 		| CompetitionOvertimeEvent
 		| CompetitionEndEvent
-		| CompetitionSessionPlayerEnd;
+		| CompetitionSessionPlayerEnd
+                | MassRaceSessionEvent;
 
 	export type Messages = {
 		mapPicks: PickBansSessionStateEvent;

@@ -14,7 +14,14 @@
 
 	import PlayerControl from '$lib/components/controls/PlayerControl.svelte';
 	import { getFiltersStyle } from '$lib/filters.svelte';
-	import { settings, overlay, items, defaultStages, defaultSettings } from '$lib/storage.svelte';
+	import {
+		settings,
+		overlay,
+		items,
+		defaultStages,
+		defaultSettings,
+		addBootcampTestTournament
+	} from '$lib/storage.svelte';
 	import { Fonts, MonoFonts, OverlayScenes } from '$lib/types';
 	import * as _ from 'underscore';
 
@@ -34,6 +41,10 @@
 			setScene(settings.current.overlayScene);
 		}
 	});
+
+	if (!items.current.tournaments.filter((t) => t.info.name == 'BootcampTest')[0]) {
+		addBootcampTestTournament();
+	}
 </script>
 
 <span class="self-center">jtoo controls</span>
@@ -128,12 +139,15 @@
 				/>
 				<button
 					class="button button-unselected hover:button-selected"
-					onclick={() =>
-						obsConnect(
-							settings.current.obsWsIp,
-							settings.current.obsWsPort,
-							settings.current.obsWsPw
-						)}>connect</button
+					onclick={() => {
+						if (settings.current.obsWsPort) {
+							obsConnect(
+								settings.current.obsWsIp,
+								settings.current.obsWsPort,
+								settings.current.obsWsPw
+							);
+						}
+					}}>connect</button
 				>
 			</div>
 		</Accordion>

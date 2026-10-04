@@ -4,6 +4,7 @@ import type { Tempus2 } from './api/tempus2/api-tempus2';
 
 
 // MARK: Types
+export type TempusID = number;
 export const TFClasses = ['demoman', 'soldier', 'overall'] as const;
 export type TFClass = (typeof TFClasses)[number];
 
@@ -16,60 +17,60 @@ export type SteamID3 = number;
 export type MapFileName = string;
 
 export class Player {
-	name: string = '';
-	division: Division | null = null;
-	score: number = 0;
-	tempusID: number = 0;
-	steamID3: number = 0;
-	steamID: string = '';
-	avatarURL: string = '';
-	tag: string = '';
-	flag: string = '';
-	pr: string = ''; // only used for manual PRs
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	rank: Record<TFClass, Rank> = {
-		demoman: { points: 0, rank: 0, title: '' },
-		soldier: { points: 0, rank: 0, title: '' },
-		overall: { points: 0, rank: 0, title: '' }
-	};
-	TTs: Record<TFClass, number> = { soldier: 0, demoman: 0, overall: 0 };
-	WRs: Record<TFClass, number> = { soldier: 0, demoman: 0, overall: 0 };
-	bestRun: string = '';
-	note: string = '';
-	favouriteMap: string = '';
+        name: string = '';
+        division: Division | null = null;
+        score: number = 0;
+        tempusID: number = 0;
+        steamID3: number = 0;
+        steamID: string = '';
+        avatarURL: string = '';
+        tag: string = '';
+        flag: string = '';
+        pr: string = ''; // only used for manual PRs
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        rank: Record<TFClass, Rank> = {
+                demoman: { points: 0, rank: 0, title: '' },
+                soldier: { points: 0, rank: 0, title: '' },
+                overall: { points: 0, rank: 0, title: '' }
+        };
+        TTs: Record<TFClass, number> = { soldier: 0, demoman: 0, overall: 0 };
+        WRs: Record<TFClass, number> = { soldier: 0, demoman: 0, overall: 0 };
+        bestRun: string = '';
+        note: string = '';
+        favouriteMap: string = '';
 }
 
 export type MapRun = {
-	tempusID: number;
-	rank: number;
-	duration: number;
+        tempusID: number;
+        rank: number;
+        duration: number;
 };
 
 export class TFMap {
-	fileName: MapFileName = '';
-	shortName: string = '';
-	mapZoneId: number = 0;
-	intendedClass: Record<Exclude<TFClass, 'overall'>, boolean> = { soldier: false, demoman: false };
-	tier: Record<Exclude<TFClass, 'overall'>, number> = { soldier: 0, demoman: 0 };
-	authors: Tempus2.Author[] = [];
-	worldRecordInfo: Record<Exclude<TFClass, 'overall'>, Tempus2.Run2 | undefined> = {
-		soldier: undefined,
-		demoman: undefined
-	};
-	runs: Omit<Record<TFClass, MapRun[]>, 'overall'> = { soldier: [], demoman: [] };
+        fileName: MapFileName = '';
+        shortName: string = '';
+        mapZoneId: number = 0;
+        intendedClass: Record<Exclude<TFClass, 'overall'>, boolean> = { soldier: false, demoman: false };
+        tier: Record<Exclude<TFClass, 'overall'>, number> = { soldier: 0, demoman: 0 };
+        authors: Tempus2.Author[] = [];
+        worldRecordInfo: Record<Exclude<TFClass, 'overall'>, Tempus2.Run2 | undefined> = {
+                soldier: undefined,
+                demoman: undefined
+        };
+        runs: Omit<Record<TFClass, MapRun[]>, 'overall'> = { soldier: [], demoman: [] };
 
-	imageURL?: string = '';
+        imageURL?: string = '';
 
-	static fileNameToShortName(fileName: string): string {
-		if (fileName == 'jump_') return fileName;
+        static fileNameToShortName(fileName: string): string {
+                if (fileName == 'jump_') return fileName;
 
-		let tmp = fileName.match(/(?<=_)[^_]+/); // match name after first '_' and before any subsequent '_', eg: 'beef' from 'jump_beef' or 'jump_beef_final'
-		return tmp ? tmp[0].trim() : '';
-	}
+                let tmp = fileName.match(/(?<=_)[^_]+/); // match name after first '_' and before any subsequent '_', eg: 'beef' from 'jump_beef' or 'jump_beef_final'
+                return tmp ? tmp[0].trim() : '';
+        }
 
-	static fileNameToTfId(fileName: string): string {
-		return fileName.replace('_', '-');
-	}
+        static fileNameToTfId(fileName: string): string {
+                return fileName.replace('_', '-');
+        }
 }
 
 export const nullPlayer: Player = Object.freeze(new Player());
@@ -78,47 +79,47 @@ export const BracketOptions = ['whole', 'upper', 'lower'] as const;
 export type BracketOption = (typeof BracketOptions)[number];
 
 export interface PlayerPoints {
-	playerId: number; // tempus id
-	stage1: { pr: number; points: number };
-	stage2: { laps: number; pr: number; points: number };
-	stage3: { pr: number; points: number };
+        playerId: number; // tempus id
+        stage1: { pr: number; points: number };
+        stage2: { laps: number; pr: number; points: number };
+        stage3: { pr: number; points: number };
 }
 
 export const TournamentFormats = [
-	'DoubleElim4Player',
-	'DoubleElim8Player',
-	'AllOutRoyale',
-	'MassRace'
+        'DoubleElim4Player',
+        'DoubleElim8Player',
+        'AllOutRoyale',
+        'MassRace'
 ] as const;
 export type TournamentFormat = (typeof TournamentFormats)[number];
 
 interface Prize {
-	placement: string;
-	prize: string;
+        placement: string;
+        prize: string;
 }
 
 export class Tournament {
-	id: string;
-	format: TournamentFormat | '';
-	info: {
-		name: string;
-		imageUrl: string;
-		prizePool: Prize[];
-		class: TFClass;
-	};
-	players: SteamID3[];
-	// playerScores: {};
-	maps: MapFileName[];
-	bracket?: Bracket4 | Bracket8; // used for elim formats
-	playerPoints?: PlayerPoints[]; // used for all out royale format
+        id: string;
+        format: TournamentFormat | '';
+        info: {
+                name: string;
+                imageUrl?: string;
+                prizePool?: Prize[];
+                class: TFClass;
+        };
+        players: SteamID3[];
+        // playerScores: {};
+        maps: MapFileName[];
+        bracket?: Bracket4 | Bracket8; // used for elim formats
+        playerPoints?: PlayerPoints[]; // used for all out royale format
 
-	constructor() {
-		this.id = uuidv4();
-		this.format = '';
-		this.info = { name: '', imageUrl: '', prizePool: [], class: 'soldier' };
-		this.players = [];
-		this.maps = [];
-	}
+        constructor() {
+                this.id = uuidv4();
+                this.format = '';
+                this.info = { name: '', imageUrl: '', prizePool: [], class: 'soldier' };
+                this.players = [];
+                this.maps = [];
+        }
 }
 
 // add tournament PopOver
@@ -144,71 +145,71 @@ export class Tournament {
 
 // MARK: Settings
 export const Fonts = [
-	'font-fredoka',
-	'font-inter',
-	'font-bebas',
-	'font-montserrat',
-	'font-roboto',
-	'font-space-grotesk'
+        'font-fredoka',
+        'font-inter',
+        'font-bebas',
+        'font-montserrat',
+        'font-roboto',
+        'font-space-grotesk'
 ] as const;
 export type Font = (typeof Fonts)[number];
 
 export const MonoFonts = [
-	'font-dm-mono',
-	'font-anonymous-pro',
-	'font-ubuntu-mono',
-	'font-azeret-mono',
-	'font-chivo-mono',
-	'font-spline-sans-mono'
+        'font-dm-mono',
+        'font-anonymous-pro',
+        'font-ubuntu-mono',
+        'font-azeret-mono',
+        'font-chivo-mono',
+        'font-spline-sans-mono'
 ] as const;
 export type MonoFont = (typeof MonoFonts)[number];
 
 export const OverlayScenes = [
-	'',
-	'MatchScene',
-	'MapScene',
-	'TournamentInfoScene',
-	'BracketScene',
-	'PlayerCardScene',
-	'PlayerListScene',
-	'ThanksScene'
+        '',
+        'MatchScene',
+        'MapScene',
+        'TournamentInfoScene',
+        'BracketScene',
+        'PlayerCardScene',
+        'PlayerListScene',
+        'ThanksScene'
 ] as const;
 export type OverlayScene = (typeof OverlayScenes)[number];
 
 
 export type Settings = {
-	font: Font;
-	monoFont: MonoFont;
-	hue: number;
-	saturation: number;
-	enableMovingBG: boolean;
-	enablePRs: boolean;
-	enableAvatars: boolean;
-	enableTags: boolean;
-	enableFlags: boolean;
-	enableGradient: boolean;
-	enableTeamColors: boolean;
-	enablePOVGuide: boolean;
-	useShortMapNames: boolean;
-	overlayScene: OverlayScene;
-	ksnWebSocketToken: string;
-	obsWsIp: string;
-	obsWsPort: number;
-	obsWsPw: string;
+        font: Font;
+        monoFont: MonoFont;
+        hue: number;
+        saturation: number;
+        enableMovingBG: boolean;
+        enablePRs: boolean;
+        enableAvatars: boolean;
+        enableTags: boolean;
+        enableFlags: boolean;
+        enableGradient: boolean;
+        enableTeamColors: boolean;
+        enablePOVGuide: boolean;
+        useShortMapNames: boolean;
+        overlayScene: OverlayScene;
+        ksnWebSocketToken: string;
+        obsWsIp: string;
+        obsWsPort: number | undefined;
+        obsWsPw: string;
 };
 
 export type Overlay = {
-	bestOf: number;
-	players: Array<SteamID3 | undefined>;
-	map: MapFileName;
-	stage: string;
-	tournament: Tournament;
+        bestOf: number;
+        players: Array<SteamID3 | undefined>;
+        map: MapFileName;
+        stage: string;
+        tournament: Tournament;
 };
 
 export type Items = {
-	players: Player[];
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	maps: TFMap[];
-	stages: string[];
-	tournaments: Tournament[];
+        players: Player[];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        maps: TFMap[];
+        stages: string[];
+        tournaments: Tournament[];
 };
