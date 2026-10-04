@@ -32,9 +32,9 @@
 	import { getMap } from '$lib/util';
 
 	let ksnWs = $state(new KSNWebSocket());
-	if (settings.current.ksnWebSocketToken) {
-		ksnWs.connectNoBroadcast(settings.current.ksnWebSocketToken);
-	}
+	// if (settings.current.ksnWebSocketToken) {
+	// 	ksnWs.connectNoBroadcast(settings.current.ksnWebSocketToken);
+	// }
 
 	$effect(() => {
 		if (settings.current.overlayScene) {
