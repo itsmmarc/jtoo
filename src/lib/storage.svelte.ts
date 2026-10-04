@@ -95,7 +95,7 @@ async function addPlayersFromTempusID(tempusIds: TempusID[]) {
 
                 if (!player) continue
 
-                player.avatarURL = await Steam.fetchPlayerAvatar(player.steamID)
+                // player.avatarURL = await Steam.fetchPlayerAvatar(player.steamID)
 
                 items.current.players.push(player)
         }

@@ -35,7 +35,7 @@
 
 		player = result as Player;
 
-		player.avatarURL = await Steam.fetchPlayerAvatar(player.steamID);
+		// player.avatarURL = await Steam.fetchPlayerAvatar(player.steamID);
 
 		player = { ...player };
 	}
