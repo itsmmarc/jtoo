@@ -11,6 +11,7 @@ import {
 } from './types';
 import { getPlayerByTempusID, getPlayerIndexByTempusID } from './util';
 import { Tempus2 } from './api/tempus2/api-tempus2';
+import { Steam } from './api/steam/api-steam';
 
 export const defaultStages: Array<string> = [
         '',
@@ -92,10 +93,11 @@ async function addPlayersFromTempusID(tempusIds: TempusID[]) {
                 // fetch player
                 let player = await Tempus2.fetchPlayerByTempusID(tempusId)
 
-                console.log(player)
+                if (!player) continue
 
-                // push player
-                if (player) items.current.players.push(player)
+                player.avatarURL = await Steam.fetchPlayerAvatar(player.steamID)
+
+                items.current.players.push(player)
         }
 }
 function tempusIDsToSteamID3s(tempusIds: TempusID[]): SteamID3[] {
