@@ -1,3 +1,5 @@
+import { error } from "@sveltejs/kit";
+
 export namespace Steam {
         /**
          *
@@ -98,6 +100,10 @@ export namespace Steam {
                         body: JSON.stringify({ steamids: steamID }),
                         headers: { 'Content-Type': 'application/json' }
                 });
+                if (!response.ok) {
+                        throw error(response.status, 'Upstream request failed');
+                }
+
                 let data = await response.json();
                 console.log(data);
 
