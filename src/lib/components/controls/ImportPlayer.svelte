@@ -35,7 +35,7 @@
 
 		player = result as Player;
 
-		player.avatarURL = await Steam.fetchPlayerAvatar(player.steamID);
+		// player.avatarURL = await Steam.fetchPlayerAvatar(player.steamID);
 
 		player = { ...player };
 	}
@@ -45,7 +45,7 @@
 		searchResultsTempus = await Tempus2.searchPlayers(queryTerm);
 		let ids: string[] = [];
 		searchResultsTempus.forEach((r) => ids.push(r.steamid));
-		searchResultsSteam = await Steam.fetchPlayerSummaries(ids);
+		// searchResultsSteam = await Steam.fetchPlayerSummaries(ids);
 	}
 
 	function importPlayer(player: Player) {
