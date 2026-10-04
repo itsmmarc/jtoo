@@ -38,7 +38,7 @@
 	}
 	let maxPlayers = $derived(formatChosen ? getMaxPlayers(tournament.format) : 999);
 	function getMaxPlayers(
-		format: '' | 'DoubleElim4Player' | 'DoubleElim8Player' | 'AllOutRoyale' | 'Leaderboard'
+		format: '' | 'DoubleElim4Player' | 'DoubleElim8Player' | 'AllOutRoyale' | 'MassRace'
 	) {
 		return format == 'DoubleElim4Player' ? 4 : format == 'DoubleElim8Player' ? 8 : 999;
 	}
@@ -206,7 +206,6 @@
 		<div class="col-span-full flex flex-col">
 			<label for="format" class="col-span-4">format</label>
 			<RadioInputs
-				name="format"
 				bind:value={tournament.format}
 				opts={[...TournamentFormats]}
 				onchange={() => {
@@ -217,7 +216,7 @@
 						case 'DoubleElim8Player':
 							maxPlayers = 8;
 							break;
-						case 'Leaderboard':
+						case 'MassRace':
 							tournament.bracket = undefined;
 							maxPlayers = 999;
 							break;
@@ -233,7 +232,7 @@
 				}}
 			/>
 			<label for="tfclass" class="col-span-4">class</label>
-			<RadioInputs name="tfclass" bind:value={tournament.info.class} opts={[...TFClasses]} />
+			<RadioInputs bind:value={tournament.info.class} opts={[...TFClasses]} />
 			{#if mode == 'add'}
 				<button
 					class="button col-span-4 mt-2 max-w-30 justify-self-center"

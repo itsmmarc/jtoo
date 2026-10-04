@@ -485,6 +485,9 @@ export class KSNWebSocket {
 				this.timer.stopPlayerTimer(parseInt(data.steamAccountId));
 				this.timer.sortPlayers();
 				break;
+                                case 'mass_race_session':
+                                        
+                                        break;
 			default:
 				return;
 		}

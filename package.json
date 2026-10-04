@@ -15,7 +15,7 @@
 	},
 	"devDependencies": {
 		"@catppuccin/tailwindcss": "^1.0.0",
-		"@cloudflare/workers-types": "^4.20260606.1",
+		"@cloudflare/workers-types": "^5.20261003.1",
 		"@eslint/compat": "^2.0.4",
 		"@eslint/js": "^10.0.1",
 		"@iconify-json/mdi": "^1.2.3",

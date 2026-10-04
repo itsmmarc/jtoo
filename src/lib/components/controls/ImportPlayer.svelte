@@ -35,7 +35,7 @@
 
 		player = result as Player;
 
-		player.avatarURL = await Steam.fetchPlayerAvatar(player.steamID);
+		// player.avatarURL = await Steam.fetchPlayerAvatar(player.steamID);
 
 		player = { ...player };
 	}
@@ -45,10 +45,10 @@
 		searchResultsTempus = await Tempus2.searchPlayers(queryTerm);
 		let ids: string[] = [];
 		searchResultsTempus.forEach((r) => ids.push(r.steamid));
-		searchResultsSteam = await Steam.fetchPlayerSummaries(ids);
+		// searchResultsSteam = await Steam.fetchPlayerSummaries(ids);
 	}
 
-	function importplayer(player: Player) {
+	function importPlayer(player: Player) {
 		let errorFound = false;
 		if (!player.name) {
 			error.noName.state = true;
@@ -274,7 +274,7 @@
 				class="button col-span-6"
 				// value=""
 				onclick={() => {
-					importplayer(player);
+					importPlayer(player);
 				}}>add player</button
 			>
 		{/if}

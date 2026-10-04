@@ -14,7 +14,14 @@
 
 	import PlayerControl from '$lib/components/controls/PlayerControl.svelte';
 	import { getFiltersStyle } from '$lib/filters.svelte';
-	import { settings, overlay, items, defaultStages, defaultSettings } from '$lib/storage.svelte';
+	import {
+		settings,
+		overlay,
+		items,
+		defaultStages,
+		defaultSettings,
+		addBootcampTestTournament
+	} from '$lib/storage.svelte';
 	import { Fonts, MonoFonts, OverlayScenes } from '$lib/types';
 	// import * as _ from 'underscore';
 
@@ -31,6 +38,10 @@
 			setScene(settings.current.overlayScene);
 		}
 	});
+
+	// if (!items.current.tournaments.filter((t) => t.info.name == 'BootcampTest')[0]) {
+	// 	addBootcampTestTournament();
+	// }
 </script>
 
 <span class="self-center">jtoo controls</span>
@@ -87,23 +98,35 @@
 <Accordion title="connections">
 	<section class="ml-5 w-[calc(100%-1.25rem)]">
 		<Accordion title="obs websocket" defaultstate="closed">
-			<div class="flex flex-wrap gap-2">
+			<div class="grid grid-cols-[auto_auto]">
 				<label for="input-websocket-obs">ip: </label>
 				<input
 					type="text"
 					class="input"
 					id="input-websocket-obs"
-					placeholder="ws://localhost:4455"
+					placeholder="192.168.1.101"
 					value={settings.current.obsWsIp}
 					onchange={(e) => {
 						let target = e.target as HTMLInputElement;
 						settings.current.obsWsIp = target.value;
 					}}
 				/>
+				<label for="input-websocket-obs">port: </label>
+				<input
+					type="number"
+					class="input remove-arrow"
+					id="input-websocket-obs"
+					placeholder="4455"
+					value={settings.current.obsWsPort}
+					onchange={(e) => {
+						let target = e.target as HTMLInputElement;
+						settings.current.obsWsPort = parseInt(target.value);
+					}}
+				/>
 				<label for="input-websocket-obs">password: </label>
 				<input
 					type="password"
-					class="input w-40"
+					class="input"
 					id="input-websocket-obs"
 					value={settings.current.obsWsPw}
 					onchange={(e) => {
@@ -113,8 +136,15 @@
 				/>
 				<button
 					class="button button-unselected hover:button-selected"
-					onclick={() => obsConnect(settings.current.obsWsIp, settings.current.obsWsPw)}
-					>connect</button
+					onclick={() => {
+						if (settings.current.obsWsPort) {
+							obsConnect(
+								settings.current.obsWsIp,
+								settings.current.obsWsPort,
+								settings.current.obsWsPw
+							);
+						}
+					}}>connect</button
 				>
 			</div>
 		</Accordion>
