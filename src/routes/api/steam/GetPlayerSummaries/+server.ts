@@ -7,6 +7,7 @@ export async function POST(request: Request) {
         console.log('body:');
         console.log(body);
 
+        console.log(Object.keys(env))
         if (!('steamids' in body)) {
                 return json({}, { status: 400 });
         }
