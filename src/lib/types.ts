@@ -1,9 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import { type Bracket4, type Bracket8 } from './Bracket.svelte';
 import type { Tempus2 } from './api/tempus2/api-tempus2';
-import { counters } from './storage.svelte';
 
 // MARK: Types
+export type Seconds = number
+export type Centiseconds = number
 export type TempusID = number;
 export const TFClasses = ['demoman', 'soldier', 'overall'] as const;
 export type TFClass = (typeof TFClasses)[number];
@@ -42,7 +43,7 @@ export class Player {
 export type MapRun = {
         tempusID: number;
         rank: number;
-        duration: number;
+        duration: Seconds;
 };
 
 export class TFMap {

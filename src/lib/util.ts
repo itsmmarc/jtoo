@@ -1,6 +1,6 @@
 import { indexOf } from 'underscore';
 import { items } from './storage.svelte';
-import { Player, TFMap, type MapFileName, type SteamID3, type TempusID } from './types';
+import { Player, TFMap, type Centiseconds, type MapFileName, type Seconds, type SteamID3, type TempusID } from './types';
 
 export function getPlayer(steamID3: SteamID3 | undefined): Player {
         if (!steamID3) return items.current.players[0];
@@ -22,11 +22,19 @@ export function getMap(mapFileName: MapFileName): TFMap {
         return { ...items.current.maps.filter((m) => m.fileName == mapFileName)[0] };
 }
 
-export function csToTime(cs: number, precision?: 'centiseconds' | 'seconds' | 'minutes') {
+export function secondsToCs(seconds: Seconds): Centiseconds {
+        return seconds * 100
+}
+
+export function csToSeconds(centiseconds: Centiseconds): Seconds {
+        return centiseconds / 100
+}
+
+export function csToFormattedTime(cs: Centiseconds, precision?: 'centiseconds' | 'seconds' | 'minutes') {
         const minutes = Math.floor(cs / 6000)
                 .toString()
                 .padStart(2, '0');
-        const seconds = Math.floor((cs / 100) % 60)
+        const seconds = Math.floor((csToSeconds(cs)) % 60)
                 .toString()
                 .padStart(2, '0');
         const centiseconds = Math.floor(cs % 100)

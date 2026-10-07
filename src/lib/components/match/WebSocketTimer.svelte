@@ -2,7 +2,7 @@
 	import { overlay, settings } from '$lib/storage.svelte';
 	import { KSNWebSocket } from '$lib/websockets/ksn/ws-ksn.svelte';
 	import { type SteamID3 } from '$lib/types';
-	import { csToTime } from '$lib/util';
+	import { csToFormattedTime } from '$lib/util';
 	import { getContext } from 'svelte';
 
 	let ksnWs: KSNWebSocket = getContext('ksnWs');
@@ -31,7 +31,7 @@
                                 {!playerTimer || !playerTimer.isRunning ? 'opacity-40' : ''}"
 		>
 			{#if playerTimer && playerTimer.timeFormatted}
-				{playerTimer ? playerTimer.timeFormatted : csToTime(0)}
+				{playerTimer ? playerTimer.timeFormatted : csToFormattedTime(0)}
 			{/if}
 		</span>
 	{/key}

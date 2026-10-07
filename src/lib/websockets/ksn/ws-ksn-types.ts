@@ -1,153 +1,155 @@
+import type { Seconds } from "$lib/types";
+
 // kingstripes server network
 export namespace KSN {
-	// MARK: Picks and Bans
-	type SeriesLength = 3 | 5;
-	type PickBansActor = 'A' | 'B';
-	type PickBansAction = 'pick' | 'ban';
-	type PickBansSessionStatus = 'running' | 'completed' | 'cancelled';
-	type PickBansResolutionSource = 'web' | 'in-game' | 'timeout-random' | 'elimination';
+        // MARK: Picks and Bans
+        type SeriesLength = 3 | 5;
+        type PickBansActor = 'A' | 'B';
+        type PickBansAction = 'pick' | 'ban';
+        type PickBansSessionStatus = 'running' | 'completed' | 'cancelled';
+        type PickBansResolutionSource = 'web' | 'in-game' | 'timeout-random' | 'elimination';
 
-	interface MapOption {
-		id: string;
-		name: string;
-		displayName: string | null;
-	}
+        interface MapOption {
+                id: string;
+                name: string;
+                displayName: string | null;
+        }
 
-	interface PickBansSessionConfig {
-		turnTimeLimitSeconds: number;
-		seriesLength: SeriesLength;
-	}
+        interface PickBansSessionConfig {
+                turnTimeLimitSeconds: Seconds;
+                seriesLength: SeriesLength;
+        }
 
-	interface StepDefinition {
-		index: number;
-		actor: PickBansActor;
-		action: PickBansAction;
-	}
+        interface StepDefinition {
+                index: number;
+                actor: PickBansActor;
+                action: PickBansAction;
+        }
 
-	interface ActiveTurn {
-		turnId: string;
-		stepIndex: number;
-		actor: PickBansActor;
-		action: PickBansAction;
-		startedAt: string;
-		expiresAt: string;
-		acceptanceClosesAt: string;
-		remainingMapIds: string[];
-	}
+        interface ActiveTurn {
+                turnId: string;
+                stepIndex: number;
+                actor: PickBansActor;
+                action: PickBansAction;
+                startedAt: string;
+                expiresAt: string;
+                acceptanceClosesAt: string;
+                remainingMapIds: string[];
+        }
 
-	interface StepResult {
-		turnId: string;
-		stepIndex: number;
-		actor: PickBansActor;
-		action: PickBansAction;
-		mapId: string;
-		resolvedBy: PickBansResolutionSource;
-		resolvedAt: string;
-	}
+        interface StepResult {
+                turnId: string;
+                stepIndex: number;
+                actor: PickBansActor;
+                action: PickBansAction;
+                mapId: string;
+                resolvedBy: PickBansResolutionSource;
+                resolvedAt: string;
+        }
 
-	interface PlayerRecord {
-		id: string;
-		displayName: string;
-		personaName: string;
-		steamId64: string;
-		steamAccountId: string;
-		steamId3: string;
-		profileUrl: string;
-		avatarUrl: string;
-		countryCode: string | null;
-		countryName: string | null;
-		source: 'steam-import' | 'manual';
-		createdAt: string;
-		updatedAt: string;
-	}
+        interface PlayerRecord {
+                id: string;
+                displayName: string;
+                personaName: string;
+                steamId64: string;
+                steamAccountId: string;
+                steamId3: string;
+                profileUrl: string;
+                avatarUrl: string;
+                countryCode: string | null;
+                countryName: string | null;
+                source: 'steam-import' | 'manual';
+                createdAt: string;
+                updatedAt: string;
+        }
 
-	interface PickBansSessionState {
-		id: string;
-		revision: number;
-		status: PickBansSessionStatus;
-		createdAt: string;
-		startedAt?: string;
-		completedAt?: string;
-		updatedAt: string;
-		playerA: PlayerRecord;
-		playerB: PlayerRecord;
-		mapPoolId: string;
-		mapPoolName: string;
-		maps: MapOption[];
-		steps: StepDefinition[];
-		currentStepIndex: number;
-		config: PickBansSessionConfig;
-		currentTurn?: ActiveTurn;
-		history: StepResult[];
-	}
+        interface PickBansSessionState {
+                id: string;
+                revision: number;
+                status: PickBansSessionStatus;
+                createdAt: string;
+                startedAt?: string;
+                completedAt?: string;
+                updatedAt: string;
+                playerA: PlayerRecord;
+                playerB: PlayerRecord;
+                mapPoolId: string;
+                mapPoolName: string;
+                maps: MapOption[];
+                steps: StepDefinition[];
+                currentStepIndex: number;
+                config: PickBansSessionConfig;
+                currentTurn?: ActiveTurn;
+                history: StepResult[];
+        }
 
-	export interface PickBansSessionStateEvent {
-		type: 'pickbans_session_state';
-		session: PickBansSessionState | null; // null when a session is cancelled
-	}
+        export interface PickBansSessionStateEvent {
+                type: 'pickbans_session_state';
+                session: PickBansSessionState | null; // null when a session is cancelled
+        }
 
-	interface WelcomeEvent {
-		type: 'welcome';
-		message: string; // "Connected to WebSocket server"
-		timestamp: number; // Unix timestamp
-	}
-	// MARK: Timer
+        interface WelcomeEvent {
+                type: 'welcome';
+                message: string; // "Connected to WebSocket server"
+                timestamp: number; // Unix timestamp
+        }
+        // MARK: Timer
 
-	// modified, added timer_checkpoint
-	type TimerEventType = 'timer_start' | 'timer_stop' | 'timer_finish' | 'timer_checkpoint';
+        // modified, added timer_checkpoint
+        type TimerEventType = 'timer_start' | 'timer_stop' | 'timer_finish' | 'timer_checkpoint';
 
-	const STYLES = {
-		RocketJump: 0,
-		StickyJump: 1,
-		EngineerJump: 2,
-		PyroJump: 3,
-		Conc: 4
-	} as const;
-	type Style = (typeof STYLES)[keyof typeof STYLES];
+        const STYLES = {
+                RocketJump: 0,
+                StickyJump: 1,
+                EngineerJump: 2,
+                PyroJump: 3,
+                Conc: 4
+        } as const;
+        type Style = (typeof STYLES)[keyof typeof STYLES];
 
-	// modified
-	export interface BaseTimerEvent {
-		type: TimerEventType;
-		steamid: number; // the ID portion of steamID3 format [U:1:50734103]
-		track: number; // 0 for main track, >0 is bonuses
-		style: Style;
-		timestamp: number; // Unix timestamp
-		tick?: number;
-	}
+        // modified
+        export interface BaseTimerEvent {
+                type: TimerEventType;
+                steamid: number; // the ID portion of steamID3 format [U:1:50734103]
+                track: number; // 0 for main track, >0 is bonuses
+                style: Style;
+                timestamp: number; // Unix timestamp
+                tick?: number;
+        }
 
-	/*
+        /*
 {"type":"timer_start","steamid":50734103,"track":0,"style":0,"timestamp":10000}
 {"type":"timer_start","steamid":99019190,"track":0,"style":0,"timestamp":10000}
 */
-	interface TimerStartEvent extends BaseTimerEvent {
-		type: 'timer_start';
-	}
+        interface TimerStartEvent extends BaseTimerEvent {
+                type: 'timer_start';
+        }
 
-	/*
+        /*
 {"type":"timer_stop","steamid":50734103,"track":0,"style":0,"timestamp":10000}
 {"type":"timer_stop","steamid":99019190,"track":0,"style":0,"timestamp":10000}
 */
-	interface TimerStopEvent extends BaseTimerEvent {
-		type: 'timer_stop';
-	}
+        interface TimerStopEvent extends BaseTimerEvent {
+                type: 'timer_stop';
+        }
 
-	/*
+        /*
 {"type":"timer_finish","steamid":50734103,"track":0,"style":0,"timestamp":10000,"time":600,"jumps":21,"strafes":21,"sync":50,"oldtime":500,"perfs":21,"avgvel":1000,"maxvel":3500}
 {"type":"timer_finish","steamid":99019190,"track":0,"style":0,"timestamp":10000,"time":600,"jumps":21,"strafes":21,"sync":50,"oldtime":500,"perfs":21,"avgvel":1000,"maxvel":3500}
 */
-	interface TimerFinishEvent extends BaseTimerEvent {
-		type: 'timer_finish';
-		time: number; // time in seconds float32
-		jumps: number; // number of jumps (measured as +IN_JUMP)
-		strafes: number; // number of strafes
-		sync: number; // float ranging from 0 to 100
-		oldtime: number; // time in seconds float32 - previous PR time
-		perfs: number; // number of bhops
-		avgvel: number; // average abs velocity float32
-		maxvel: number; // max abs velocity float32
-	}
+        interface TimerFinishEvent extends BaseTimerEvent {
+                type: 'timer_finish';
+                time: number; // time in seconds float32
+                jumps: number; // number of jumps (measured as +IN_JUMP)
+                strafes: number; // number of strafes
+                sync: number; // float ranging from 0 to 100
+                oldtime: number; // time in seconds float32 - previous PR time
+                perfs: number; // number of bhops
+                avgvel: number; // average abs velocity float32
+                maxvel: number; // max abs velocity float32
+        }
 
-	/*
+        /*
 {"type":"timer_checkpoint","steamid":50734103,"track":0,"style":0,"timestamp":10000,"tick":450,"formattedCheckpoint":"Checkpoint 1","time":300}
 {"type":"timer_checkpoint","steamid":99019190,"track":0,"style":0,"timestamp":11000,"tick":500,"formattedCheckpoint":"Checkpoint 1","time":320}
 {"type":"timer_checkpoint","steamid":50734103,"track":0,"style":0,"timestamp":12000,"tick":450,"formattedCheckpoint":"Checkpoint 2","time":400}
@@ -155,85 +157,85 @@ export namespace KSN {
 {"type":"timer_checkpoint","steamid":50734103,"track":0,"style":0,"timestamp":14000,"tick":450,"formattedCheckpoint":"Checkpoint 3","time":550}
 {"type":"timer_checkpoint","steamid":99019190,"track":0,"style":0,"timestamp":15000,"tick":500,"formattedCheckpoint":"Checkpoint 3","time":551.3}
 */
-	interface TimerCheckpointEvent extends BaseTimerEvent {
-		type: 'timer_checkpoint';
-		tick: number;
-		formattedCheckpoint: string;
-		time: number;
-	}
+        interface TimerCheckpointEvent extends BaseTimerEvent {
+                type: 'timer_checkpoint';
+                tick: number;
+                formattedCheckpoint: string;
+                time: Seconds;
+        }
 
-	// MARK: Competition
-	// written by me for now, will get kingstripes' interfaces at some point
-	interface BaseCompetitionEvent {
-		type:
-			| 'competition_session_live'
-			| 'competition_session_overtime'
-			| 'competition_session_end'
-			| 'competition_session_player_ended';
-		timestamp: number;
-		sessionId: number;
-		startedAt: number;
-		durationSeconds: number;
-	}
+        // MARK: Competition
+        // written by me for now, will get kingstripes' interfaces at some point
+        interface BaseCompetitionEvent {
+                type:
+                | 'competition_session_live'
+                | 'competition_session_overtime'
+                | 'competition_session_end'
+                | 'competition_session_player_ended';
+                timestamp: number;
+                sessionId: number;
+                startedAt: number;
+                durationSeconds: Seconds;
+        }
 
-	// {"type":"competition_session_live","timestamp":1780753370,"sessionId":49,"startedAt":1780753370,"durationSeconds":60,"expiresAt":1780753430}
-	interface CompetitionLiveEvent extends BaseCompetitionEvent {
-		type: 'competition_session_live';
-		expiresAt: number;
-	}
+        // {"type":"competition_session_live","timestamp":1780753370,"sessionId":49,"startedAt":1780753370,"durationSeconds":60,"expiresAt":1780753430}
+        interface CompetitionLiveEvent extends BaseCompetitionEvent {
+                type: 'competition_session_live';
+                expiresAt: number;
+        }
 
-	// {"type":"competition_session_overtime","timestamp":1780753430,"sessionId":49,"startedAt":1780753370,"durationSeconds":60,"expiredAt":1780753430}
-	interface CompetitionOvertimeEvent extends BaseCompetitionEvent {
-		type: 'competition_session_overtime';
-		expiredAt: number;
-	}
+        // {"type":"competition_session_overtime","timestamp":1780753430,"sessionId":49,"startedAt":1780753370,"durationSeconds":60,"expiredAt":1780753430}
+        interface CompetitionOvertimeEvent extends BaseCompetitionEvent {
+                type: 'competition_session_overtime';
+                expiredAt: number;
+        }
 
-	/*
+        /*
 {"type":"competition_session_ended","timestamp":1780753370,"sessionId":49,"startedAt":1780753370,"durationSeconds":60,"expiredAt":1780753430}
 */
-	interface CompetitionEndEvent extends BaseCompetitionEvent {
-		type: 'competition_session_end';
-		expiredAt: number;
-	}
+        interface CompetitionEndEvent extends BaseCompetitionEvent {
+                type: 'competition_session_end';
+                expiredAt: number;
+        }
 
-	export interface CompetitionSessionPlayerEnd extends BaseCompetitionEvent {
-		type: 'competition_session_player_ended';
-		steamAccountId: string;
-	}
+        export interface CompetitionSessionPlayerEnd extends BaseCompetitionEvent {
+                type: 'competition_session_player_ended';
+                steamAccountId: string;
+        }
 
         // mass-multi is the relevant one for rookie cup
         type MassMode = 'mass-single' | 'mass-multi'
 
         type MassSessionState =
-        | 'armed'
-        | 'ended'
+                | 'armed'
+                | 'ended'
 
         type MassServerState =
-        | 'pending'
-        | 'preparing'
-        | 'prepared'
-        | 'racing'
-        | 'overtime'
-        | 'ended'
-        | 'detached'
+                | 'pending'
+                | 'preparing'
+                | 'prepared'
+                | 'racing'
+                | 'overtime'
+                | 'ended'
+                | 'detached'
 
         type MassPlayerState =
-        | 'prepared'
-        | 'racing'
-        | 'overtime'
-        | 'finished'
-        | 'withdrawn'
-        | 'disqualified'
-        | 'disconnected'
-        
-        
+                | 'prepared'
+                | 'racing'
+                | 'overtime'
+                | 'finished'
+                | 'withdrawn'
+                | 'disqualified'
+                | 'disconnected'
+
+
         type MassParticipantFinishedReason =
-        | 'overtime_finished'       // finished main after window end
-        | 'overtime_terminated'     // run ended in overtime without a valid finish (non-death)
-        | 'window_expired'          // still Racing at endsAt but not on an active main run
-        | 'respawn_after_expiry'
-        | 'spectate'
-        | 'death'
+                | 'overtime_finished'       // finished main after window end
+                | 'overtime_terminated'     // run ended in overtime without a valid finish (non-death)
+                | 'window_expired'          // still Racing at endsAt but not on an active main run
+                | 'respawn_after_expiry'
+                | 'spectate'
+                | 'death'
 
 
         export interface MassRaceSessionEvent {
@@ -247,8 +249,8 @@ export namespace KSN {
                         created_at: number        // Unix timestamp
                         starts_at: number | null  // shared UTC go-time (countdown ended, round timer begins)
                         ended_at: number | null
-                        active_slot: 1 | null     
-                        duration_seconds: number  // mass-multi window length; 0 for mass-single
+                        active_slot: 1 | null
+                        duration_seconds: Seconds  // mass-multi window length; 0 for mass-single
                         ends_at: number | null    // starts_at + duration_seconds (mass-multi); null for mass-single
                         servers: Array<{
                                 session_id: number
@@ -268,33 +270,59 @@ export namespace KSN {
                 }
         }
 
-	// MARK: Messages
+        export interface MassRaceWindowStartEvent {
+                type: "mass_window_start",
+                mode: "mass-multi",
+                sessionId: number,
+                timestamp: number,
+                startsAt: number,
+                endsAt: number,
+                durationSeconds: Seconds,
+                server_code: string,
+                reason: string
+        }
 
-	export type MessageTypes =
-		| PickBansSessionStateEvent
-		| TimerStartEvent
-		| TimerStopEvent
-		| TimerFinishEvent
-		| TimerCheckpointEvent
-		| CompetitionLiveEvent
-		| CompetitionOvertimeEvent
-		| CompetitionEndEvent
-		| CompetitionSessionPlayerEnd
-                | MassRaceSessionEvent;
+        export interface MassRaceWindowOvertimeEvent {
+                type: "mass_window_overtime",
+                mode: "mass-multi",
+                sessionId: number,
+                timestamp: number,
+                startsAt: number,
+                endsAt: number,
+                durationSeconds: Seconds,
+                server_code: string,
+                reason: string
+        }
 
-	export type Messages = {
-		mapPicks: PickBansSessionStateEvent;
-		mapPicksPrevious: PickBansSessionStateEvent;
-		timer: BaseTimerEvent | undefined;
-		competition: BaseCompetitionEvent | undefined;
-	};
+        // MARK: Messages
 
-	export const defaultMessages = {
-		mapPicks: { type: 'pickbans_session_state', session: null },
-		mapPicksPrevious: { type: 'pickbans_session_state', session: null },
-		timer: undefined,
-		competition: undefined
-	} as Messages;
+        export type MessageTypes =
+                | PickBansSessionStateEvent
+                | TimerStartEvent
+                | TimerStopEvent
+                | TimerFinishEvent
+                | TimerCheckpointEvent
+                | CompetitionLiveEvent
+                | CompetitionOvertimeEvent
+                | CompetitionEndEvent
+                | CompetitionSessionPlayerEnd
+                | MassRaceSessionEvent
+                | MassRaceWindowStartEvent
+                | MassRaceWindowOvertimeEvent;
 
-	// test checkpoint object - {"type": "timer_checkpoint","steamid": 50734103,"track": 0,"style": 1,"formattedCheckpoint": "Checkpoint 1","time": 6.25499963760376,"timestamp": 1780761188,"tick": 2428}
+        export type Messages = {
+                mapPicks: PickBansSessionStateEvent;
+                mapPicksPrevious: PickBansSessionStateEvent;
+                timer: BaseTimerEvent | undefined;
+                competition: BaseCompetitionEvent | undefined;
+        };
+
+        export const defaultMessages = {
+                mapPicks: { type: 'pickbans_session_state', session: null },
+                mapPicksPrevious: { type: 'pickbans_session_state', session: null },
+                timer: undefined,
+                competition: undefined
+        } as Messages;
+
+        // test checkpoint object - {"type": "timer_checkpoint","steamid": 50734103,"track": 0,"style": 1,"formattedCheckpoint": "Checkpoint 1","time": 6.25499963760376,"timestamp": 1780761188,"tick": 2428}
 }
