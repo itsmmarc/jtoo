@@ -172,6 +172,7 @@ export const OverlayScenes = [
         'BracketScene',
         'PlayerCardScene',
         'PlayerListScene',
+        'LeaderboardScene',
         'ThanksScene'
 ] as const;
 export type OverlayScene = (typeof OverlayScenes)[number];
@@ -203,7 +204,7 @@ export type Overlay = {
         players: Array<SteamID3 | undefined>;
         map: MapFileName;
         stage: string;
-        tournament: Tournament;
+        tournament: string;
 };
 
 export type Items = {

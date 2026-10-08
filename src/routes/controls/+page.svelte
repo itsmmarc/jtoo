@@ -22,14 +22,14 @@
 		defaultSettings,
 		addBootcampTestTournament
 	} from '$lib/storage.svelte';
-	import { Fonts, MonoFonts, OverlayScenes } from '$lib/types';
+	import { Fonts, MonoFonts, OverlayScenes, Tournament } from '$lib/types';
 	// import * as _ from 'underscore';
 
 	import { obsConnect, setScene } from '$lib/websockets/obs/ws-obs';
 	import ManageTournaments from '$lib/components/controls/ManageTournaments.svelte';
 
 	import { KSNWebSocketController } from '$lib/websockets/ksn/ws-ksn.svelte';
-	import { getMap } from '$lib/util';
+	import { getMap, getTournament } from '$lib/util';
 	import { onMount } from 'svelte';
 
 	let ksnWs: KSNWebSocketController | undefined = $state();
@@ -94,9 +94,11 @@
 		<RadioInputs opts={[...OverlayScenes]} bind:value={settings.current.overlayScene} />
 		<span>tournament</span>
 		<RadioInputs
-			opts={[...items.current.tournaments]}
+			opts={items.current.tournaments}
 			labelkey={['info', 'name']}
-			bind:value={overlay.current.tournament}
+			onchange={(value: Tournament) => {
+				overlay.current.tournament = value.id;
+			}}
 		/>
 	</Accordion>
 
@@ -255,9 +257,9 @@
 
 		<span>map</span>
 		<RadioInputs
-			opts={overlay.current.tournament.maps}
+			opts={getTournament(overlay.current.tournament).maps}
 			optlabels={settings.current.useShortMapNames
-				? overlay.current.tournament.maps.map((m) => getMap(m).shortName)
+				? getTournament(overlay.current.tournament).maps.map((m) => getMap(m).shortName)
 				: undefined}
 			bind:value={overlay.current.map}
 		/>

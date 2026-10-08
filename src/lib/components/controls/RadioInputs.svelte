@@ -6,9 +6,9 @@
 		opts: any[];
 		labelkey?: string | string[];
 		optlabels?: string[];
-		value: any;
+		value?: any;
 		log?: boolean;
-		onchange?: Function;
+		onchange?: (value: any) => void;
 	};
 	let { opts, labelkey, optlabels, log = false, value = $bindable(), onchange }: Props = $props();
 
@@ -17,7 +17,7 @@
 	function onSelect() {
 		if (log) console.log(`${name}: ${value}`);
 
-		if (onchange) onchange();
+		if (onchange) onchange(value);
 	}
 
 	function getOptionLabel(opt: any, labelkey: string | string[] | undefined, index: number) {

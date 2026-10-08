@@ -8,6 +8,7 @@
 	import { getContext } from 'svelte';
 	import type { KSNWebSocket } from '$lib/websockets/ksn/ws-ksn.svelte';
 	import { KSN } from '$lib/websockets/ksn/ws-ksn-types';
+	import { getMap, getTournament } from '$lib/util';
 
 	let ksnWs: KSNWebSocket = getContext('ksnWs');
 </script>
@@ -33,7 +34,8 @@
 		<div class="absolute top-0 left-0 size-full bg-black/35"></div>
 	{/if}
 	<section class="flex flex-wrap justify-around gap-5 p-10">
-		{#each overlay.current.tournament.maps as map, i (i)}
+		{#each getTournament(overlay.current.tournament).maps as mapFilename, i (i)}
+			{@const map = getMap(mapFilename)}
 			{#if !map.fileName}
 				{@const m: KSN.PickBansSessionStateEvent | null = ksnWs.messages.mapPicks ? ksnWs.messages.mapPicks : null}
 				<div class="@container relative mb-2 h-65 w-130 text-4xl">

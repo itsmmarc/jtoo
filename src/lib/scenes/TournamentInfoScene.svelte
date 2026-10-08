@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { overlay } from '$lib/storage.svelte';
+	import { getMap, getPlayer, getTournament } from '$lib/util';
 
-	let tournament = $derived(overlay.current.tournament);
+	let tournament = $derived(getTournament(overlay.current.tournament));
 </script>
 
 <!-- isolated border filter -->
@@ -18,7 +19,8 @@
 		</div>
 		<div class="col-span-8 row-start-2 flex">prizepool info</div>
 		<div class="col-span-8 row-start-3 flex">
-			{#each tournament.players as player, i (i)}
+			{#each tournament.players as playerId, i (i)}
+				{@const player = getPlayer(playerId)}
 				<div>
 					<img src={player.avatarURL} alt="{player.name}'s avatar" />
 					<div>{player.name}</div>
@@ -26,7 +28,8 @@
 			{/each}
 		</div>
 		<div class="col-span-4 row-span-2 row-start-2 flex">
-			{#each tournament.maps as map, i (i)}
+			{#each tournament.maps as mapFilename, i (i)}
+				{@const map = getMap(mapFilename)}
 				<div>
 					<img src={map.imageURL} alt={map.shortName} />
 					<div>{map.shortName}</div>

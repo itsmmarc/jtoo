@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { overlay, items } from '$lib/storage.svelte';
 	import type { Player, SteamID3 } from '$lib/types';
-	import { getPlayer, getPlayerIndex } from '$lib/util';
+	import { getPlayer, getPlayerIndex, getTournament } from '$lib/util';
 	import RadioInputs from './RadioInputs.svelte';
 
 	type Props = {
@@ -10,6 +10,7 @@
 	};
 
 	let { player, playerNum }: Props = $props();
+	let tournament = $derived(getTournament(overlay.current.tournament));
 	const playerObj: Player = $derived(getPlayer(player));
 	const maxScore: number = $derived((overlay.current.bestOf + 1) / 2);
 
@@ -28,7 +29,7 @@
 </script>
 
 <div class="flex w-full max-w-full flex-col items-start">
-	{#if overlay.current.tournament}
+	{#if tournament}
 		<span class="self-center text-center">player {playerNum + 1}</span>
 
 		<!-- score -->
@@ -57,8 +58,8 @@
 				<span class="text-ctp-text/50">no players..</span>
 			{:else}
 				<RadioInputs
-					optlabels={overlay.current.tournament.players.map((sId3) => getPlayer(sId3).name)}
-					opts={overlay.current.tournament.players}
+					optlabels={tournament.players.map((sId3) => getPlayer(sId3).name)}
+					opts={tournament.players}
 					bind:value={overlay.current.players[playerNum]}
 				/>
 			{/if}

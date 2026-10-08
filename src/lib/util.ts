@@ -1,6 +1,6 @@
 import { indexOf } from 'underscore';
 import { items } from './storage.svelte';
-import { Player, TFMap, type Centiseconds, type MapFileName, type Seconds, type SteamID3, type TempusID } from './types';
+import { Player, TFMap, Tournament, type Centiseconds, type MapFileName, type Seconds, type SteamID3, type TempusID } from './types';
 
 export function getPlayer(steamID3: SteamID3 | undefined): Player {
         if (!steamID3) return items.current.players[0];
@@ -18,6 +18,12 @@ export function getPlayerIndexByTempusID(tempusID: TempusID | undefined): number
         if (!tempusID) return -1;
         return items.current.players.findIndex((p) => p.tempusID == tempusID);
 }
+
+export function getTournament(id: string | undefined): Tournament {
+        if (!id) return items.current.tournaments[0];
+        return { ...items.current.tournaments.filter((t) => t.id == id)[0] };
+}
+
 export function getMap(mapFileName: MapFileName): TFMap {
         return { ...items.current.maps.filter((m) => m.fileName == mapFileName)[0] };
 }

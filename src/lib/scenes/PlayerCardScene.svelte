@@ -6,6 +6,9 @@
 	import PRDisplay from '$lib/components/maps/PRDisplay.svelte';
 	import Flag from '$lib/components/util/Flag.svelte';
 	import { Player, Tournament } from '$lib/types';
+	import { getTournament } from '$lib/util';
+
+	let tournament = $derived(getTournament(overlay.current.tournament));
 </script>
 
 <!-- isolated border filter -->
@@ -88,8 +91,8 @@
 					style:filter={getFiltersStyle()}
 				>
 					<ul class="flex h-150 w-full flex-col gap-6">
-						<li class="">{player.WRs[overlay.current.tournament.info.class]} world records</li>
-						<li class="">{player.TTs[overlay.current.tournament.info.class]} top times</li>
+						<li class="">{player.WRs[tournament.info.class]} world records</li>
+						<li class="">{player.TTs[tournament.info.class]} top times</li>
 						<li class="italic opacity-60">best run</li>
 						<li class="-mt-6">{player.bestRun}</li>
 						<li class="italic opacity-60">favourite map</li>
@@ -110,9 +113,9 @@
 
 				<!-- ranks -->
 				<div class="h-fit w-80 text-center" style:filter={getFiltersStyle()}>
-					<h1 class="text-3xl">{overlay.current.tournament.info.class} rank</h1>
+					<h1 class="text-3xl">{tournament.info.class} rank</h1>
 					<div class="text-8xl font-bold">
-						#{player.rank![overlay.current.tournament.info.class].rank}
+						#{player.rank![tournament.info.class].rank}
 					</div>
 				</div>
 			</div>

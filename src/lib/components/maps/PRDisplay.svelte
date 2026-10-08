@@ -3,7 +3,7 @@
 	import { TFMap, type MapRun } from '$lib/types';
 	import { fade } from 'svelte/transition';
 	import { getFiltersStyle } from '$lib/filters.svelte';
-	import { csToFormattedTime, secondsToCs } from '$lib/util';
+	import { csToFormattedTime, getTournament, secondsToCs } from '$lib/util';
 
 	function getPlayerFromPickActor(steamID3: string): string | null {
 		const playerA = overlay.current.leftPlayer.steamID3;
@@ -47,7 +47,7 @@
 		console.log(`running player prs for ${map.fileName}-------------`);
 		console.log(map.runs.soldier);
 		let tfclass: 'soldier' | 'demoman' =
-			overlay.current.tournament.info.class == 'demoman' ? 'demoman' : 'soldier';
+			getTournament(overlay.current.tournament).info.class == 'demoman' ? 'demoman' : 'soldier';
 		let result: { left: MapRun | undefined; right: MapRun | undefined } = {
 			left: undefined,
 			right: undefined

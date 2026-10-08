@@ -12,6 +12,7 @@
 
 	import { KSNWebSocket } from '$lib/websockets/ksn/ws-ksn.svelte';
 	import { onMount, setContext, type Component } from 'svelte';
+	import LeaderboardScene from '$lib/scenes/LeaderboardScene.svelte';
 
 	let ksnWs: KSNWebSocket | undefined = $state();
 
@@ -34,6 +35,7 @@
 		PlayerCardScene,
 		PlayerListScene,
 		ThanksScene,
+		LeaderboardScene,
 		TournamentInfoScene
 	};
 

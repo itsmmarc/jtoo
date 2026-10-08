@@ -5,6 +5,9 @@
 	import { fade } from 'svelte/transition';
 	import { page } from '$app/state';
 	import Flag from '$lib/components/util/Flag.svelte';
+	import { getTournament } from '$lib/util';
+
+	let tournament = $derived(getTournament(overlay.current.tournament));
 
 	const drawBG: boolean = !page.url.searchParams.has('nobg');
 </script>
@@ -35,7 +38,7 @@
 		<li></li>
 		<li></li>
 		{@render Header('name')}
-		{@render Header(`${overlay.current.tournament.info.class} rank`)}
+		{@render Header(`${tournament.info.class} rank`)}
 		{@render Header('world records')}
 		{@render Header('top times')}
 
@@ -67,9 +70,9 @@
 		<Flag code={player.flag} class="rounded-xl text-[6rem]" />
 	</li>
 	{@render BodyCell(player.name)}
-	{@render BodyCell(player.rank![overlay.current.tournament.info.class].rank.toString())}
-	{@render BodyCell(player.WRs.toString())}
-	{@render BodyCell(player.TTs.toString())}
+	{@render BodyCell(player.rank![tournament.info.class].rank.toString())}
+	{@render BodyCell(player.WRs[tournament.info.class].toString())}
+	{@render BodyCell(player.TTs[tournament.info.class].toString())}
 {/snippet}
 
 {#snippet BodyCell(content: string, noFilter: boolean = false)}

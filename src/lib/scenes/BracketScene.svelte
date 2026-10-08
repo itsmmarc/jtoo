@@ -2,13 +2,16 @@
 	import { clearMatchWinner, setMatchWinner, type Match } from '$lib/Bracket.svelte';
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { items, settings, overlay } from '$lib/storage.svelte';
+	import { getTournament } from '$lib/util';
 	import { fade, slide } from 'svelte/transition';
 
 	type Coordinate = { x: number; y: number };
+
+	let tournament = $derived(getTournament(overlay.current.tournament));
 </script>
 
-{#if overlay.current.tournament.bracket}
-	{#if overlay.current.tournament.bracket.type == 8}
+{#if tournament.bracket}
+	{#if tournament.bracket.type == 8}
 		<!-- MARK: 8 Player Bracket -->
 		<section class="z-1 m-auto">
 			<div class=" flex flex-col gap-20">
@@ -23,7 +26,7 @@
 						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Quarter Finals</h2>
 						<div class="grid grow">
 							<div class="stage-container">
-								{#each overlay.current.tournament.bracket.Upper.QuarterFinals as match, i (i)}
+								{#each tournament.bracket.Upper.QuarterFinals as match, i (i)}
 									{@render Match(match)}
 								{/each}
 							</div>
@@ -34,7 +37,7 @@
 						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Semi Finals</h2>
 						<div class="grid grow">
 							<div class="stage-container">
-								{#each overlay.current.tournament.bracket.Upper.SemiFinals as match, i (i)}
+								{#each tournament.bracket.Upper.SemiFinals as match, i (i)}
 									{@render Match(match)}
 								{/each}
 							</div>
@@ -45,7 +48,7 @@
 						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Final</h2>
 						<div class="grid grow">
 							<div class="stage-container">
-								{#each overlay.current.tournament.bracket.Upper.Final as match, i (i)}
+								{#each tournament.bracket.Upper.Final as match, i (i)}
 									{@render Match(match)}
 								{/each}
 							</div>
@@ -56,14 +59,14 @@
 						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Grand Final</h2>
 						<div class="grid grow">
 							<div class="stage-container">
-								{#each overlay.current.tournament.bracket.Upper.GrandFinal as match, i (i)}
+								{#each tournament.bracket.Upper.GrandFinal as match, i (i)}
 									{@render Match(match)}
 								{/each}
 							</div>
 							<div class="background" style:filter={getFiltersStyle()}></div>
 						</div>
 					</div>
-					{#key overlay.current.tournament.bracket}
+					{#key tournament.bracket}
 						{@const col1r = 240}
 						{@const col2l = 400}
 						{@const col2r = 640}
@@ -109,7 +112,7 @@
 						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Round 1</h2>
 						<div class="grid grow">
 							<div class="stage-container">
-								{#each overlay.current.tournament.bracket.Lower.Round1 as match, i (i)}
+								{#each tournament.bracket.Lower.Round1 as match, i (i)}
 									{@render Match(match)}
 								{/each}
 							</div>
@@ -120,7 +123,7 @@
 						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Quarter Finals</h2>
 						<div class="grid grow">
 							<div class="stage-container">
-								{#each overlay.current.tournament.bracket.Lower.QuarterFinals as match, i (i)}
+								{#each tournament.bracket.Lower.QuarterFinals as match, i (i)}
 									{@render Match(match)}
 								{/each}
 							</div>
@@ -131,7 +134,7 @@
 						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Semi Final</h2>
 						<div class="grid grow">
 							<div class="stage-container">
-								{#each overlay.current.tournament.bracket.Lower.SemiFinal as match, i (i)}
+								{#each tournament.bracket.Lower.SemiFinal as match, i (i)}
 									{@render Match(match)}
 								{/each}
 							</div>
@@ -142,14 +145,14 @@
 						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Final</h2>
 						<div class="grid grow">
 							<div class="stage-container">
-								{#each overlay.current.tournament.bracket.Lower.Final as match, i (i)}
+								{#each tournament.bracket.Lower.Final as match, i (i)}
 									{@render Match(match)}
 								{/each}
 							</div>
 							<div class="background" style:filter={getFiltersStyle()}></div>
 						</div>
 					</div>
-					{#key overlay.current.tournament.bracket}
+					{#key tournament.bracket}
 						{@const col1r = 240}
 						{@const col2l = 400}
 						{@const col2r = 640}
@@ -180,7 +183,7 @@
 				</div>
 			</div>
 		</section>
-	{:else if overlay.current.tournament.bracket.type == 4}
+	{:else if tournament.bracket.type == 4}
 		<!-- MARK: 4 Player Bracket -->
 		<section class="m-auto">
 			<div class=" flex flex-col gap-20">
@@ -195,7 +198,7 @@
 						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Quarter Finals</h2>
 						<div class="grid grow">
 							<div class="stage-container">
-								{#each overlay.current.tournament.bracket.Upper.QuarterFinals as match, i (i)}
+								{#each tournament.bracket.Upper.QuarterFinals as match, i (i)}
 									{@render Match(match)}
 								{/each}
 							</div>
@@ -206,7 +209,7 @@
 						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Semi Final</h2>
 						<div class="grid grow">
 							<div class="stage-container">
-								{#each overlay.current.tournament.bracket.Upper.SemiFinal as match, i (i)}
+								{#each tournament.bracket.Upper.SemiFinal as match, i (i)}
 									{@render Match(match)}
 								{/each}
 							</div>
@@ -217,14 +220,14 @@
 						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Grand Final</h2>
 						<div class="grid grow">
 							<div class="stage-container">
-								{#each overlay.current.tournament.bracket.Upper.GrandFinal as match, i (i)}
+								{#each tournament.bracket.Upper.GrandFinal as match, i (i)}
 									{@render Match(match)}
 								{/each}
 							</div>
 							<div class="background" style:filter={getFiltersStyle()}></div>
 						</div>
 					</div>
-					{#key overlay.current.tournament.bracket}
+					{#key tournament.bracket}
 						{@const col1r = 240}
 						{@const col2l = 400}
 						{@const col2r = 640}
@@ -258,7 +261,7 @@
 						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Semi Final</h2>
 						<div class="grid grow">
 							<div class="stage-container">
-								{#each overlay.current.tournament.bracket.Lower.SemiFinal as match, i (i)}
+								{#each tournament.bracket.Lower.SemiFinal as match, i (i)}
 									{@render Match(match)}
 								{/each}
 							</div>
@@ -269,14 +272,14 @@
 						<h2 class="text-3xl" style:filter={getFiltersStyle()}>Final</h2>
 						<div class="grid grow">
 							<div class="stage-container">
-								{#each overlay.current.tournament.bracket.Lower.Final as match, i (i)}
+								{#each tournament.bracket.Lower.Final as match, i (i)}
 									{@render Match(match)}
 								{/each}
 							</div>
 							<div class="background" style:filter={getFiltersStyle()}></div>
 						</div>
 					</div>
-					{#key overlay.current.tournament.bracket}
+					{#key tournament.bracket}
 						{@const col1r = 240}
 						{@const col2l = 400}
 
@@ -353,11 +356,11 @@
 			class="z-1 grow"
 			onclick={() => {
 				console.log(match);
-				setMatchWinner(overlay.current.tournament.bracket!, match, player);
+				setMatchWinner(tournament.bracket!, match, player);
 				console.log(match);
 			}}
 			oncontextmenu={() => {
-				clearMatchWinner(overlay.current.tournament.bracket!, match);
+				clearMatchWinner(tournament.bracket!, match);
 			}}
 		>
 			<div class="grid">
