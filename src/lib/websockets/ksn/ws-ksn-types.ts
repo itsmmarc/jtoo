@@ -1,4 +1,4 @@
-import type { Seconds } from "$lib/types";
+import type { Seconds, SteamID3 } from "$lib/types";
 
 // kingstripes server network
 export namespace KSN {
@@ -260,14 +260,20 @@ export namespace KSN {
                         }>
                         players: Array<{
                                 session_id: number
-                                auth: number            // SteamID3, account portion
+                                auth: SteamID3            // SteamID3, account portion
                                 server_code: string     // which participant server they were captured on
                                 display_name: string
                                 state: MassPlayerState
                                 reason: MassParticipantFinishedReason
-                                time: number | null     // best main-track time from competition_mass_results, if any
+                                time: Seconds | null     // best main-track time from competition_mass_results, if any
                         }>
                 }
+        }
+        export interface MassRaceSessionStartEvent extends MassRaceSessionEvent {
+                state: "armed"
+        }
+        export interface MassRaceSessionEndEvent extends MassRaceSessionEvent {
+                state: "ended"
         }
 
         export interface MassRaceWindowStartEvent {
@@ -294,6 +300,19 @@ export namespace KSN {
                 reason: string
         }
 
+        export interface MassRaceParticipantFinishedEvent {
+                type: "mass_participant_finished",
+                mode: "mass-multi",
+                sessionId: number,
+                timestamp: number,
+                startsAt: number,
+                endsAt: number,
+                durationSeconds: Seconds,
+                server_code: string,
+                reason: string,
+                steamid: SteamID3
+        }
+
         // MARK: Messages
 
         export type MessageTypes =
@@ -306,9 +325,11 @@ export namespace KSN {
                 | CompetitionOvertimeEvent
                 | CompetitionEndEvent
                 | CompetitionSessionPlayerEnd
-                | MassRaceSessionEvent
+                | MassRaceSessionStartEvent
+                | MassRaceSessionEndEvent
                 | MassRaceWindowStartEvent
-                | MassRaceWindowOvertimeEvent;
+                | MassRaceWindowOvertimeEvent
+                | MassRaceParticipantFinishedEvent;
 
         export type Messages = {
                 mapPicks: PickBansSessionStateEvent;

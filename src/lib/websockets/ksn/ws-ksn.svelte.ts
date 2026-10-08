@@ -489,10 +489,24 @@ export class KSNWebSocket {
                                 this.timer.sortPlayers();
                                 break;
                         case 'mass_race_session':
-                                this.timer.fullClear();
-                                // verify all players in race have a timer
-                                for (const player of data.session.players) {
-                                        this.timer.verifyPlayerAdded(player.auth)
+                                switch (data.state) {
+                                        /**
+                                         * MassRaceSessionStartEvent
+                                         * Received when the race is first started, before the 10 second countdown and race actually starts
+                                         */
+                                        case 'armed':
+                                                this.timer.fullClear();
+                                                // verify all players in race have a timer
+                                                for (const player of data.session.players) {
+                                                        this.timer.verifyPlayerAdded(player.auth)
+                                                }
+                                                break;
+                                        /**
+                                         * MassRaceSessionEndEvent
+                                         * Only received after the race is ended in the JF Control Panel
+                                         * */
+                                        case 'ended':
+                                                break;
                                 }
                                 break;
                         case 'mass_window_start':
@@ -502,6 +516,8 @@ export class KSNWebSocket {
                                 break;
                         case 'mass_window_overtime':
                                 this.timer.competition.activateOvertime();
+                                break;
+                        case 'mass_participant_finished':
                                 break;
                         default:
                                 return;
