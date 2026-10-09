@@ -196,7 +196,7 @@
 		</section>
 	</Accordion>
 	<!-- settings -->
-	<Accordion title="settings">
+	<Accordion title="settings" defaultstate="closed">
 		<button
 			class="button-remove absolute top-0 right-0"
 			onclick={() => {
@@ -242,14 +242,14 @@
 	</div>
 
 	<!-- players -->
-	<div class="flex w-full max-w-lg justify-evenly self-center">
+	<div class="flex w-full max-w-lg justify-evenly gap-x-20 self-center">
 		<PlayerControl player={overlay.current.players[0]} playerNum={0} />
-		<hr class="hr" />
 		<PlayerControl player={overlay.current.players[1]} playerNum={1} />
-		<hr class="hr" />
+		<!-- disabled since 4 player POV is not implemented yet -->
+		<!-- <hr class="hr" />
 		<PlayerControl player={overlay.current.players[2]} playerNum={2} />
 		<hr class="hr" />
-		<PlayerControl player={overlay.current.players[3]} playerNum={3} />
+		<PlayerControl player={overlay.current.players[3]} playerNum={3} /> -->
 	</div>
 
 	<div class="max-w-lg self-center">
