@@ -9,9 +9,7 @@
 	let { class: styleClass }: Props = $props();
 
 	let tournament = $derived(getTournament(overlay.current.tournament));
-	let leaderboardEntries = $derived(
-		getLeaderboardEntries(tournament.leaderboards, tournament.leaderboards.length)
-	);
+	let leaderboardEntries = $derived(getLeaderboardEntries(tournament.leaderboards));
 	let leader = $derived(getLeaderEntry(leaderboardEntries));
 
 	const maxPlayers = 16;
@@ -21,9 +19,10 @@
 	let visibilityInterval: NodeJS.Timeout | undefined;
 	const visibleTime = 10000;
 
-	function getLeaderboardEntries(leaderboards: Leaderboard[], size: number) {
+	function getLeaderboardEntries(leaderboards: Leaderboard[]) {
 		console.log(tournament);
-		if (size == 0) return undefined;
+		if (!leaderboards) return undefined;
+		if (leaderboards.length == 0) return undefined;
 
 		console.log(leaderboards[leaderboards.length - 1].leaderboard);
 
@@ -68,25 +67,25 @@
 	// });
 </script>
 
-{#if leaderboardEntries && leaderboardEntries.length > 0}
-	{#if visible}
-		<section class="{styleClass} absolute top-0 left-0 z-20 p-2" transition:fade>
-			<div class="grid grid-cols-[repeat(4,auto)] gap-x-2 gap-y-0 text-xl *:m-0 *:p-0">
-				{#each leaderboardEntries as entry, i (i)}
-					{#if i < maxPlayers && entry}
-						{@render Row(entry, i)}
-						<hr class="hr m-1!" />
-					{/if}
-				{/each}
-			</div>
-			<!-- background -->
-			<div
-				class="absolute top-0 left-0 -z-1 h-full w-full bg-[#0f1016] opacity-95"
-				style:filter={getFiltersStyle()}
-			></div>
-		</section>
-	{/if}
-{/if}
+<!-- {#if leaderboardEntries && leaderboardEntries.length > 0} -->
+<!-- {#if visible} -->
+<section class="{styleClass} absolute top-0 left-0 z-20 p-2" transition:fade>
+	<div class="grid grid-cols-[repeat(4,auto)] gap-x-2 gap-y-0 text-xl *:m-0 *:p-0">
+		{#each leaderboardEntries as entry, i (i)}
+			{#if i < maxPlayers && entry}
+				{@render Row(entry, i)}
+				<hr class="hr m-1!" />
+			{/if}
+		{/each}
+	</div>
+	<!-- background -->
+	<div
+		class="absolute top-0 left-0 -z-1 h-full w-full bg-[#0f1016] opacity-95"
+		style:filter={getFiltersStyle()}
+	></div>
+</section>
+<!-- {/if} -->
+<!-- {/if} -->
 
 {#snippet Row(entry: LeaderboardEntry, i: number)}
 	{@const player = getPlayer(entry.steamId3)}
