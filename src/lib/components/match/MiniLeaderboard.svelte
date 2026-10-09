@@ -17,7 +17,7 @@
 	const maxPlayers = 16;
 	const maxNameLength = 12;
 
-	let visible = $state(false);
+	let visible = $state(true);
 	let visibilityInterval: NodeJS.Timeout | undefined;
 	const visibleTime = 10000;
 
@@ -54,18 +54,18 @@
 		return '--';
 	}
 
-	$effect(() => {
-		if (leaderboardEntries) {
-			if (visibilityInterval) {
-				clearInterval(visibilityInterval);
-			}
-			visible = true;
+	// $effect(() => {
+	// 	if (leaderboardEntries) {
+	// 		if (visibilityInterval) {
+	// 			clearInterval(visibilityInterval);
+	// 		}
+	// 		visible = true;
 
-			visibilityInterval = setInterval(() => {
-				visible = false;
-			}, visibleTime);
-		}
-	});
+	// 		visibilityInterval = setInterval(() => {
+	// 			visible = false;
+	// 		}, visibleTime);
+	// 	}
+	// });
 </script>
 
 {#if leaderboardEntries && leaderboardEntries.length > 0}
