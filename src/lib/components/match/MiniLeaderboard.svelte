@@ -99,17 +99,23 @@
 	<div>{i + 1}</div>
 	<!-- avatar -->
 	<div>
-		<img
-			in:fade
-			src={player.avatarURL}
-			alt=""
-			class="size-7 rounded-md object-cover object-center"
-			draggable="false"
-		/>
+		{#if player && player.avatarURL}
+			<img
+				in:fade
+				src={player.avatarURL}
+				alt=""
+				class="size-7 rounded-md object-cover object-center"
+				draggable="false"
+			/>
+		{/if}
 	</div>
 	<!-- name -->
 	<div>
-		{name}
+		{#if player}
+			{name}
+		{:else}
+			unknown
+		{/if}
 	</div>
 	<!-- gap -->
 	<div class="w-full min-w-20 text-end">
