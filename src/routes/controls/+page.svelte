@@ -175,6 +175,7 @@
 						onclick={() => ksnWs!.connect(settings.current.ksnWebSocketToken.trim())}
 						>connect</button
 					>
+
 					<!-- the websocket state keeps reverting to 'closed' even when the connection is still open -->
 					<!-- <div class="flex gap-2">
 					<p>status:</p>
@@ -192,6 +193,7 @@
 					{/key}
 				</div> -->
 				</div>
+				<Checkbox setting="logWsMessages" desc="log websocket messages" />
 			</Accordion>
 		</section>
 	</Accordion>

@@ -3,6 +3,7 @@ import { ProxyWebSocket } from '../../ProxyWebSocket';
 import { csToFormattedTime, secondsToCs } from '$lib/util';
 import type { Centiseconds, Seconds, SteamID3 } from '$lib/types';
 import { SvelteMap } from 'svelte/reactivity';
+import { items, overlay, settings, wsMessages } from '$lib/storage.svelte';
 
 type PickedMaps = Array<{ mapID: string; steamID3: string }>;
 class RunTimer {
@@ -557,6 +558,15 @@ export class KSNWebSocket {
 
         clearTimers() {
                 this._timer.fullClear();
+        }
+
+        logWsMessage(data: KSN.MessageTypes) {
+                const entry = {
+                        timestamp: new Date().toISOString(),
+                        data: data
+                }
+
+                wsMessages.current.push(entry)
         }
 
         // map picks

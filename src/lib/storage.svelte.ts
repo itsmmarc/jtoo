@@ -43,6 +43,7 @@ export const defaultSettings: Settings = {
         enablePOVGuide: false,
         useShortMapNames: true,
         ksnWebSocketToken: '',
+        logWsMessages: false,
         overlayScene: 'MatchScene',
         obsWsIp: '',
         obsWsPort: undefined,
@@ -72,6 +73,9 @@ export const overlay = new PersistentState('overlay', defaultOverlay);
 
 // overlay items
 export const items = new PersistentState('items', defaultItems);
+
+// ws messages
+export const wsMessages: PersistentState<any[]> = new PersistentState('wsMessages', [])
 
 export function fullReset() {
         settings.current = defaultSettings;
