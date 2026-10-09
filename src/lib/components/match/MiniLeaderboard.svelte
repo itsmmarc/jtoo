@@ -1,67 +1,107 @@
 <script lang="ts">
 	import { getFiltersStyle } from '$lib/filters.svelte';
-	import { items, overlay, settings } from '$lib/storage.svelte';
-	import { Player, type SteamID3 } from '$lib/types';
+	import { Leaderboard, LeaderboardEntry } from '$lib/types';
 	import { fade } from 'svelte/transition';
-	import { csToSeconds, getPlayer, getTournament } from '$lib/util';
-	import type { KSNWebSocket, PlayerTimer } from '$lib/websockets/ksn/ws-ksn.svelte';
-	import { getContext } from 'svelte';
-	import type { SvelteMap } from 'svelte/reactivity';
+	import { csToFormattedTime, csToSeconds, getTournament, getPlayer } from '$lib/util';
+	import { overlay } from '$lib/storage.svelte';
 
 	type Props = { class?: string };
 	let { class: styleClass }: Props = $props();
 
 	let tournament = $derived(getTournament(overlay.current.tournament));
-	let ksnWs: KSNWebSocket = getContext('ksnWs');
-	let leaderboard = $derived(getLeaderboard(ksnWs.timer.players));
-
-	type LeaderboardRow = { id: SteamID3; timer: PlayerTimer; player: Player };
-
-	function getLeaderboard(playerTimers: SvelteMap<SteamID3, PlayerTimer>) {
-		let leaderboardArrays = playerTimers.entries().toArray();
-		let leaderboard: LeaderboardRow[] = [];
-		for (let i = 0; i < leaderboardArrays.length; i++) {
-			leaderboard.push({
-				id: leaderboardArrays[i][0],
-				timer: leaderboardArrays[i][1],
-				player: getPlayer(leaderboardArrays[i][0])
-			});
-		}
-		return leaderboard;
-	}
+	let leaderboardEntries = $derived(
+		getLeaderboardEntries(tournament.leaderboards, tournament.leaderboards.length)
+	);
+	let leader = $derived(getLeaderEntry(leaderboardEntries));
 
 	const maxPlayers = 16;
 	const maxNameLength = 12;
+
+	let visible = $state(false);
+	let visibilityInterval: NodeJS.Timeout | undefined;
+	const visibleTime = 10000;
+
+	function getLeaderboardEntries(leaderboards: Leaderboard[], size: number) {
+		console.log(tournament);
+		if (size == 0) return undefined;
+
+		console.log(leaderboards[leaderboards.length - 1].leaderboard);
+
+		return leaderboards[leaderboards.length - 1].leaderboard;
+	}
+
+	function getLeaderEntry(leaderboard: LeaderboardEntry[] | undefined) {
+		if (!leaderboard) return undefined;
+
+		return leaderboard[0];
+	}
+
+	function getGapTime(entry: LeaderboardEntry, i: number) {
+		// if leader
+		if (i == 0 && entry.prCs) {
+			return csToFormattedTime(entry.prCs);
+		}
+		// if not leader and both the leader and this player have a pr
+		if (i > 1 && entry.prCs && leader!.prCs) {
+			if (entry.prCs == leader!.prCs) {
+				return csToSeconds(entry.prCs - leader!.prCs);
+			} else {
+				return '+' + csToSeconds(entry.prCs - leader!.prCs);
+			}
+		}
+		// return 'cp ' + entry.currentCheckpointsCs.size;
+
+		return '--';
+	}
+
+	$effect(() => {
+		if (leaderboardEntries) {
+			if (visibilityInterval) {
+				clearInterval(visibilityInterval);
+			}
+			visible = true;
+
+			visibilityInterval = setInterval(() => {
+				visible = false;
+			}, visibleTime);
+		}
+	});
 </script>
 
-<section class="{styleClass} absolute top-0 left-0 z-20 p-2">
-	<div class="grid grid-cols-[repeat(4,auto)] gap-x-2 gap-y-0 text-xl *:m-0 *:p-0">
-		{#each leaderboard as player, i (i)}
-			{#if i < maxPlayers && player}
-				{@render Row(player, i)}
-				<hr class="hr m-1!" />
-			{/if}
-		{/each}
-	</div>
-	<!-- background -->
-	<div
-		class="absolute top-0 left-0 -z-1 h-full w-full bg-[#0f1016] opacity-95"
-		style:filter={getFiltersStyle()}
-	></div>
-</section>
+{#if leaderboardEntries && leaderboardEntries.length > 0}
+	{#if visible}
+		<section class="{styleClass} absolute top-0 left-0 z-20 p-2" transition:fade>
+			<div class="grid grid-cols-[repeat(4,auto)] gap-x-2 gap-y-0 text-xl *:m-0 *:p-0">
+				{#each leaderboardEntries as entry, i (i)}
+					{#if i < maxPlayers && entry}
+						{@render Row(entry, i)}
+						<hr class="hr m-1!" />
+					{/if}
+				{/each}
+			</div>
+			<!-- background -->
+			<div
+				class="absolute top-0 left-0 -z-1 h-full w-full bg-[#0f1016] opacity-95"
+				style:filter={getFiltersStyle()}
+			></div>
+		</section>
+	{/if}
+{/if}
 
-{#snippet Row(player: LeaderboardRow, i: number)}
+{#snippet Row(entry: LeaderboardEntry, i: number)}
+	{@const player = getPlayer(entry.steamId3)}
 	{@const name =
-		player.player.name.length > maxNameLength
-			? player.player.name.substring(0, maxNameLength) + '...'
-			: player.player.name.substring(0, maxNameLength)}
+		player.name.length > maxNameLength
+			? player.name.substring(0, maxNameLength) + '...'
+			: player.name.substring(0, maxNameLength)}
+	{@const gap = getGapTime(entry, i)}
 	<!-- position -->
 	<div>{i + 1}</div>
 	<!-- avatar -->
 	<div>
 		<img
 			in:fade
-			src={player.player.avatarURL}
+			src={player.avatarURL}
 			alt=""
 			class="size-7 rounded-md object-cover object-center"
 			draggable="false"
@@ -73,13 +113,6 @@
 	</div>
 	<!-- gap -->
 	<div class="w-full min-w-20 text-end">
-		{#if i == 1 && player.timer.prFormatted}
-			{player.timer.prFormatted}
-		{:else if i > 1 && player.timer.prCs && leaderboard[0].timer.prCs}
-			{player.timer.prCs == leaderboard[0].timer.prCs ? '' : '+'}
-			{csToSeconds(player.timer.prCs - leaderboard[0].timer.prCs)}
-		{:else}
-			--
-		{/if}
+		{gap}
 	</div>
 {/snippet}

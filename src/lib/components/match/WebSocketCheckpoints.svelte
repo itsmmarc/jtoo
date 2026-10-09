@@ -76,9 +76,6 @@
 	<div class={playerNum == 0 ? 'justify-self-end text-right' : 'justify-self-start text-left'}>
 		{#each leaderCps as [cpName, leaderCpTime], i (i)}
 			{@const playerCpTime = playerCps.get(cpName)}
-			{console.log(`playernum: ${playerNum}`)}
-			{console.log(`playercp: ${playerCpTime}`)}
-			{console.log(`leadercp: ${leaderCpTime}`)}
 			<div>
 				{#if playerCpTime}
 					{@const diff = csToSeconds(playerCpTime - leaderCpTime)}

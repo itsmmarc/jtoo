@@ -1,5 +1,5 @@
 import { indexOf } from 'underscore';
-import { items } from './storage.svelte';
+import { items, overlay } from './storage.svelte';
 import { Player, TFMap, Tournament, type Centiseconds, type MapFileName, type Seconds, type SteamID3, type TempusID } from './types';
 
 export function getPlayer(steamID3: SteamID3 | undefined): Player {

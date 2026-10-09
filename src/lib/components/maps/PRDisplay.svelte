@@ -3,11 +3,15 @@
 	import { TFMap, type MapRun } from '$lib/types';
 	import { fade } from 'svelte/transition';
 	import { getFiltersStyle } from '$lib/filters.svelte';
-	import { csToFormattedTime, getTournament, secondsToCs } from '$lib/util';
+	import { csToFormattedTime, getPlayer, getTournament, secondsToCs } from '$lib/util';
+	import type { KSNWebSocket } from '$lib/websockets/ksn/ws-ksn.svelte';
+	import { getContext } from 'svelte';
+
+	let ksnWs: KSNWebSocket = getContext('ksnWs');
 
 	function getPlayerFromPickActor(steamID3: string): string | null {
-		const playerA = overlay.current.leftPlayer.steamID3;
-		const playerB = overlay.current.rightPlayer.steamID3;
+		const playerA = leftPlayer.steamID3;
+		const playerB = rightPlayer.steamID3;
 
 		let pickActor: RegExpMatchArray | null | number = steamID3.match('\\d{2,12}');
 		if (!pickActor) return null;
@@ -66,8 +70,8 @@
 		return result;
 	}
 
-	let leftPlayer = $derived(overlay.current.leftPlayer);
-	let rightPlayer = $derived(overlay.current.rightPlayer);
+	let leftPlayer = $derived(getPlayer(overlay.current.players[0]));
+	let rightPlayer = $derived(getPlayer(overlay.current.players[1]));
 </script>
 
 <section>
@@ -91,10 +95,8 @@
 		>
 			<!-- map picks -->
 			<div
-				class="absolute top-0 left-[-2px] mt-[-2px] h-[calc(100%+4px)] w-[calc(100%+4px)] rounded-2xl border-4 border-transparent {displayMapPick(
-					map,
-					pickedMaps.current
-				)}"
+				class="absolute top-0 -left-0.5 -mt-0.5 h-[calc(100%+4px)] w-[calc(100%+4px)] rounded-2xl border-4 border-transparent
+                                {displayMapPick(map, ksnWs.pickedMaps)}"
 			></div>
 			<!-- map name -->
 			<h1

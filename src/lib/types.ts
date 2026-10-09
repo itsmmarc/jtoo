@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { type Bracket4, type Bracket8 } from './Bracket.svelte';
 import type { Tempus2 } from './api/tempus2/api-tempus2';
+import type { SvelteMap } from 'svelte/reactivity';
 
 // MARK: Types
 export type Seconds = number
@@ -16,6 +17,32 @@ export type Division = (typeof Divisions)[number];
 
 export type SteamID3 = number;
 export type MapFileName = string;
+
+export class LeaderboardEntry {
+        position: number
+        steamId3: SteamID3
+        prCs: Centiseconds | undefined
+        prCheckpointsCs: SvelteMap<string, Centiseconds>
+        currentCheckpointsCs: SvelteMap<string, Centiseconds>
+        score: undefined // TODO
+
+        constructor(params: LeaderboardEntry) {
+                this.position = params.position
+                this.steamId3 = params.steamId3
+                this.prCs = params.prCs
+                this.prCheckpointsCs = params.prCheckpointsCs
+                this.currentCheckpointsCs = params.currentCheckpointsCs
+                this.score = params.score
+        }
+}
+export class Leaderboard {
+        id: number
+        leaderboard: LeaderboardEntry[] = []
+
+        constructor(id: number) {
+                this.id = id
+        }
+}
 
 export class Player {
         name: string = '';
@@ -110,6 +137,7 @@ export class Tournament {
         players: SteamID3[];
         // playerScores: {};
         maps: MapFileName[];
+        leaderboards: Leaderboard[]
         bracket?: Bracket4 | Bracket8; // used for elim formats
         playerPoints?: PlayerPoints[]; // used for all out royale format
 
@@ -119,6 +147,7 @@ export class Tournament {
                 this.info = { name: '', imageUrl: '', prizePool: [], class: 'soldier' };
                 this.players = [];
                 this.maps = [];
+                this.leaderboards = []
         }
 }
 
@@ -206,6 +235,7 @@ export type Overlay = {
         map: MapFileName;
         stage: string;
         tournament: string;
+        leaderboard: number | undefined;
 };
 
 export type Items = {

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { overlay } from '$lib/storage.svelte';
-	import { getMap, getPlayer, getTournament } from '$lib/util';
+	import { getMap, getTournament, getPlayer } from '$lib/util';
 
 	let tournament = $derived(getTournament(overlay.current.tournament));
 </script>

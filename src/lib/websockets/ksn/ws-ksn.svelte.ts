@@ -1,7 +1,13 @@
 import { KSN } from './ws-ksn-types';
 import { ProxyWebSocket } from '../../ProxyWebSocket';
-import { csToFormattedTime, secondsToCs } from '$lib/util';
-import type { Centiseconds, Seconds, SteamID3 } from '$lib/types';
+import { csToFormattedTime, getTournament, secondsToCs } from '$lib/util';
+import {
+        Leaderboard,
+        LeaderboardEntry,
+        type Centiseconds,
+        type Seconds,
+        type SteamID3
+} from '$lib/types';
 import { SvelteMap } from 'svelte/reactivity';
 import { items, overlay, settings, wsMessages } from '$lib/storage.svelte';
 
@@ -77,9 +83,9 @@ export class PlayerTimer {
         finishTimer(finishTime: Seconds) {
                 this.stopTimer();
 
-                console.log('FINISHING TIMER')
-                console.log(`finishTime: ${secondsToCs(finishTime)}`)
-                console.log(`this.pr: ${this._pr}`)
+                console.log('FINISHING TIMER');
+                console.log(`finishTime: ${secondsToCs(finishTime)}`);
+                console.log(`this.pr: ${this._pr}`);
                 if (!this._pr || secondsToCs(finishTime) < this._pr) {
                         this._pr = secondsToCs(finishTime); // convert from seconds to centiseconds
                         this._prCps = new SvelteMap(this._currentCps);
@@ -443,6 +449,8 @@ export class KSNWebSocket {
 
                 console.log(data);
 
+                if (settings.current.logWsMessages) this.logWsMessage(data);
+
                 // let playerTimer: PlayerTimer | undefined;
 
                 switch (data.type) {
@@ -462,6 +470,7 @@ export class KSNWebSocket {
                                 this.timer.verifyPlayerAdded(data.steamid);
                                 this.timer.finishPlayerTimer(data.steamid, data.time);
                                 this.timer.sortPlayers();
+                                this.updateLeaderboard();
                                 break;
                         case 'timer_checkpoint':
                                 this.timer.verifyPlayerAdded(data.steamid);
@@ -471,6 +480,7 @@ export class KSNWebSocket {
                                         secondsToCs(data.time)
                                 );
                                 this.timer.sortPlayers();
+                                this.updateLeaderboard();
                                 break;
                         case 'competition_session_live':
                                 this.timer.fullClear();
@@ -480,6 +490,7 @@ export class KSNWebSocket {
                                 this.timer.competition.stopCountdownTimer();
                                 this.timer.stopAllPlayerTimers();
                                 this.timer.sortPlayers();
+                                this.updateLeaderboard();
                                 break;
                         case 'competition_session_overtime':
                                 this.timer.competition.activateOvertime();
@@ -488,18 +499,20 @@ export class KSNWebSocket {
                                 this.timer.verifyPlayerAdded(parseInt(data.steamAccountId));
                                 this.timer.stopPlayerTimer(parseInt(data.steamAccountId));
                                 this.timer.sortPlayers();
+                                this.updateLeaderboard();
                                 break;
                         case 'mass_race_session':
-                                switch (data.state) {
+                                switch (data.session.state) {
                                         /**
                                          * MassRaceSessionStartEvent
                                          * Received when the race is first started, before the 10 second countdown and race actually starts
                                          */
                                         case 'armed':
                                                 this.timer.fullClear();
+                                                this.createLeaderboard(data.session.id)
                                                 // verify all players in race have a timer
                                                 for (const player of data.session.players) {
-                                                        this.timer.verifyPlayerAdded(player.auth)
+                                                        this.timer.verifyPlayerAdded(player.auth);
                                                 }
                                                 break;
                                         /**
@@ -511,8 +524,9 @@ export class KSNWebSocket {
                                 }
                                 break;
                         case 'mass_window_start':
-                                if (data.durationSeconds) { // don't start timer for mass single run race where duration_seconds == 0
-                                        this.timer.competition.startCountdownTimer(data.durationSeconds)
+                                if (data.durationSeconds) {
+                                        // don't start timer for mass single run race where duration_seconds == 0
+                                        this.timer.competition.startCountdownTimer(data.durationSeconds);
                                 }
                                 break;
                         case 'mass_window_overtime':
@@ -564,9 +578,40 @@ export class KSNWebSocket {
                 const entry = {
                         timestamp: new Date().toISOString(),
                         data: data
+                };
+
+                wsMessages.current.push(entry);
+        }
+
+        createLeaderboard(id: number) {
+                let tournament = getTournament(overlay.current.tournament);
+                tournament.leaderboards.push(new Leaderboard(id))
+                tournament.leaderboards = [...tournament.leaderboards]
+                overlay.current.leaderboard = id
+        }
+        updateLeaderboard() {
+                let tournament = getTournament(overlay.current.tournament);
+                let oldLeaderboard = tournament.leaderboards[tournament.leaderboards.length - 1]
+
+                let leaderboardArrays = this.timer.players.entries().toArray();
+                let leaderboardEntries: LeaderboardEntry[] = [];
+                for (let i = 0; i < leaderboardArrays.length; i++) {
+                        let timer = leaderboardArrays[i][1];
+                        leaderboardEntries.push(
+                                new LeaderboardEntry({
+                                        position: i + 1,
+                                        steamId3: leaderboardArrays[i][0],
+                                        prCs: timer.prCs,
+                                        prCheckpointsCs: timer.prCheckpointsCs,
+                                        currentCheckpointsCs: timer.currentCheckpointsCs,
+                                        score: undefined
+                                })
+                        );
                 }
 
-                wsMessages.current.push(entry)
+                oldLeaderboard.leaderboard = leaderboardEntries
+                tournament.leaderboards = [...tournament.leaderboards]
+                console.log(tournament.leaderboards)
         }
 
         // map picks

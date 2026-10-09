@@ -22,14 +22,14 @@
 		defaultSettings,
 		addBootcampTestTournament
 	} from '$lib/storage.svelte';
-	import { Fonts, MonoFonts, OverlayScenes, Tournament } from '$lib/types';
+	import { Fonts, Leaderboard, MonoFonts, OverlayScenes, Tournament } from '$lib/types';
 	// import * as _ from 'underscore';
 
 	import { obsConnect, setScene } from '$lib/websockets/obs/ws-obs';
 	import ManageTournaments from '$lib/components/controls/ManageTournaments.svelte';
 
 	import { KSNWebSocketController } from '$lib/websockets/ksn/ws-ksn.svelte';
-	import { getMap, getTournament } from '$lib/util';
+	import { getTournament, getMap } from '$lib/util';
 	import { onMount } from 'svelte';
 
 	let ksnWs: KSNWebSocketController | undefined = $state();
@@ -100,6 +100,15 @@
 				overlay.current.tournament = value.id;
 			}}
 		/>
+		<!-- {#if getTournament(overlay.current.tournament).format == 'MassRace' || getTournament(overlay.current.tournament).format == 'AllOutRoyale'}
+			<RadioInputs
+				opts={getTournament(overlay.current.tournament).leaderboards}
+				labelkey={['id']}
+				onchange={(value: Leaderboard) => {
+					overlay.current.leaderboard = value.id;
+				}}
+			/>
+		{/if} -->
 	</Accordion>
 
 	<Accordion title="connections">
