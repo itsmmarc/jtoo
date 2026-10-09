@@ -64,7 +64,7 @@
 		@apply rounded-sm border-b-2 border-ctp-lavender-950 bg-obs-padding/75 px-1 placeholder-ctp-lavender-900 outline-none placeholder:italic focus:border-ctp-lavender focus:bg-obs-padding;
 	}
 	.hr {
-		@apply col-span-12 mt-2 mb-2 h-0.5 w-full border-none bg-obs-padding;
+		@apply col-span-full mt-2 mb-2 h-0.5 w-full border-none bg-obs-padding;
 	}
 }
 
