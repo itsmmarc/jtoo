@@ -201,6 +201,14 @@ export const OverlayScenes = [
 	'LeaderboardScene',
 	'ThanksScene'
 ] as const;
+export const BrokenOverlayScenes = [
+	'MapScene',
+	'TournamentInfoScene',
+	'BracketScene',
+	'PlayerCardScene',
+	'PlayerListScene',
+	'ThanksScene'
+];
 export type OverlayScene = (typeof OverlayScenes)[number];
 
 export type Settings = {

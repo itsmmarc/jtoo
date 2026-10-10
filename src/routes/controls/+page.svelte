@@ -22,7 +22,13 @@
 		defaultSettings,
 		addBootcampSoldierTournament
 	} from '$lib/storage.svelte';
-	import { Fonts, MonoFonts, OverlayScenes, Tournament } from '$lib/types.svelte';
+	import {
+		BrokenOverlayScenes,
+		Fonts,
+		MonoFonts,
+		OverlayScenes,
+		Tournament
+	} from '$lib/types.svelte';
 	// import * as _ from 'underscore';
 
 	import { obsConnect, setScene } from '$lib/websockets/obs/ws-obs';
@@ -103,7 +109,10 @@
 
 	<Accordion title="scenes">
 		<span>scene</span>
-		<RadioInputs opts={[...OverlayScenes]} bind:value={settings.current.overlayScene} />
+		<RadioInputs
+			opts={OverlayScenes.filter((s) => !BrokenOverlayScenes.includes(s))}
+			bind:value={settings.current.overlayScene}
+		/>
 		<span>tournament</span>
 		<RadioInputs
 			opts={items.current.tournaments}
