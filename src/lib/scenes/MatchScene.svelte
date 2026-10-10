@@ -10,6 +10,7 @@
 	import type { KSNWebSocket } from '$lib/websockets/ksn/ws-ksn.svelte';
 	import { getMap, getPlayer } from '$lib/util';
 	import { Steam } from '$lib/api/steam/api-steam';
+	import WebSocketLeader from '$lib/components/match/WebSocketLeader.svelte';
 
 	let ksnWs: KSNWebSocket = getContext('ksnWs');
 </script>
@@ -76,8 +77,11 @@
 		{/key}
 	</div>
 
-	{#if settings.current.ksnWebSocketToken !== '' && overlay.current.players[0] && overlay.current.players[1]}
+	<!-- {#if settings.current.ksnWebSocketToken !== '' && overlay.current.players[0] && overlay.current.players[1]}
 		<WebSocketCheckpoints numPlayers={2} />
+	{/if} -->
+	{#if settings.current.ksnWebSocketToken !== ''}
+		<WebSocketLeader />
 	{/if}
 	<!-- map -->
 	<div

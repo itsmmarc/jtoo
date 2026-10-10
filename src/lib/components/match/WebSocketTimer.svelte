@@ -13,7 +13,7 @@
 
 {#if numPlayers == 2}
 	<div
-		class="absolute left-0 flex h-32 w-full items-center justify-center gap-60
+		class="absolute right-0 left-0 grid h-32 w-[55%] grid-cols-3 items-center justify-center justify-self-center
                 {settings.current.monoFont}"
 	>
 		{@render PlayerStopwatch(overlay.current.players[0])}
@@ -38,7 +38,7 @@
 {/snippet}
 
 {#snippet CompetitionTimer()}
-	<div class="absolute top-5 flex flex-col">
+	<div class="flex flex-col">
 		{#if ksnWs.timer.competition.timeLeftSeconds > 0}
 			<div class="text-palewhite/40 text-center text-5xl">
 				{ksnWs.timer.competition.getTimeLeftFormatted('seconds')}
