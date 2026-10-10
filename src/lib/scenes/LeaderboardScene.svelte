@@ -88,7 +88,7 @@
 	</li>
 	<!-- gap -->
 	<li>
-		{#if i > 1 && entry.prCs && leader.prCs}
+		{#if i > 0 && entry.prCs && leader.prCs}
 			{entry.prCs == leader.prCs ? '' : '+'}
 			{csToSeconds(entry.prCs - leader.prCs)}
 		{:else}

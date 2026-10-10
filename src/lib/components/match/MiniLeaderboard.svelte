@@ -41,7 +41,7 @@
 			return csToFormattedTime(entry.prCs);
 		}
 		// if not leader and both the leader and this player have a pr
-		if (i > 1 && entry.prCs && leader!.prCs) {
+		if (i > 0 && entry.prCs && leader!.prCs) {
 			if (entry.prCs == leader!.prCs) {
 				return csToSeconds(entry.prCs - leader!.prCs);
 			} else {
