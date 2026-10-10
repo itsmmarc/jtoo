@@ -49,21 +49,21 @@
 		return '--';
 	}
 
-	$effect(() => {
-		if (leaderboardEntries) {
-			if (visibilityInterval) {
-				clearInterval(visibilityInterval);
-			}
-			visible = true;
+	// $effect(() => {
+	// 	if (leaderboardEntries) {
+	// 		if (visibilityInterval) {
+	// 			clearInterval(visibilityInterval);
+	// 		}
+	// 		visible = true;
 
-			visibilityInterval = setInterval(() => {
-				visible = false;
-			}, visibleTime);
-		}
-	});
+	// 		visibilityInterval = setInterval(() => {
+	// 			visible = false;
+	// 		}, visibleTime);
+	// 	}
+	// });
 </script>
 
-{#if visible}
+{#if leaderboardEntries && leaderboardEntries?.length > 0}
 	<section class="{styleClass} absolute top-0 left-0 z-20 p-2" transition:fade>
 		<div class="grid grid-cols-[repeat(4,auto)] gap-x-2 gap-y-0 text-xl *:m-0 *:p-0">
 			{#each leaderboardEntries as entry, i (i)}
