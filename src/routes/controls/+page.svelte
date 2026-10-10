@@ -34,7 +34,6 @@
 	import { JFRelayWebSocket } from '$lib/websockets/jf-relay/js-relay.svelte';
 
 	let ksnWs: KSNWebSocketController | undefined = $state();
-
 	let jfRelayWs: JFRelayWebSocket | undefined = $state();
 
 	onMount(() => {
