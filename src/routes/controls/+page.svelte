@@ -40,6 +40,8 @@
 		ksnWs = new KSNWebSocketController('ksnWs');
 
 		jfRelayWs = new JFRelayWebSocket();
+		if (settings.current.jfRelayWebSocketToken)
+			jfRelayWs.connect(settings.current.jfRelayWebSocketToken);
 		setContext('jfRelayWs', jfRelayWs);
 
 		$effect(() => {

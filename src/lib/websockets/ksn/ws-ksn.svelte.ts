@@ -566,7 +566,7 @@ export class KSNWebSocket {
 			this._ws.close();
 		}
 
-		console.log('initializing websocket');
+		console.log('initializing ksn websocket');
 
 		// clear messages
 		this._messages = KSN.defaultMessages;

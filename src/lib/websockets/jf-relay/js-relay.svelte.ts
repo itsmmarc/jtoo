@@ -35,26 +35,37 @@ export class JFRelayWebSocket {
 			this._ws.close();
 		}
 
-		console.log('initializing websocket');
+		console.log('initializing jf relay websocket');
 
 		// connect to websocket
 		this._ws = new ProxyWebSocket(
 			`wss://console.jumpfortress.tf/?token=${wsToken}&channel=progress`
 		);
 
-		// handle websocket messages
+		// broadcast welcome on connect
 		this._ws.onopen = () => {
+			console.log('jf relay websocket connected');
 			const msg: JFRelayWelcomeEvent = {
 				type: 'overlay_connected',
 				value: 'hello world'
 			};
 			this.send(msg);
 		};
+
+		this._ws.onclose = () => {
+			console.log('jf relay websocket closing');
+		};
+
+		this._ws.state?.subscribe((state) => {
+			console.log(`wsState: ${state}`);
+			this._wsState = state;
+		});
 	}
 
 	broadcastSelectedPlayers(steamId3s: Array<SteamID3 | undefined>) {
 		const playerA = steamId3s[0] ?? null;
 		const playerB = steamId3s[1] ?? null;
+		console.log(`jf relay broadcasting player selections: [${playerA}, ${playerB}]`);
 		const msg: JFRelaySpectatorSelectEvent = {
 			type: 'spectator_select',
 			value: { playerA: playerA, playerB: playerB }
@@ -64,7 +75,14 @@ export class JFRelayWebSocket {
 
 	send(msg: JFRelayEvents) {
 		const msgString = JSON.stringify(msg);
-		if (this._ws?.readyState === WebSocket.OPEN) this._ws.send(msgString);
+		console.log('readyState:', this._ws?.readyState); // 0 connecting, 1 open, 2 closing, 3 closed
+		console.log(this._ws?.url);
+
+		if (this._ws?.readyState === WebSocket.OPEN) {
+			this._ws.send(msgString);
+		} else {
+			console.warn('socket not open, dropping', msgString);
+		}
 	}
 
 	// getters
