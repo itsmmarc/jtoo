@@ -31,9 +31,11 @@ export namespace Tempus2 {
 		player.name = data.player_info.name;
 		player.flag = data.player_info.country_code.toLocaleLowerCase();
 
-		player.rank.soldier = _.pick(data.class_rank_info[3], ['points', 'rank', 'title']);
-		player.rank.demoman = _.pick(data.class_rank_info[4], ['points', 'rank', 'title']);
-		player.rank.overall = { ..._.pick(data.rank_info, ['points', 'rank']), title: null };
+		player.rank = {
+			soldier: _.pick(data.class_rank_info[3], ['points', 'rank', 'title']),
+			demoman: _.pick(data.class_rank_info[4], ['points', 'rank', 'title']),
+			overall: { ..._.pick(data.rank_info, ['points', 'rank']), title: null }
+		};
 
 		player = await TempusPlaza.fetchPlayerRecords(player);
 
