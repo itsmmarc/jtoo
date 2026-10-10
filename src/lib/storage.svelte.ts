@@ -144,8 +144,13 @@ export async function addBootcampSoldierTournament() {
 	tournament.players = bootcampSoldierPlayers.map(
 		(p) => Steam.convertSteamId(p, 'SteamID3') as number
 	);
+	tournament.players = [...tournament.players].sort((a, b) =>
+		getPlayer(a).name.localeCompare(getPlayer(b).name, undefined, { sensitivity: 'base' })
+	);
 	tournament.format = 'MassRace';
 	tournament.info = { name: 'Bootcamp Soldiers', class: 'soldier' };
-	items.current.players = [...items.current.players];
+	items.current.players = [...items.current.players].sort((a, b) =>
+		a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+	);
 	items.current.tournaments = [...items.current.tournaments, tournament];
 }
