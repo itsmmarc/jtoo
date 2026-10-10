@@ -21,7 +21,7 @@
 	const maxPlayers = 16;
 	const maxNameLength = 12;
 
-	let visible = $state(true);
+	let visible = $state(false);
 	let visibilityInterval: NodeJS.Timeout | undefined;
 	const visibleTime = 30000;
 
