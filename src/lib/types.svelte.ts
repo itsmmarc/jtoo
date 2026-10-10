@@ -35,12 +35,14 @@ export class LeaderboardEntry {
 		this.score = params.score;
 	}
 }
-export class Leaderboard {
+export class Round {
 	id: number;
+	map: MapFileName;
 	leaderboard: LeaderboardEntry[] = $state([]);
 
-	constructor(id: number) {
+	constructor(id: number, map: MapFileName) {
 		this.id = id;
+		this.map = map;
 	}
 }
 
@@ -133,7 +135,7 @@ export class Tournament {
 	players: SteamID3[];
 	// playerScores: {};
 	maps: MapFileName[];
-	leaderboards: Leaderboard[];
+	leaderboards: Round[];
 	bracket?: Bracket4 | Bracket8; // used for elim formats
 	playerPoints?: PlayerPoints[]; // used for all out royale format
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getFiltersStyle } from '$lib/filters.svelte';
-	import { Leaderboard, LeaderboardEntry } from '$lib/types.svelte';
+	import { Round, LeaderboardEntry } from '$lib/types.svelte';
 	import { fade } from 'svelte/transition';
 	import { csToFormattedTime, csToSeconds, getTournament, getPlayer } from '$lib/util';
 	import { overlay } from '$lib/storage.svelte';
@@ -19,7 +19,7 @@
 	let visibilityInterval: NodeJS.Timeout | undefined;
 	const visibleTime = 8000;
 
-	function getLeaderboardEntries(leaderboards: Leaderboard[]) {
+	function getLeaderboardEntries(leaderboards: Round[]) {
 		console.log(tournament);
 		if (!leaderboards) return undefined;
 		if (leaderboards.length == 0) return undefined;
@@ -43,9 +43,9 @@
 		// if not leader and both the leader and this player have a pr
 		if (i > 0 && entry.prCs && leader!.prCs) {
 			if (entry.prCs == leader!.prCs) {
-				return csToSeconds(entry.prCs - leader!.prCs);
+				return csToSeconds(entry.prCs - leader!.prCs).toFixed(2);
 			} else {
-				return '+' + csToSeconds(entry.prCs - leader!.prCs);
+				return '+' + csToSeconds(entry.prCs - leader!.prCs).toFixed(2);
 			}
 		}
 		// return 'cp ' + entry.currentCheckpointsCs.size;

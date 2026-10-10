@@ -2,11 +2,12 @@ import { KSN } from './ws-ksn-types.svelte';
 import { ProxyWebSocket } from '../../ProxyWebSocket';
 import { csToFormattedTime, getMap, getPlayer, getTournament, secondsToCs } from '$lib/util';
 import {
-	Leaderboard,
+	Round,
 	LeaderboardEntry,
 	type Centiseconds,
 	type Seconds,
-	type SteamID3
+	type SteamID3,
+	type MapFileName
 } from '$lib/types.svelte';
 import { SvelteMap } from 'svelte/reactivity';
 import { items, overlay, settings, wsMessages } from '$lib/storage.svelte';
@@ -511,7 +512,7 @@ export class KSNWebSocket {
 					 */
 					case 'armed':
 						this.timer.fullClear();
-						this.createLeaderboard(data.session.id);
+						this.createLeaderboard(data.session.id, data.session.map);
 						// verify all players in race have a timer
 						for (const player of data.session.players) {
 							this.timer.verifyPlayerAdded(player.auth);
@@ -638,9 +639,9 @@ export class KSNWebSocket {
 		wsMessages.current.push(entry);
 	}
 
-	createLeaderboard(id: number) {
+	createLeaderboard(id: number, map: MapFileName) {
 		let tournament = getTournament(overlay.current.tournament);
-		tournament.leaderboards.push(new Leaderboard(id));
+		tournament.leaderboards.push(new Round(id, map));
 		tournament.leaderboards = [...tournament.leaderboards];
 		overlay.current.leaderboard = id;
 	}
@@ -669,6 +670,7 @@ export class KSNWebSocket {
 
 		tournament.leaderboards[tournament.leaderboards.length - 1] = {
 			id: tournament.leaderboards[tournament.leaderboards.length - 1].id,
+			map: tournament.leaderboards[tournament.leaderboards.length - 1].map,
 			leaderboard: leaderboardEntries
 		};
 		tournament.leaderboards = [...tournament.leaderboards];
