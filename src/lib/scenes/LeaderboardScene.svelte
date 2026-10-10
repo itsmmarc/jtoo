@@ -136,7 +136,7 @@
 	{@const player = getPlayer(entry.steamId3)}
 	{@const leader = _leader as LeaderboardEntry}
 	<!-- position -->
-	<li>{i + 1}</li>
+	<li class={settings.current.monoFont}>{i + 1}</li>
 	<!-- avatar -->
 	<li>
 		<img
@@ -158,7 +158,7 @@
 		{player.name}
 	</li>
 	<!-- gap -->
-	<li>
+	<li class={settings.current.monoFont}>
 		{#if i > 0 && entry.prCs && leader.prCs}
 			{entry.prCs == leader.prCs ? '' : '+'}
 			{csToSeconds(entry.prCs - leader.prCs).toFixed(2)}
@@ -167,7 +167,7 @@
 		{/if}
 	</li>
 	<!-- pr -->
-	<li>
+	<li class={settings.current.monoFont}>
 		{#if entry.prCs}
 			{csToFormattedTime(entry.prCs)}
 		{/if}
@@ -177,7 +177,7 @@
 {#snippet TotalRow(entry: LeaderboardAvgEntry, i: number)}
 	{@const player = getPlayer(entry.steamId3)}
 	<!-- position -->
-	<li>{i + 1}</li>
+	<li class={settings.current.monoFont}>{i + 1}</li>
 	<!-- avatar -->
 	<li>
 		<img
@@ -199,7 +199,7 @@
 		{player.name}
 	</li>
 	<!-- gap -->
-	<li>
+	<li class={settings.current.monoFont}>
 		{entry.avgPlacement}
 	</li>
 {/snippet}

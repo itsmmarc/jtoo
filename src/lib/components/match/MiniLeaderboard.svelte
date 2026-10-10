@@ -3,7 +3,7 @@
 	import { Round, LeaderboardEntry } from '$lib/types.svelte';
 	import { fade } from 'svelte/transition';
 	import { csToFormattedTime, csToSeconds, getTournament, getPlayer } from '$lib/util';
-	import { overlay } from '$lib/storage.svelte';
+	import { overlay, settings } from '$lib/storage.svelte';
 	import { KSNWebSocketLeaderboardReceiver } from '$lib/websockets/ksn/ws-ksn.svelte';
 	import { onMount } from 'svelte';
 
@@ -109,7 +109,7 @@
 			{/if}
 		</div>
 		<!-- gap -->
-		<div class="w-full min-w-20 text-end">
+		<div class="w-full min-w-20 text-end {settings.current.monoFont}">
 			{gap}
 		</div>
 		<hr class="hr m-1!" />
