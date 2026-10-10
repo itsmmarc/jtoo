@@ -1,6 +1,6 @@
 import { KSN } from './ws-ksn-types.svelte';
 import { ProxyWebSocket } from '../../ProxyWebSocket';
-import { csToFormattedTime, getPlayer, getTournament, secondsToCs } from '$lib/util';
+import { csToFormattedTime, getMap, getPlayer, getTournament, secondsToCs } from '$lib/util';
 import {
 	Leaderboard,
 	LeaderboardEntry,
@@ -11,6 +11,7 @@ import {
 import { SvelteMap } from 'svelte/reactivity';
 import { items, overlay, settings, wsMessages } from '$lib/storage.svelte';
 import { Steam } from '$lib/api/steam/api-steam';
+import { Tempus2 } from '$lib/api/tempus2/api-tempus2';
 
 type PickedMaps = Array<{ mapID: string; steamID3: string }>;
 class RunTimer {
@@ -516,6 +517,7 @@ export class KSNWebSocket {
 							this.timer.verifyPlayerAdded(player.auth);
 						}
 						this.verifyPlayersInTournament(data.session.players.map((p) => p.auth));
+						this.verifyMapAdded(data.session.map);
 						break;
 					/**
 					 * MassRaceSessionEndEvent
@@ -539,6 +541,33 @@ export class KSNWebSocket {
 			default:
 				return;
 		}
+	}
+
+	async verifyMapAdded(mapFilename: string) {
+		console.log(`verifying map ${mapFilename} is added`);
+		// select map
+		overlay.current.map = mapFilename;
+
+		// add map to tournament if it isnt there already
+		let tournament = getTournament(overlay.current.tournament);
+		if (!tournament.maps.includes(mapFilename)) {
+			tournament.maps = [...tournament.maps, mapFilename];
+		}
+		console.log('was not in tournament');
+
+		// fetch map if it doesnt exist
+		if (getMap(mapFilename).fileName) return;
+
+		console.log('did not exist');
+
+		const map = await Tempus2.fetchMapByName(mapFilename);
+
+		if (!map) return;
+
+		console.log('fetched');
+		console.log(map);
+
+		items.current.maps = [...items.current.maps, map];
 	}
 
 	async verifyPlayersInTournament(steamId3s: SteamID3[]) {
