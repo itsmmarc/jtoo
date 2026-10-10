@@ -19,7 +19,7 @@
 			style:mask-image="url({grid})"
 		>
 			<!-- grain -->
-			<div class="absolute size-full opacity-15" style:background-image="url({grain})"></div>
+			<div class="absolute size-full opacity-5" style:background-image="url({grain})"></div>
 		</div>
 	{/if}
 </div>
