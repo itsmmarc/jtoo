@@ -550,7 +550,11 @@ export class KSNWebSocket {
 		for (const ps of playerSummaries) {
 			let steamId3 = Steam.convertSteamId(ps.steamid, 'SteamID3') as number;
 
-			if (steamId3 in tournament.players) continue;
+			console.log(`steamId3: ${steamId3}`);
+			console.log(`is steamId3 in tournament ${tournament.players.includes(steamId3)}`);
+			console.log(tournament.players);
+
+			if (tournament.players.includes(steamId3)) continue;
 			tournament.players.push(steamId3);
 
 			if (getPlayer(steamId3).steamID3) continue;

@@ -12,7 +12,7 @@
 <div class="flex h-screen w-full flex-col overflow-hidden {settings.current.font}">
 	{@render children()}
 
-	{#if settings.current.enableMovingBG}
+	{#if settings.current.enableMovingBG && settings.current.overlayScene != 'SinglePovMatchScene'}
 		<!-- grid mask -->
 		<div
 			class="absolute size-full animate-[movingMaskBG_20s_linear_infinite] opacity-100"

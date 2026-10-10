@@ -43,7 +43,7 @@ export const defaultSettings: Settings = {
 	ksnWebSocketToken: '',
 	jfRelayWebSocketToken: '',
 	logWsMessages: false,
-	overlayScene: 'MatchScene',
+	overlayScene: 'DualPovMatchScene',
 	obsWsIp: '',
 	obsWsPort: undefined,
 	obsWsPw: ''

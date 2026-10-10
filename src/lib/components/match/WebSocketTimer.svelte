@@ -7,18 +7,26 @@
 
 	let ksnWs: KSNWebSocket = getContext('ksnWs');
 
-	type Props = { numPlayers: number };
-	let { numPlayers }: Props = $props();
+	type Props = { numPlayers: number; class?: string };
+	let { numPlayers, class: styleClass }: Props = $props();
 </script>
 
 {#if numPlayers == 2}
 	<div
-		class="absolute right-0 left-0 grid h-32 w-[55%] grid-cols-3 items-center justify-center justify-self-center
+		class="{styleClass} grid h-20 grid-cols-3 items-center justify-center
                 {settings.current.monoFont}"
 	>
 		{@render PlayerStopwatch(overlay.current.players[0])}
 		{@render CompetitionTimer()}
 		{@render PlayerStopwatch(overlay.current.players[1])}
+	</div>
+{:else if numPlayers == 1}
+	<div
+		class="{styleClass} flex h-20 items-center justify-between *:w-fit
+                {settings.current.monoFont}"
+	>
+		{@render PlayerStopwatch(overlay.current.players[0])}
+		{@render CompetitionTimer()}
 	</div>
 {/if}
 
@@ -26,26 +34,30 @@
 	{#key ksnWs.timer.players.size}
 		{@const playerTimer = player ? ksnWs.timer.getPlayerTimer(player) : undefined}
 		{console.log(playerTimer)}
-		<span
-			class="text-palewhite font-chivomono text-center text-5xl transition-colors duration-1000
+		<div class="text-palewhite flex h-full flex-col justify-start text-center">
+			<div class="text-xl opacity-80 {settings.current.font}">run timer</div>
+			<div
+				class="{settings.current.monoFont} text-5xl transition-colors duration-1000
                                 {!playerTimer || !playerTimer.isRunning ? 'opacity-40' : ''}"
-		>
-			{#if playerTimer && playerTimer.timeFormatted}
-				{playerTimer ? playerTimer.timeFormatted : csToFormattedTime(0)}
-			{/if}
-		</span>
+			>
+				{#if playerTimer && playerTimer.timeFormatted}
+					{playerTimer ? playerTimer.timeFormatted : csToFormattedTime(0)}
+				{/if}
+			</div>
+		</div>
 	{/key}
 {/snippet}
 
 {#snippet CompetitionTimer()}
-	<div class="flex flex-col">
+	<div class="text-palewhite/40 flex h-full flex-col justify-start text-center">
+		<div class="text-xl opacity-80 {settings.current.font}">match timer</div>
 		{#if ksnWs.timer.competition.timeLeftSeconds > 0}
-			<div class="text-palewhite/40 text-center text-5xl">
+			<div class="text-5xl">
 				{ksnWs.timer.competition.getTimeLeftFormatted('seconds')}
 			</div>
 		{/if}
 		{#if ksnWs.timer.competition.overtimeStatus}
-			<div class="text-palewhite/40 text-center text-4xl">OVERTIME</div>
+			<div class="text-4xl">OVERTIME</div>
 		{/if}
 	</div>
 {/snippet}

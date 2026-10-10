@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { overlay, settings } from '$lib/storage.svelte';
 
-	import MatchScene from '$lib/scenes/MatchScene.svelte';
+	import DualPovMatchScene from '$lib/scenes/DualPovMatchScene.svelte';
+	import SinglePovMatchScene from '$lib/scenes/SinglePovMatchScene.svelte';
 	import MapScene from '$lib/scenes/MapScene.svelte';
 	import BracketScene from '$lib/scenes/BracketScene.svelte';
 	import PlayerCardScene from '$lib/scenes/PlayerCardScene.svelte';
@@ -29,7 +30,8 @@
 	});
 
 	let sceneComponents: Record<Exclude<OverlayScene, ''>, Component> = {
-		MatchScene,
+		DualPovMatchScene,
+		SinglePovMatchScene,
 		MapScene,
 		BracketScene,
 		PlayerCardScene,

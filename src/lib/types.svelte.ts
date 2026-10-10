@@ -191,7 +191,8 @@ export type MonoFont = (typeof MonoFonts)[number];
 
 export const OverlayScenes = [
 	'',
-	'MatchScene',
+	'DualPovMatchScene',
+	'SinglePovMatchScene',
 	'MapScene',
 	'TournamentInfoScene',
 	'BracketScene',

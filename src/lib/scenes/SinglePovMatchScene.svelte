@@ -18,17 +18,17 @@
 <!-- MARK: top bar -->
 <div class="relative z-20 flex h-32 w-full justify-between p-4">
 	{#if settings.current.ksnWebSocketToken !== '' && overlay.current.players[0] && overlay.current.players[1]}
-		<WebSocketTimer numPlayers={2} />
+		<WebSocketTimer numPlayers={1} class="absolute top-6 right-10 w-[54%] justify-self-center " />
 	{/if}
 	{#if settings.current.enableGradient}
 		<!-- gradients -->
 		{#if settings.current.enableTeamColors}
 			<div
-				class="absolute top-0 left-0 size-full bg-linear-to-r from-ctp-blue/35 via-black/35 to-ctp-red/35"
+				class="absolute top-0 left-0 size-full bg-linear-to-r from-ctp-blue/35 to-black/35"
 			></div>
 		{:else}
 			<div
-				class="absolute top-0 left-0 size-full bg-linear-to-r from-ctp-lavender/35 via-black/35 to-ctp-lavender/35"
+				class="absolute top-0 left-0 size-full bg-linear-to-r from-ctp-lavender/35 to-black/35"
 				style:filter={getFiltersStyle()}
 			></div>
 		{/if}
@@ -38,30 +38,9 @@
 	{/if}
 
 	{@render OverlayPlayer(overlay.current.players[0], 0)}
-	{@render OverlayPlayer(overlay.current.players[1], 1)}
 </div>
-<!-- isolated border filter -->
-<div class="border-b-4 border-ctp-lavender/50" style:filter={getFiltersStyle()}></div>
 
-<!-- MARK: POVs -->
-<div
-	transition:slide
-	class="flex w-full border-b-4 border-ctp-lavender/50"
-	style:filter={getFiltersStyle()}
->
-	<div
-		class="aspect-video w-full
-  {settings.current.enablePOVGuide
-			? 'border-r-2 border-dashed border-ctp-lavender/50 bg-ctp-lavender/25'
-			: ''}"
-	></div>
-	<div
-		class="aspect-video w-full
-  {settings.current.enablePOVGuide
-			? 'border-l-2 border-dashed border-ctp-lavender/50 bg-ctp-lavender/25'
-			: ''}"
-	></div>
-</div>
+<div class="grow"></div>
 
 <!-- MARK: bottom bar -->
 <div class="flex h-16 w-full justify-between" style:filter={getFiltersStyle()}>
