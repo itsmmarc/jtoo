@@ -52,7 +52,7 @@
 			<div class="absolute top-0 left-0 size-full bg-black/35"></div>
 		{/if}
 	{/if}
-	<ul class="flex justify-center gap-10 text-2xl">
+	<ul class="flex justify-center gap-10 text-xl">
 		{#each { length: tournament.leaderboards.length }, i (i)}
 			<button onclick={() => (selectedLeaderboard = i)}>
 				<li
@@ -79,7 +79,7 @@
 	</ul>
 	{#if selectedLeaderboard >= 0}
 		<ul
-			class="grid grid-cols-[repeat(6,max-content)] items-center justify-center gap-x-6 gap-y-4 text-4xl"
+			class="grid grid-cols-[repeat(6,max-content)] items-center justify-center gap-x-6 gap-y-2 text-3xl"
 		>
 			<!--position-->
 			<li></li>
@@ -104,7 +104,7 @@
 			class="grid {settings.current.enableFlags
 				? 'grid-cols-[repeat(6,max-content)]'
 				: 'grid-cols-[repeat(5,max-content)]'}
-                                items-center justify-center gap-x-6 gap-y-4 text-4xl"
+                                items-center justify-center gap-x-6 gap-y-2 text-3xl"
 		>
 			<!--position-->
 			<li></li>
@@ -160,8 +160,7 @@
 	<!-- gap -->
 	<li class={settings.current.monoFont}>
 		{#if i > 0 && entry.prCs && leader.prCs}
-			{entry.prCs == leader.prCs ? '' : '+'}
-			{csToSeconds(entry.prCs - leader.prCs).toFixed(2)}
+			{entry.prCs == leader.prCs ? '' : '+'}{csToSeconds(entry.prCs - leader.prCs).toFixed(2)}
 		{:else}
 			--
 		{/if}
