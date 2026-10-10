@@ -13,6 +13,14 @@
 		playerNum: 0 | 1 | 2 | 3;
 	};
 
+	const slotLabel = { 0: 'A', 1: 'B', 2: 'C', 3: 'D' } as const;
+
+	type Slot = keyof typeof slotLabel; // 1 | 2
+
+	function getLabel(slot: Slot) {
+		return slotLabel[slot];
+	}
+
 	let { player, playerNum }: Props = $props();
 	let tournament = $derived(getTournament(overlay.current.tournament));
 	const playerObj: Player = $derived(getPlayer(player));
@@ -34,25 +42,25 @@
 
 <div class="flex w-full max-w-full flex-col items-start">
 	{#if tournament}
-		<span class="self-center text-center">player {playerNum + 1}</span>
+		<span class="self-center text-center">player {getLabel(playerNum)}</span>
 
 		<!-- score -->
 		<!-- svelte-ignore a11y_consider_explicit_label -->
 		<div class="flex justify-center self-center">
-			<button
+			<!-- <button
 				class="button rounded-r-none"
 				onclick={() => {
 					if (player) decrementScore(player);
 				}}><span class="icon-[mdi--minus] align-middle"></span></button
 			>
-			<span class="button button-selected rounded-none">{playerObj.score}</span>
+			<span class="button button-selected rounded-none">{playerObj.score}</span> -->
 			<!-- svelte-ignore a11y_consider_explicit_label -->
-			<button
+			<!-- <button
 				class="button rounded-l-none border-ctp-lavender-950/50 bg-ctp-lavender/50 px-2 hover:bg-ctp-lavender/85"
 				onclick={() => {
 					if (player) incrementScore(player);
 				}}><span class="icon-[mdi--plus] align-middle"></span></button
-			>
+			> -->
 		</div>
 
 		<div class="flex flex-col">

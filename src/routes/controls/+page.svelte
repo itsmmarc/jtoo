@@ -290,10 +290,10 @@
 	</Accordion>
 
 	<!-- overlay -->
-	<div class="relative mb-2 flex w-full max-w-lg justify-center gap-1 self-center">
+	<!-- <div class="relative mb-2 flex w-full max-w-lg justify-center gap-1 self-center">
 		<span class="absolute left-0">best of</span>
 		<RadioInputs opts={[1, 3, 5, 7, 9]} bind:value={overlay.current.bestOf} log={true} />
-	</div>
+	</div> -->
 
 	<!-- players -->
 	<div class="flex w-full max-w-lg justify-evenly gap-x-20 self-center">
