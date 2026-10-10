@@ -79,7 +79,7 @@
 			</div>
 			<!-- background -->
 			<div
-				class="absolute top-0 left-0 -z-1 h-full w-full rounded-md bg-[#0f0f16] opacity-60"
+				class="absolute top-0 left-0 -z-1 h-full w-full rounded-md bg-[#0f0f16] opacity-90"
 				style:filter={getFiltersStyle()}
 			></div>
 		</section>
