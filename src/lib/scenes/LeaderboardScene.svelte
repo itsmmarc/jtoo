@@ -14,7 +14,7 @@
 	let leaderboard = $derived(getLeaderboard(selectedLeaderboard));
 	let _leader = $derived(leaderboard.leaderboard[0]);
 
-	const maxPlayers = 16;
+	const maxPlayers = 8;
 	const maxNameLength = 12;
 
 	const drawBG: boolean = !page.url.searchParams.has('nobg');
@@ -93,7 +93,7 @@
 
 			<hr class="hr" />
 			{#each leaderboard.leaderboard as entry, i (i)}
-				{#if entry}
+				{#if entry && i < maxPlayers}
 					{@render Row(entry as LeaderboardEntry, i)}
 					<hr class="hr" />
 				{/if}
@@ -119,7 +119,7 @@
 
 			<hr class="hr" />
 			{#each leaderboard.leaderboard as entry, i (i)}
-				{#if entry}
+				{#if entry && i < maxPlayers}
 					{@render TotalRow(entry as LeaderboardAvgEntry, i)}
 					<hr class="hr" />
 				{/if}
@@ -143,7 +143,7 @@
 			in:fade
 			src={player.avatarURL}
 			alt=""
-			class="size-24 rounded-xl object-cover object-center"
+			class="size-16 rounded-xl object-cover object-center"
 			draggable="false"
 		/>
 	</li>
@@ -184,7 +184,7 @@
 			in:fade
 			src={player.avatarURL}
 			alt=""
-			class="size-24 rounded-xl object-cover object-center"
+			class="size-16 rounded-xl object-cover object-center"
 			draggable="false"
 		/>
 	</li>
