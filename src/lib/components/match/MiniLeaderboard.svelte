@@ -18,7 +18,7 @@
 	let leaderboardEntries = $derived(roundBc?.round?.leaderboard);
 	let leader = $derived(getLeaderEntry(leaderboardEntries));
 
-	const maxPlayers = 16;
+	const maxPlayers = 8;
 	const maxNameLength = 12;
 
 	let visible = $state(false);
