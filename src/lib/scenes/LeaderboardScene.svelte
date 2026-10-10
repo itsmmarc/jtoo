@@ -199,6 +199,6 @@
 	</li>
 	<!-- gap -->
 	<li class={settings.current.monoFont}>
-		{entry.avgPlacement}
+		{entry.avgPlacement.toFixed(2)}
 	</li>
 {/snippet}
