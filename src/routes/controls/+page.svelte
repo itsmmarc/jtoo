@@ -30,12 +30,18 @@
 
 	import { KSNWebSocketController } from '$lib/websockets/ksn/ws-ksn.svelte';
 	import { getTournament, getMap } from '$lib/util';
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
+	import { JFRelayWebSocket } from '$lib/websockets/jf-relay/js-relay.svelte';
 
 	let ksnWs: KSNWebSocketController | undefined = $state();
 
+	let jfRelayWs: JFRelayWebSocket | undefined = $state();
+
 	onMount(() => {
 		ksnWs = new KSNWebSocketController('ksnWs');
+
+		jfRelayWs = new JFRelayWebSocket();
+		setContext('jfRelayWs', jfRelayWs);
 
 		$effect(() => {
 			if (settings.current.overlayScene) {
@@ -203,6 +209,28 @@
 				</div> -->
 				</div>
 				<Checkbox setting="logWsMessages" desc="log websocket messages" />
+			</Accordion>
+			<Accordion title="jf relay plugin websocket" defaultstate="closed">
+				<div class="flex gap-2">
+					<label for="input-websocket-jf">token: </label>
+					<input
+						type="password"
+						class="input w-60"
+						id="input-websocket-jf"
+						value={settings.current.jfRelayWebSocketToken}
+						onchange={(e) => {
+							let target = e.target as HTMLInputElement;
+							settings.current.jfRelayWebSocketToken = target.value;
+						}}
+					/>
+				</div>
+				<div class="flex gap-2">
+					<button
+						class="button button-unselected hover:button-selected"
+						onclick={() => jfRelayWs!.connect(settings.current.jfRelayWebSocketToken.trim())}
+						>connect</button
+					>
+				</div>
 			</Accordion>
 		</section>
 	</Accordion>

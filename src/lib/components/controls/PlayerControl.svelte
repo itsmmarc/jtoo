@@ -2,7 +2,11 @@
 	import { overlay, items } from '$lib/storage.svelte';
 	import type { Player, SteamID3 } from '$lib/types';
 	import { getTournament, getPlayer, getPlayerIndex } from '$lib/util';
+	import { getContext } from 'svelte';
 	import RadioInputs from './RadioInputs.svelte';
+	import type { JFRelayWebSocket } from '$lib/websockets/jf-relay/js-relay.svelte';
+
+	let jfRelayWs: JFRelayWebSocket = getContext('jfRelayWs');
 
 	type Props = {
 		player: SteamID3 | undefined;
@@ -61,6 +65,9 @@
 					optlabels={tournament.players.map((sId3) => getPlayer(sId3).name)}
 					opts={tournament.players}
 					bind:value={overlay.current.players[playerNum]}
+					onchange={() => {
+						jfRelayWs.broadcastSelectedPlayers(overlay.current.players);
+					}}
 				/>
 			{/if}
 		</div>
