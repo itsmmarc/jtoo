@@ -20,9 +20,9 @@
 		items,
 		defaultStages,
 		defaultSettings,
-		addBootcampTestTournament
+		addBootcampSoldierTournament
 	} from '$lib/storage.svelte';
-	import { Fonts, Leaderboard, MonoFonts, OverlayScenes, Tournament } from '$lib/types';
+	import { Fonts, MonoFonts, OverlayScenes, Tournament } from '$lib/types';
 	// import * as _ from 'underscore';
 
 	import { obsConnect, setScene } from '$lib/websockets/obs/ws-obs';
@@ -42,8 +42,8 @@
 				setScene(settings.current.overlayScene);
 			}
 		});
-		if (!items.current.tournaments.filter((t) => t.info.name == 'BootcampTest')[0]) {
-			addBootcampTestTournament();
+		if (!items.current.tournaments.filter((t) => t.info.name == 'Bootcamp Soldiers')[0]) {
+			addBootcampSoldierTournament();
 		}
 	});
 </script>
@@ -120,7 +120,7 @@
 						type="text"
 						class="input"
 						id="input-websocket-obs"
-						placeholder="192.168.1.101"
+						placeholder="localhost"
 						value={settings.current.obsWsIp}
 						onchange={(e) => {
 							let target = e.target as HTMLInputElement;
