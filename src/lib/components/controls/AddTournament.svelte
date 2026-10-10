@@ -202,15 +202,20 @@
 
 <PopOver title="{mode} tournament" bind:state={popoverState} clearfn={clear}>
 	{#if tournament.leaderboards.length > 0}
-		<div>tournament rounds</div>
+		<div class="text-2xl">tournament rounds</div>
 		{#each tournament.leaderboards as leaderboard, i (i)}
-			<div>{leaderboard.map}</div>
-			<button
-				class="button-remove"
-				onclick={() => {
-					tournament.leaderboards = tournament.leaderboards.splice(i, 1);
-				}}>delete</button
-			>
+			<div class="flex gap-2">
+				<div>{leaderboard.map}</div>
+				<div>{leaderboard.id}</div>
+				<button
+					class="button-remove"
+					onclick={() => {
+						tournament.leaderboards = tournament.leaderboards.filter(
+							(t) => t.id !== leaderboard.id
+						);
+					}}>delete</button
+				>
+			</div>
 		{/each}
 	{/if}
 	<section class="grid grid-cols-12 gap-2">
