@@ -666,8 +666,8 @@ export class KSNWebSocket {
 					position: i + 1,
 					steamId3: leaderboardArrays[i][0],
 					prCs: timer.prCs,
-					prCheckpointsCs: timer.prCheckpointsCs,
-					currentCheckpointsCs: timer.currentCheckpointsCs,
+					prCheckpointsCs: new SvelteMap(timer.prCheckpointsCs),
+					currentCheckpointsCs: new SvelteMap(timer.currentCheckpointsCs),
 					score: undefined
 				})
 			);
