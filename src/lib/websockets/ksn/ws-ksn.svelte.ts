@@ -321,9 +321,9 @@ class KSNTimer {
 			}
 			// if a's last checkpoint is faster than b's last checkpoint
 			if ([...a[1].currentCheckpointsCs].pop()![1]! < [...b[1].currentCheckpointsCs].pop()![1]!) {
-				return 1;
-			} else {
 				return -1;
+			} else {
+				return 1;
 			}
 		});
 
