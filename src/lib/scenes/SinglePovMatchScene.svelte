@@ -192,22 +192,17 @@
 				<!-- PRs -->
 				<div
 					class="-mt-4 mr-2 ml-2 flex h-16 max-w-55 flex-wrap items-center
-                                        {playerNum === 1 ? 'flex-row-reverse' : ''} {settings
-						.current.monoFont} "
+                                        {playerNum === 1 ? 'flex-row-reverse' : ''} 
+                                        {settings.current.monoFont}"
 				>
 					{#if settings.current.enablePRs}
 						<div class="flex gap-2">
-							<span class="text-2xl">pr</span>
-							<span class="text-3xl">
-								{#if playerTimer}
+							{#if playerTimer && playerTimer.prCs}
+								<span class="text-xl opacity-80 {settings.current.font}">pr</span>
+								<span class="text-3xl">
 									{playerTimer.prFormatted}
-								{/if}
-							</span>
-						</div>
-					{:else if settings.current.enablePRs && playerTimer && playerTimer.prCs}
-						<div class="flex gap-2">
-							<span class="text-2xl">pr</span>
-							<span class="text-3xl">{playerTimer.prFormatted}</span>
+								</span>
+							{/if}
 						</div>
 					{/if}
 					<!-- {#if settings.current.enablePRs && tempusPR && tempusPR.time}
