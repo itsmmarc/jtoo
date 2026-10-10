@@ -41,6 +41,9 @@
 	{@render OverlayPlayer(overlay.current.players[0], 0)}
 </div>
 
+<!-- isolated border filter -->
+<div class="border-b-4 border-ctp-lavender/50" style:filter={getFiltersStyle()}></div>
+
 <!-- MARK: bottom bar -->
 <div class="flex h-16 w-full justify-between" style:filter={getFiltersStyle()}>
 	<!-- stage -->
