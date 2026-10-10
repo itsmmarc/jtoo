@@ -9,7 +9,7 @@ import {
 	Tournament,
 	type TempusID
 } from './types.svelte';
-import { addPlayersFromSteamID3, getMap, getPlayer } from './util';
+import { addPlayersFromSteamID3, getMap, getPlayer, getTournament } from './util';
 import { Tempus2 } from './api/tempus2/api-tempus2';
 import { Steam } from './api/steam/api-steam';
 import { TempusPlaza } from './api/tempusplaza/api-tempusplaza';
@@ -149,6 +149,17 @@ export async function importBootcampTournaments() {
 	if (!items.current.tournaments.filter((t) => t.info.name == 'Bootcamp Demomen')[0]) {
 		await addBootcampDemoTournament();
 	}
+
+	const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+	await sleep(2000);
+
+	let bootcampSoldierLeaderboards = items.current.tournaments.filter(
+		(t) => t.info.name == 'Bootcamp Soldiers'
+	)[0].leaderboards;
+	console.log(bootcampSoldierLeaderboards);
+	if (bootcampSoldierLeaderboards) {
+		restoreAcademyLeaderboard();
+	}
 }
 async function addBootcampSoldierTournament() {
 	await addPlayersFromSteamID3(bootcampPlayers);
@@ -224,4 +235,319 @@ async function addBootcampDemoTournament() {
 	);
 	items.current.tournaments = [...items.current.tournaments, tournament];
 	items.current.maps = [...items.current.maps];
+}
+
+export function restoreAcademyLeaderboard() {
+	console.log('restoring academy leaderboard');
+
+	if (
+		items.current.tournaments
+			.filter((t) => t.info.name == 'Bootcamp Soldiers')[0]
+			.leaderboards.some((t) => t.id === 182)
+	)
+		return;
+	items.current.tournaments.filter((t) => t.info.name == 'Bootcamp Soldiers')[0].leaderboards = [
+		{
+			id: 182,
+			map: 'jump_academy2_easy_event',
+			leaderboard: [
+				{
+					position: 1,
+					steamId3: 274524520,
+					prCs: 29704.498291015625,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 2,
+					steamId3: 1205331,
+					prCs: 29807.998657226562,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 3,
+					steamId3: 1570772744,
+					prCs: 30394.500732421875,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 4,
+					steamId3: 209024251,
+					prCs: 31426.498413085938,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 5,
+					steamId3: 173761676,
+					prCs: 32590.499877929688,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 6,
+					steamId3: 238550246,
+					prCs: 32720.999145507812,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 7,
+					steamId3: 1208621983,
+					prCs: 32890.49987792969,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 8,
+					steamId3: 1051130653,
+					prCs: 33145.49865722656,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 9,
+					steamId3: 285397454,
+					prCs: 34013.99841308594,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 10,
+					steamId3: 125790511,
+					prCs: 34514.99938964844,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 11,
+					steamId3: 846446001,
+					prCs: 34531.500244140625,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 12,
+					steamId3: 210594027,
+					prCs: 35575.50048828125,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 13,
+					steamId3: 1238513455,
+					prCs: 37231.500244140625,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 14,
+					steamId3: 433739437,
+					prCs: 38875.50048828125,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 15,
+					steamId3: 1280310205,
+					prCs: 40045.49865722656,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 16,
+					steamId3: 449416302,
+					prCs: 41003.997802734375,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 17,
+					steamId3: 112000502,
+					prCs: 42680.999755859375,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 18,
+					steamId3: 386769336,
+					prCs: 42738.00048828125,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 19,
+					steamId3: 1044066317,
+					prCs: 44431.500244140625,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 20,
+					steamId3: 1160686771,
+					prCs: 45947.998046875,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 21,
+					steamId3: 1221028872,
+					prCs: 49303.50036621094,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 22,
+					steamId3: 1864007529,
+					prCs: 50626.49841308594,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 23,
+					steamId3: 1306487452,
+					prCs: 51473.9990234375,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 24,
+					steamId3: 1178234287,
+					prCs: 66670.49560546875,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 25,
+					steamId3: 181840608,
+					prCs: 83560.498046875,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 26,
+					steamId3: 366336591,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 27,
+					steamId3: 1161800600,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 28,
+					steamId3: 207457615,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 29,
+					steamId3: 298130705,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 30,
+					steamId3: 153381898,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 31,
+					steamId3: 220580073,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 32,
+					steamId3: 252636943,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 33,
+					steamId3: 428509153,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 34,
+					steamId3: 394357679,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 35,
+					steamId3: 85949170,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 36,
+					steamId3: 212863037,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 37,
+					steamId3: 843065071,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 38,
+					steamId3: 288849900,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 39,
+					steamId3: 172628689,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 40,
+					steamId3: 177346410,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 41,
+					steamId3: 141252761,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 42,
+					steamId3: 209702177,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 43,
+					steamId3: 194459329,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 44,
+					steamId3: 484874521,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				},
+				{
+					position: 45,
+					steamId3: 1187198874,
+					prCheckpointsCs: {},
+					currentCheckpointsCs: {}
+				}
+			]
+		},
+		...items.current.tournaments.filter((t) => t.info.name == 'Bootcamp Soldiers')[0].leaderboards
+	];
 }

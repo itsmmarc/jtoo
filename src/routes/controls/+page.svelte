@@ -20,7 +20,8 @@
 		items,
 		defaultStages,
 		defaultSettings,
-		importBootcampTournaments
+		importBootcampTournaments,
+		restoreAcademyLeaderboard
 	} from '$lib/storage.svelte';
 	import {
 		BrokenOverlayScenes,
