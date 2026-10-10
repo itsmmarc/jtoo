@@ -40,6 +40,7 @@ export async function addPlayersFromSteamID3(steamId3s: string[]) {
 		if (getPlayer(steamId3).steamID3) continue;
 		items.current.players.push(Steam.playerSummaryToPlayer(ps));
 	}
+	items.current.players = [...items.current.players];
 }
 
 export function getTournament(id: string | undefined): Tournament {

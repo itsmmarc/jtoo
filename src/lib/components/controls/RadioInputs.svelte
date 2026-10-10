@@ -30,7 +30,7 @@
 	}
 
 	function getOptionLabel(opt: any, labelkey: string | string[] | undefined, index: number) {
-		if (optlabels && optlabels.length > index) {
+		if (optlabels && index < optlabels.length) {
 			return optlabels[index];
 		}
 		if (typeof labelkey == 'undefined') {

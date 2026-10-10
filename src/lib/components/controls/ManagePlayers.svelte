@@ -7,7 +7,7 @@
 	let popoverState: 'open' | 'closed' = $state('closed');
 
 	function deletePlayer(player: Player) {
-		items.current.players = items.current.players.filter((p) => p.tempusID !== player.tempusID);
+		items.current.players = items.current.players.filter((p) => p.steamID3 !== player.steamID3);
 	}
 </script>
 
