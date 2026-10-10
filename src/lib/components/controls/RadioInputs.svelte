@@ -9,8 +9,17 @@
 		value?: any;
 		log?: boolean;
 		onchange?: (value: any) => void;
+		undefinedOption?: boolean;
 	};
-	let { opts, labelkey, optlabels, log = false, value = $bindable(), onchange }: Props = $props();
+	let {
+		opts,
+		labelkey,
+		optlabels,
+		log = false,
+		value = $bindable(),
+		onchange,
+		undefinedOption = false
+	}: Props = $props();
 
 	let name = uuidv4();
 
@@ -51,6 +60,25 @@
 </script>
 
 <div class="button-container">
+	{#if undefinedOption}
+		<label
+			class="button button-unselected flex cursor-pointer flex-col select-none has-checked:border-ctp-lavender-950 has-checked:bg-ctp-lavender
+                {typeof value == 'undefined' ? 'border-ctp-lavender-950 bg-ctp-lavender' : ''}"
+		>
+			<input
+				type="radio"
+				class="hidden"
+				id="undefined"
+				{name}
+				bind:group={value}
+				value={undefined}
+				onchange={() => {
+					onSelect();
+				}}
+			/>
+			✖
+		</label>
+	{/if}
 	{#each opts as opt, i (i)}
 		{@render RadioButton(opt, i)}
 	{/each}

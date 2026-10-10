@@ -76,6 +76,7 @@
 					onchange={() => {
 						jfRelayWs.broadcastSelectedPlayers(overlay.current.players);
 					}}
+					undefinedOption={true}
 				/>
 			{/if}
 		</div>

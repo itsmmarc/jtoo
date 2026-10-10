@@ -17,7 +17,7 @@
 
 <!-- MARK: top bar -->
 <div class="relative z-20 flex h-32 w-full justify-between p-4">
-	{#if settings.current.ksnWebSocketToken !== '' && overlay.current.players[0] && overlay.current.players[1]}
+	{#if settings.current.ksnWebSocketToken !== ''}
 		<WebSocketTimer
 			numPlayers={2}
 			class="absolute top-11 right-0 left-0 w-[55%] justify-self-center"
