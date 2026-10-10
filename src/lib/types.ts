@@ -37,7 +37,7 @@ export class LeaderboardEntry {
 }
 export class Leaderboard {
 	id: number;
-	leaderboard: LeaderboardEntry[] = [];
+	leaderboard: LeaderboardEntry[] = $state([]);
 
 	constructor(id: number) {
 		this.id = id;
