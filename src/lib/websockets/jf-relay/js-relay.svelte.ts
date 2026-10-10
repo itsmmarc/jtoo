@@ -1,5 +1,5 @@
 import { ProxyWebSocket } from '$lib/ProxyWebSocket';
-import type { SteamID3 } from '$lib/types';
+import type { SteamID3 } from '$lib/types.svelte';
 
 interface JFRelayEvent {
 	type: 'spectator_select' | 'overlay_connected';

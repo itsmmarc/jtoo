@@ -10,7 +10,7 @@
 		type MapFileName,
 		type SteamID3,
 		type TFClass
-	} from '$lib/types';
+	} from '$lib/types.svelte';
 	import _ from 'underscore';
 	import RadioInputs from './RadioInputs.svelte';
 	import ImportPlayer from './ImportPlayer.svelte';

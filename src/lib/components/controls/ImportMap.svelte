@@ -1,7 +1,7 @@
 <script lang="ts">
 	import PopOver from './PopOver.svelte';
 	import { items } from '$lib/storage.svelte';
-	import { TFMap } from '$lib/types';
+	import { TFMap } from '$lib/types.svelte';
 	import { Tempus2 } from '$lib/api/tempus2/api-tempus2';
 	import _ from 'underscore';
 	import { TempusPlaza } from '$lib/api/tempusplaza/api-tempusplaza';

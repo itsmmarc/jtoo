@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { overlay, settings } from '$lib/storage.svelte';
 	import { KSNWebSocket } from '$lib/websockets/ksn/ws-ksn.svelte';
-	import { type SteamID3 } from '$lib/types';
+	import { type SteamID3 } from '$lib/types.svelte';
 	import { csToFormattedTime } from '$lib/util';
 	import { getContext } from 'svelte';
 

@@ -1,4 +1,4 @@
-import { Player } from '$lib/types';
+import { Player } from '$lib/types.svelte';
 import { error } from '@sveltejs/kit';
 
 export namespace Steam {

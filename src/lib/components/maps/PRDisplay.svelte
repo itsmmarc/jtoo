@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { settings, items, overlay } from '$lib/storage.svelte';
-	import { TFMap, type MapRun } from '$lib/types';
+	import { TFMap, type MapRun } from '$lib/types.svelte';
 	import { fade } from 'svelte/transition';
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { csToFormattedTime, getPlayer, getTournament, secondsToCs } from '$lib/util';

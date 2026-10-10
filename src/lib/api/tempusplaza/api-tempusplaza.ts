@@ -1,4 +1,4 @@
-import type { Player } from '$lib/types';
+import type { Player } from '$lib/types.svelte';
 
 export namespace TempusPlaza {
 	export function getImageUrl(mapName: string, quality?: 'medium' | 'full') {

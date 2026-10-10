@@ -1,5 +1,5 @@
 import { items } from '$lib/storage.svelte';
-import { Player, TFMap } from '$lib/types';
+import { Player, TFMap } from '$lib/types.svelte';
 import { Steam } from '../steam/api-steam';
 import _ from 'underscore';
 import { TempusPlaza } from '../tempusplaza/api-tempusplaza';

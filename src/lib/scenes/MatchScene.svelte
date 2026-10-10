@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { settings, overlay, items } from '$lib/storage.svelte';
-	import { Player, TFMap } from '$lib/types';
+	import { Player, TFMap } from '$lib/types.svelte';
 	import { fade, slide } from 'svelte/transition';
 	import WebSocketCheckpoints from '$lib/components/match/WebSocketCheckpoints.svelte';
 	import WebSocketTimer from '$lib/components/match/WebSocketTimer.svelte';

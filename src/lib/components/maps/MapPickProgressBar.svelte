@@ -2,7 +2,7 @@
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { getContext } from 'svelte';
 	import type { KSNWebSocket } from '$lib/websockets/ksn/ws-ksn.svelte';
-	import { KSN } from '$lib/websockets/ksn/ws-ksn-types';
+	import { KSN } from '$lib/websockets/ksn/ws-ksn-types.svelte';
 
 	let ksnWs: KSNWebSocket = getContext('ksnWs');
 

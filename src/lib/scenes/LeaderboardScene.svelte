@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { items, overlay, settings } from '$lib/storage.svelte';
-	import { LeaderboardEntry, Player, type SteamID3 } from '$lib/types';
+	import { LeaderboardEntry, Player, type SteamID3 } from '$lib/types.svelte';
 	import { fade } from 'svelte/transition';
 	import { page } from '$app/state';
 	import Flag from '$lib/components/util/Flag.svelte';

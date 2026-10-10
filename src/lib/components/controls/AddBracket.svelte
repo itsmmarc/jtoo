@@ -3,7 +3,7 @@
 	import _ from 'underscore';
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { Bracket8, Bracket4, type Match } from '$lib/Bracket.svelte';
-	import { Player, type SteamID3, type TournamentFormat } from '$lib/types';
+	import { Player, type SteamID3, type TournamentFormat } from '$lib/types.svelte';
 	import DraggableMatchList from '../DraggableMatchList.svelte';
 
 	type Error = { state: boolean; msg: string };

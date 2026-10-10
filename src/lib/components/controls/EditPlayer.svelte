@@ -1,7 +1,7 @@
 <script lang="ts">
 	import PopOver from './PopOver.svelte';
 	import { items } from '$lib/storage.svelte';
-	import { Player } from '$lib/types';
+	import { Player } from '$lib/types.svelte';
 	import _ from 'underscore';
 	import Flag from '../util/Flag.svelte';
 

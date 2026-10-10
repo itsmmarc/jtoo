@@ -8,7 +8,7 @@
 	import PlayerListScene from '$lib/scenes/PlayerListScene.svelte';
 	import ThanksScene from '$lib/scenes/ThanksScene.svelte';
 	import TournamentInfoScene from '$lib/scenes/TournamentInfoScene.svelte';
-	import { OverlayScenes, type OverlayScene } from '$lib/types';
+	import { OverlayScenes, type OverlayScene } from '$lib/types.svelte';
 
 	import { KSNWebSocket } from '$lib/websockets/ksn/ws-ksn.svelte';
 	import { onMount, setContext, type Component } from 'svelte';

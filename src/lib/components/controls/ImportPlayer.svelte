@@ -1,7 +1,7 @@
 <script lang="ts">
 	import PopOver from './PopOver.svelte';
 	import { items } from '$lib/storage.svelte';
-	import { Player } from '$lib/types';
+	import { Player } from '$lib/types.svelte';
 	import { Tempus2 } from '$lib/api/tempus2/api-tempus2';
 	import { Steam } from '$lib/api/steam/api-steam';
 	import _ from 'underscore';

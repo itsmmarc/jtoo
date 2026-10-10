@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getFiltersStyle } from '$lib/filters.svelte';
-	import { Leaderboard, LeaderboardEntry } from '$lib/types';
+	import { Leaderboard, LeaderboardEntry } from '$lib/types.svelte';
 	import { fade } from 'svelte/transition';
 	import { csToFormattedTime, csToSeconds, getTournament, getPlayer } from '$lib/util';
 	import { overlay } from '$lib/storage.svelte';
@@ -89,35 +89,37 @@
 
 {#snippet Row(entry: LeaderboardEntry, i: number)}
 	{@const player = getPlayer(entry.steamId3)}
-	{@const name =
-		player.name.length > maxNameLength
-			? player.name.substring(0, maxNameLength) + '...'
-			: player.name.substring(0, maxNameLength)}
-	{@const gap = getGapTime(entry, i)}
-	<!-- position -->
-	<div>{i + 1}</div>
-	<!-- avatar -->
-	<div>
-		{#if player && player.avatarURL}
-			<img
-				in:fade
-				src={player.avatarURL}
-				alt=""
-				class="size-7 rounded-md object-cover object-center"
-				draggable="false"
-			/>
-		{/if}
-	</div>
-	<!-- name -->
-	<div>
-		{#if player}
-			{name}
-		{:else}
-			unknown
-		{/if}
-	</div>
-	<!-- gap -->
-	<div class="w-full min-w-20 text-end">
-		{gap}
-	</div>
+	{#if player.name}
+		{@const name =
+			player.name.length > maxNameLength
+				? player.name.substring(0, maxNameLength) + '...'
+				: player.name.substring(0, maxNameLength)}
+		{@const gap = getGapTime(entry, i)}
+		<!-- position -->
+		<div>{i + 1}</div>
+		<!-- avatar -->
+		<div>
+			{#if player && player.avatarURL}
+				<img
+					in:fade
+					src={player.avatarURL}
+					alt=""
+					class="size-7 rounded-md object-cover object-center"
+					draggable="false"
+				/>
+			{/if}
+		</div>
+		<!-- name -->
+		<div>
+			{#if player}
+				{name}
+			{:else}
+				unknown
+			{/if}
+		</div>
+		<!-- gap -->
+		<div class="w-full min-w-20 text-end">
+			{gap}
+		</div>
+	{/if}
 {/snippet}

@@ -4,10 +4,10 @@
 	import { getFiltersStyle } from '$lib/filters.svelte';
 	import { settings, items, overlay } from '$lib/storage.svelte';
 	import { fade, slide } from 'svelte/transition';
-	import { TFMap } from '$lib/types';
+	import { TFMap } from '$lib/types.svelte';
 	import { getContext } from 'svelte';
 	import type { KSNWebSocket } from '$lib/websockets/ksn/ws-ksn.svelte';
-	import { KSN } from '$lib/websockets/ksn/ws-ksn-types';
+	import { KSN } from '$lib/websockets/ksn/ws-ksn-types.svelte';
 	import { getMap, getTournament } from '$lib/util';
 
 	let ksnWs: KSNWebSocket = getContext('ksnWs');

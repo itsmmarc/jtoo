@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Player, SteamID3 } from '$lib/types';
+	import type { Player, SteamID3 } from '$lib/types.svelte';
 	import { getPlayer } from '$lib/util';
 
 	let itemAIndex = $state(-1);

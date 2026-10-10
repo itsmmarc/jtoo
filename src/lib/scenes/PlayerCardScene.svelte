@@ -5,7 +5,7 @@
 	import { fade } from 'svelte/transition';
 	import PRDisplay from '$lib/components/maps/PRDisplay.svelte';
 	import Flag from '$lib/components/util/Flag.svelte';
-	import { Player, Tournament } from '$lib/types';
+	import { Player, Tournament } from '$lib/types.svelte';
 	import { getTournament } from '$lib/util';
 
 	let tournament = $derived(getTournament(overlay.current.tournament));

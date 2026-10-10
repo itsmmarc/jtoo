@@ -1,4 +1,4 @@
-import { KSN } from './ws-ksn-types';
+import { KSN } from './ws-ksn-types.svelte';
 import { ProxyWebSocket } from '../../ProxyWebSocket';
 import { csToFormattedTime, getPlayer, getTournament, secondsToCs } from '$lib/util';
 import {
@@ -7,7 +7,7 @@ import {
 	type Centiseconds,
 	type Seconds,
 	type SteamID3
-} from '$lib/types';
+} from '$lib/types.svelte';
 import { SvelteMap } from 'svelte/reactivity';
 import { items, overlay, settings, wsMessages } from '$lib/storage.svelte';
 import { Steam } from '$lib/api/steam/api-steam';
@@ -612,10 +612,12 @@ export class KSNWebSocket {
 		overlay.current.leaderboard = id;
 	}
 	updateLeaderboard() {
+		console.log('updating leaderboard');
 		let tournament = getTournament(overlay.current.tournament);
-		let oldLeaderboard = tournament.leaderboards[tournament.leaderboards.length - 1];
+		console.log(tournament);
 
 		let leaderboardArrays = this.timer.players.entries().toArray();
+		console.log(leaderboardArrays);
 		let leaderboardEntries: LeaderboardEntry[] = [];
 		for (let i = 0; i < leaderboardArrays.length; i++) {
 			let timer = leaderboardArrays[i][1];
@@ -630,8 +632,12 @@ export class KSNWebSocket {
 				})
 			);
 		}
+		console.log(leaderboardEntries);
 
-		oldLeaderboard.leaderboard = leaderboardEntries;
+		tournament.leaderboards[tournament.leaderboards.length - 1] = {
+			id: tournament.leaderboards[tournament.leaderboards.length - 1].id,
+			leaderboard: leaderboardEntries
+		};
 		tournament.leaderboards = [...tournament.leaderboards];
 		console.log(tournament.leaderboards);
 	}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { items, overlay } from '$lib/storage.svelte';
-	import { Player } from '$lib/types';
+	import { Player } from '$lib/types.svelte';
 	import Button from './Button.svelte';
 
 	type Props = {

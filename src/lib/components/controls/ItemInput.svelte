@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { items } from '$lib/storage.svelte';
-	import { Player, type Items } from '$lib/types';
+	import { Player, type Items } from '$lib/types.svelte';
 	import { slide } from 'svelte/transition';
 
 	type Props = {

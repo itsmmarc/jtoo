@@ -22,7 +22,7 @@
 		defaultSettings,
 		addBootcampSoldierTournament
 	} from '$lib/storage.svelte';
-	import { Fonts, MonoFonts, OverlayScenes, Tournament } from '$lib/types';
+	import { Fonts, MonoFonts, OverlayScenes, Tournament } from '$lib/types.svelte';
 	// import * as _ from 'underscore';
 
 	import { obsConnect, setScene } from '$lib/websockets/obs/ws-obs';

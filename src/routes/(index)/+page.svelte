@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import { OverlayScenes } from '$lib/types';
+	import { OverlayScenes } from '$lib/types.svelte';
 	import { fade } from 'svelte/transition';
 
 	let copied = $state({});

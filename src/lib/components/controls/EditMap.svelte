@@ -1,7 +1,7 @@
 <script lang="ts">
 	import PopOver from './PopOver.svelte';
 	import { items } from '$lib/storage.svelte';
-	import { TFMap } from '$lib/types';
+	import { TFMap } from '$lib/types.svelte';
 	import _ from 'underscore';
 
 	type Error = { state: boolean; msg: string };

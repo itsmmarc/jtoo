@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { items } from '$lib/storage.svelte';
-	import { TFMap } from '$lib/types';
+	import { TFMap } from '$lib/types.svelte';
 	import PopOver from './PopOver.svelte';
 	import EditMap from './EditMap.svelte';
 

@@ -9,7 +9,7 @@ import {
 	type Seconds,
 	type SteamID3,
 	type TempusID
-} from './types';
+} from './types.svelte';
 import { Steam } from './api/steam/api-steam';
 
 export function getPlayer(steamID3: SteamID3 | undefined): Player {

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Bracket4, Bracket8 } from '$lib/Bracket.svelte';
-	import type { Player, SteamID3, TournamentFormat } from '$lib/types';
+	import type { Player, SteamID3, TournamentFormat } from '$lib/types.svelte';
 	import { getPlayer } from '$lib/util';
 
 	let itemAIndex = $state(-1);

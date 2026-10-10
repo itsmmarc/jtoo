@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { items } from '$lib/storage.svelte';
-	import { Player } from '$lib/types';
+	import { Player } from '$lib/types.svelte';
 	import EditPlayer from './EditPlayer.svelte';
 	import PopOver from './PopOver.svelte';
 

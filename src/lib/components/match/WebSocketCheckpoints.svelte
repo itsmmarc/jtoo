@@ -5,7 +5,7 @@
 	import { fade } from 'svelte/transition';
 	import { getContext } from 'svelte';
 	import { SvelteMap } from 'svelte/reactivity';
-	import type { Centiseconds, SteamID3 } from '$lib/types';
+	import type { Centiseconds, SteamID3 } from '$lib/types.svelte';
 
 	let ksnWs: KSNWebSocket = getContext('ksnWs');
 

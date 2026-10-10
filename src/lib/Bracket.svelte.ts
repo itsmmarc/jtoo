@@ -1,4 +1,4 @@
-import { Player, type SteamID3 } from './types';
+import { Player, type SteamID3 } from './types.svelte';
 
 export type Match = {
 	A: SteamID3 | undefined;

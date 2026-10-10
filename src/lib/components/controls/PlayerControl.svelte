@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { overlay, items } from '$lib/storage.svelte';
-	import type { Player, SteamID3 } from '$lib/types';
+	import type { Player, SteamID3 } from '$lib/types.svelte';
 	import { getTournament, getPlayer, getPlayerIndex } from '$lib/util';
 	import { getContext } from 'svelte';
 	import RadioInputs from './RadioInputs.svelte';

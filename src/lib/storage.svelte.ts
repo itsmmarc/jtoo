@@ -8,7 +8,7 @@ import {
 	TFMap,
 	Tournament,
 	type TempusID
-} from './types';
+} from './types.svelte';
 import { addPlayersFromSteamID3, getPlayer } from './util';
 import { Tempus2 } from './api/tempus2/api-tempus2';
 import { Steam } from './api/steam/api-steam';
@@ -41,6 +41,7 @@ export const defaultSettings: Settings = {
 	enablePOVGuide: false,
 	useShortMapNames: true,
 	ksnWebSocketToken: '',
+	jfRelayWebSocketToken: '',
 	logWsMessages: false,
 	overlayScene: 'MatchScene',
 	obsWsIp: '',
