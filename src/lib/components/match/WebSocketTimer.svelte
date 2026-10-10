@@ -38,10 +38,14 @@
 			<div class="text-xl opacity-80 {settings.current.font}">run timer</div>
 			<div
 				class="{settings.current.monoFont} text-5xl transition-colors duration-1000
-                                {!playerTimer || !playerTimer.isRunning ? 'opacity-40' : ''}"
+                                        {!playerTimer || !playerTimer.isRunning
+					? 'opacity-40'
+					: ''}"
 			>
-				{#if playerTimer && playerTimer.timeFormatted}
-					{playerTimer ? playerTimer.timeFormatted : csToFormattedTime(0)}
+				{#if playerTimer}
+					{playerTimer.timeFormatted}
+				{:else}
+					{csToFormattedTime(0)}
 				{/if}
 			</div>
 		</div>
@@ -50,14 +54,17 @@
 
 {#snippet CompetitionTimer()}
 	<div class="text-palewhite/40 flex h-full flex-col justify-start text-center">
-		<div class="text-xl opacity-80 {settings.current.font}">match timer</div>
-		{#if ksnWs.timer.competition.timeLeftSeconds > 0}
-			<div class="text-5xl">
-				{ksnWs.timer.competition.getTimeLeftFormatted('seconds')}
-			</div>
-		{/if}
-		{#if ksnWs.timer.competition.overtimeStatus}
-			<div class="text-4xl">OVERTIME</div>
+		{#if ksnWs.timer.competition.timeLeftSeconds > 0 || ksnWs.timer.competition.overtimeStatus}
+			<div class="text-xl opacity-80 {settings.current.font}">match timer</div>
+
+			{#if ksnWs.timer.competition.timeLeftSeconds > 0}
+				<div class="text-5xl">
+					{ksnWs.timer.competition.getTimeLeftFormatted('seconds')}
+				</div>
+			{/if}
+			{#if ksnWs.timer.competition.overtimeStatus}
+				<div class="text-4xl">OVERTIME</div>
+			{/if}
 		{/if}
 	</div>
 {/snippet}
