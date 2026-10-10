@@ -19,6 +19,7 @@
 <div class="relative z-20 flex h-32 w-full justify-between p-4">
 	{#if settings.current.ksnWebSocketToken !== '' && overlay.current.players[0] && overlay.current.players[1]}
 		<WebSocketTimer numPlayers={1} class="absolute top-6 right-10 w-[54%] justify-self-center " />
+		<WebSocketLeader class="absolute top-4 right-90" />
 	{/if}
 	{#if settings.current.enableGradient}
 		<!-- gradients -->
@@ -40,8 +41,6 @@
 	{@render OverlayPlayer(overlay.current.players[0], 0)}
 </div>
 
-<div class="grow"></div>
-
 <!-- MARK: bottom bar -->
 <div class="flex h-16 w-full justify-between" style:filter={getFiltersStyle()}>
 	<!-- stage -->
@@ -59,9 +58,6 @@
 	<!-- {#if settings.current.ksnWebSocketToken !== '' && overlay.current.players[0] && overlay.current.players[1]}
 		<WebSocketCheckpoints numPlayers={2} />
 	{/if} -->
-	{#if settings.current.ksnWebSocketToken !== ''}
-		<WebSocketLeader />
-	{/if}
 	<!-- map -->
 	<div
 		class="relative -right-6 flex h-full skew-x-30 items-center justify-end rounded-bl-xl border-b-4 border-l-4 border-ctp-lavender/50 bg-ctp-lavender/25

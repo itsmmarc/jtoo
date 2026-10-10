@@ -6,9 +6,14 @@
 	import { getContext } from 'svelte';
 
 	let ksnWs: KSNWebSocket = getContext('ksnWs');
+
+	type Props = { class?: string };
+	let { class: styleClass }: Props = $props();
+
+	const maxNameLength = 12;
 </script>
 
-<div class="absolute right-0 left-0 m-auto mt-2 w-fit {settings.current.font}">
+<div class="{styleClass}  mt-2 w-fit {settings.current.font}">
 	{#if ksnWs.timer.leader}
 		{@const leader = getPlayer(ksnWs.timer.leader)}
 		{@const leaderTimer = ksnWs.timer.getPlayerTimer(ksnWs.timer.leader)}
@@ -24,7 +29,9 @@
 				/>
 			</div>
 			<div>
-				{leader.name}
+				{leader.name.length > maxNameLength
+					? leader.name.substring(0, maxNameLength) + '...'
+					: leader.name.substring(0, maxNameLength)}
 			</div>
 			<div class={settings.current.monoFont}>
 				{leaderTimer?.prCs ? leaderTimer.prFormatted : ''}
