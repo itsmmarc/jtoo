@@ -18,7 +18,7 @@
 	import { Bracket4, Bracket8 } from '$lib/Bracket.svelte';
 	import AddBracket from './AddBracket.svelte';
 	import DraggablePlayerList from '../DraggablePlayerList.svelte';
-	import { getMap, getPlayer } from '$lib/util';
+	import { csToFormattedTime, getMap, getPlayer } from '$lib/util';
 
 	type Error = { state: boolean; msg: string };
 
@@ -201,6 +201,18 @@
 </script>
 
 <PopOver title="{mode} tournament" bind:state={popoverState} clearfn={clear}>
+	{#if tournament.leaderboards.length > 0}
+		<div>tournament rounds</div>
+		{#each tournament.leaderboards as leaderboard, i (i)}
+			<div>{leaderboard.map}</div>
+			<button
+				class="button-remove"
+				onclick={() => {
+					tournament.leaderboards = tournament.leaderboards.splice(i, 1);
+				}}>delete</button
+			>
+		{/each}
+	{/if}
 	<section class="grid grid-cols-12 gap-2">
 		<!-- MARK: Format -->
 		<div class="col-span-full flex flex-col">

@@ -4,12 +4,18 @@
 	import { fade } from 'svelte/transition';
 	import { csToFormattedTime, csToSeconds, getTournament, getPlayer } from '$lib/util';
 	import { overlay } from '$lib/storage.svelte';
+	import { KSNWebSocketLeaderboardReceiver } from '$lib/websockets/ksn/ws-ksn.svelte';
+	import { onMount } from 'svelte';
 
 	type Props = { class?: string };
 	let { class: styleClass }: Props = $props();
 
-	let tournament = $derived(getTournament(overlay.current.tournament));
-	let leaderboardEntries = $derived(getLeaderboardEntries(tournament.leaderboards));
+	let roundBc: KSNWebSocketLeaderboardReceiver | undefined = $state();
+	onMount(() => {
+		roundBc = new KSNWebSocketLeaderboardReceiver('ksnWs');
+	});
+
+	let leaderboardEntries = $derived(roundBc?.round?.leaderboard);
 	let leader = $derived(getLeaderEntry(leaderboardEntries));
 
 	const maxPlayers = 16;
@@ -18,16 +24,6 @@
 	let visible = $state(true);
 	let visibilityInterval: NodeJS.Timeout | undefined;
 	const visibleTime = 8000;
-
-	function getLeaderboardEntries(leaderboards: Round[]) {
-		console.log(tournament);
-		if (!leaderboards) return undefined;
-		if (leaderboards.length == 0) return undefined;
-
-		console.log(leaderboards[leaderboards.length - 1].leaderboard);
-
-		return leaderboards[leaderboards.length - 1].leaderboard;
-	}
 
 	function getLeaderEntry(leaderboard: LeaderboardEntry[] | undefined) {
 		if (!leaderboard) return undefined;
@@ -67,24 +63,24 @@
 	// });
 </script>
 
-{#if leaderboardEntries && leaderboardEntries.length > 0}
-	{#if visible}
-		<section class="{styleClass} absolute top-0 left-0 z-20 p-2" transition:fade>
-			<div class="grid grid-cols-[repeat(4,auto)] gap-x-2 gap-y-0 text-xl *:m-0 *:p-0">
-				{#each leaderboardEntries as entry, i (i)}
-					{#if i < maxPlayers && entry}
-						{@render Row(entry, i)}
-					{/if}
-				{/each}
-			</div>
-			<!-- background -->
-			<div
-				class="absolute top-0 left-0 -z-1 h-full w-full rounded-md bg-[#0f0f16] opacity-90"
-				style:filter={getFiltersStyle()}
-			></div>
-		</section>
-	{/if}
-{/if}
+<!-- {#if leaderboardEntries && leaderboardEntries.length > 0} -->
+<!-- {#if visible} -->
+<section class="{styleClass} absolute top-0 left-0 z-20 p-2" transition:fade>
+	<div class="grid grid-cols-[repeat(4,auto)] gap-x-2 gap-y-0 text-xl *:m-0 *:p-0">
+		{#each leaderboardEntries as entry, i (i)}
+			{#if i < maxPlayers && entry}
+				{@render Row(entry, i)}
+			{/if}
+		{/each}
+	</div>
+	<!-- background -->
+	<div
+		class="absolute top-0 left-0 -z-1 h-full w-full rounded-md bg-[#0f0f16] opacity-90"
+		style:filter={getFiltersStyle()}
+	></div>
+</section>
+<!-- {/if} -->
+<!-- {/if} -->
 
 {#snippet Row(entry: LeaderboardEntry, i: number)}
 	{@const player = getPlayer(entry.steamId3)}

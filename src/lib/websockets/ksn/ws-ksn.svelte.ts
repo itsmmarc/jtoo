@@ -1,6 +1,13 @@
 import { KSN } from './ws-ksn-types.svelte';
 import { ProxyWebSocket } from '../../ProxyWebSocket';
-import { csToFormattedTime, getMap, getPlayer, getTournament, secondsToCs } from '$lib/util';
+import {
+	csToFormattedTime,
+	getMap,
+	getPlayer,
+	getTournament,
+	secondsToCs,
+	toPairs
+} from '$lib/util';
 import {
 	Round,
 	LeaderboardEntry,
@@ -409,6 +416,7 @@ export class KSNWebSocket {
 	private _messages: KSN.Messages; // probably not necessary, really only need previousMapPicks
 	private _pickedMaps: PickedMaps;
 	private _timer: KSNTimer;
+	private _lastLeaderboardEntries: LeaderboardEntry[] = [];
 
 	constructor(broadcastChannel: string) {
 		this._ws = undefined;
@@ -443,6 +451,8 @@ export class KSNWebSocket {
 			case 'request-wsState':
 				this._channel.postMessage({ type: 'wsState', value: this.wsState });
 				break;
+			case 'request-leaderboard':
+				this.broadcastLeaderboard(this._lastLeaderboardEntries);
 			default:
 				break;
 		}
@@ -660,18 +670,20 @@ export class KSNWebSocket {
 		console.log(leaderboardArrays);
 		let leaderboardEntries: LeaderboardEntry[] = [];
 		for (let i = 0; i < leaderboardArrays.length; i++) {
+			const t = leaderboardArrays[i][1];
 			let timer = leaderboardArrays[i][1];
 			leaderboardEntries.push(
 				new LeaderboardEntry({
 					position: i + 1,
 					steamId3: leaderboardArrays[i][0],
 					prCs: timer.prCs,
-					prCheckpointsCs: new SvelteMap(timer.prCheckpointsCs),
-					currentCheckpointsCs: new SvelteMap(timer.currentCheckpointsCs),
+					prCheckpointsCs: timer.prCheckpointsCs,
+					currentCheckpointsCs: timer.currentCheckpointsCs,
 					score: undefined
 				})
 			);
 		}
+		console.log(leaderboardEntries[0].currentCheckpointsCs instanceof Map); // want true
 		console.log(leaderboardEntries);
 
 		tournament.leaderboards[tournament.leaderboards.length - 1] = {
@@ -681,6 +693,29 @@ export class KSNWebSocket {
 		};
 		tournament.leaderboards = [...tournament.leaderboards];
 		console.log(tournament.leaderboards);
+
+		this.broadcastLeaderboard(leaderboardEntries);
+	}
+	broadcastLeaderboard(entries: LeaderboardEntry[]) {
+		this._lastLeaderboardEntries = entries;
+		const tournament = getTournament(overlay.current.tournament);
+		const round = tournament.leaderboards[tournament.leaderboards.length - 1];
+
+		this._channel.postMessage({
+			type: 'round',
+			value: {
+				id: round.id,
+				map: round.map,
+				leaderboard: entries.map((e) => ({
+					position: e.position,
+					steamId3: e.steamId3,
+					prCs: e.prCs,
+					score: e.score ?? null,
+					prCheckpointsCs: toPairs(e.prCheckpointsCs),
+					currentCheckpointsCs: toPairs(e.currentCheckpointsCs)
+				}))
+			}
+		});
 	}
 
 	// map picks
@@ -780,8 +815,67 @@ export class KSNWebSocketController {
 		return this._wsState;
 	}
 }
+
+export class KSNWebSocketLeaderboardReceiver {
+	private _channel: BroadcastChannel;
+	private _round: Round;
+
+	constructor(broadcastChannel: string) {
+		this._channel = new BroadcastChannel(broadcastChannel);
+		this._round = $state<Round>({});
+
+		this._channel.postMessage({
+			type: 'welcome',
+			value: `KSNWebSocketLeaderboardReceiver receiving from channel: ${this._channel.name}`
+		});
+		this._channel.postMessage({
+			type: 'request-leaderboard'
+		});
+
+		this._channel.onmessage = (event) => this.onBcMessage(event);
+	}
+	private onBcMessage(event: MessageEvent) {
+		const data: KSNBCMessageType = event.data;
+
+		console.log(data);
+
+		switch (data.type) {
+			case 'round':
+				const round = event.data.value;
+				this._round = {
+					id: round.id,
+					map: round.map,
+					leaderboard: round.leaderboard.map(
+						(raw: any) =>
+							new LeaderboardEntry({
+								...raw,
+								prCs: raw.prCs ?? undefined,
+								score: raw.score ?? undefined,
+								prCheckpointsCs: new SvelteMap(raw.prCheckpointsCs),
+								currentCheckpointsCs: new SvelteMap(raw.currentCheckpointsCs)
+							})
+					)
+				};
+				break;
+			default:
+				break;
+		}
+	}
+
+	// getters
+	get round() {
+		return this._round;
+	}
+}
 interface BaseKSNBCMessage {
-	type: 'connect' | 'clearPicksAndBans' | 'clearTimers' | 'wsState' | 'request-wsState';
+	type:
+		| 'connect'
+		| 'clearPicksAndBans'
+		| 'clearTimers'
+		| 'wsState'
+		| 'request-wsState'
+		| 'request-leaderboard'
+		| 'round';
 }
 interface KSNBCConnectMessage extends BaseKSNBCMessage {
 	type: 'connect';
@@ -800,10 +894,19 @@ interface KSNBCWSStateMessage extends BaseKSNBCMessage {
 interface KSNBCRequestWSStateMessage extends BaseKSNBCMessage {
 	type: 'request-wsState';
 }
+interface KSNBCRequestLeaderboardMessage extends BaseKSNBCMessage {
+	type: 'request-leaderboard';
+}
+interface KSNBCRoundMessage extends BaseKSNBCMessage {
+	type: 'round';
+	value: Round;
+}
 
 export type KSNBCMessageType =
 	| KSNBCConnectMessage
 	| KSNBCClearTimersMessage
 	| KSNBCPickBanMessage
 	| KSNBCWSStateMessage
-	| KSNBCRequestWSStateMessage;
+	| KSNBCRequestWSStateMessage
+	| KSNBCRequestLeaderboardMessage
+	| KSNBCRoundMessage;

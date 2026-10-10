@@ -83,3 +83,10 @@ export function csToFormattedTime(
 	}
 	return s;
 }
+
+export function toPairs(m: unknown): [string, number][] {
+	if (!m) return [];
+	if (m instanceof Map) return [...m] as [string, number][];
+	if (Array.isArray(m)) return m as [string, number][];
+	return Object.entries(m as Record<string, number>);
+}
