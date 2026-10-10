@@ -23,7 +23,7 @@
 
 	let visible = $state(true);
 	let visibilityInterval: NodeJS.Timeout | undefined;
-	const visibleTime = 8000;
+	const visibleTime = 30000;
 
 	function getLeaderEntry(leaderboard: LeaderboardEntry[] | undefined) {
 		if (!leaderboard) return undefined;
@@ -41,7 +41,7 @@
 			if (entry.prCs == leader!.prCs) {
 				return csToSeconds(entry.prCs - leader!.prCs).toFixed(2);
 			} else {
-				return '+' + csToSeconds(entry.prCs - leader!.prCs).toFixed(2);
+				return '+' + csToFormattedTime(entry.prCs - leader!.prCs);
 			}
 		}
 		// return 'cp ' + entry.currentCheckpointsCs.size;
@@ -49,38 +49,36 @@
 		return '--';
 	}
 
-	// $effect(() => {
-	// 	if (leaderboardEntries) {
-	// 		if (visibilityInterval) {
-	// 			clearInterval(visibilityInterval);
-	// 		}
-	// 		visible = true;
+	$effect(() => {
+		if (leaderboardEntries) {
+			if (visibilityInterval) {
+				clearInterval(visibilityInterval);
+			}
+			visible = true;
 
-	// 		visibilityInterval = setInterval(() => {
-	// 			visible = false;
-	// 		}, visibleTime);
-	// 	}
-	// });
+			visibilityInterval = setInterval(() => {
+				visible = false;
+			}, visibleTime);
+		}
+	});
 </script>
 
-<!-- {#if leaderboardEntries && leaderboardEntries.length > 0} -->
-<!-- {#if visible} -->
-<section class="{styleClass} absolute top-0 left-0 z-20 p-2" transition:fade>
-	<div class="grid grid-cols-[repeat(4,auto)] gap-x-2 gap-y-0 text-xl *:m-0 *:p-0">
-		{#each leaderboardEntries as entry, i (i)}
-			{#if i < maxPlayers && entry}
-				{@render Row(entry, i)}
-			{/if}
-		{/each}
-	</div>
-	<!-- background -->
-	<div
-		class="absolute top-0 left-0 -z-1 h-full w-full rounded-md bg-[#0f0f16] opacity-90"
-		style:filter={getFiltersStyle()}
-	></div>
-</section>
-<!-- {/if} -->
-<!-- {/if} -->
+{#if visible}
+	<section class="{styleClass} absolute top-0 left-0 z-20 p-2" transition:fade>
+		<div class="grid grid-cols-[repeat(4,auto)] gap-x-2 gap-y-0 text-xl *:m-0 *:p-0">
+			{#each leaderboardEntries as entry, i (i)}
+				{#if i < maxPlayers && entry}
+					{@render Row(entry, i)}
+				{/if}
+			{/each}
+		</div>
+		<!-- background -->
+		<div
+			class="absolute top-0 left-0 -z-1 h-full w-full rounded-md bg-[#0f0f16] opacity-90"
+			style:filter={getFiltersStyle()}
+		></div>
+	</section>
+{/if}
 
 {#snippet Row(entry: LeaderboardEntry, i: number)}
 	{@const player = getPlayer(entry.steamId3)}

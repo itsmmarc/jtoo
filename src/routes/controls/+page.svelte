@@ -277,6 +277,7 @@
 
 		<hr class="hr" />
 
+		<Checkbox desc="show flags" setting="enableFlags" />
 		<Checkbox desc="use moving background" setting="enableMovingBG" />
 		<Checkbox desc="use short map names" setting="useShortMapNames" />
 		<Checkbox desc="show POV guide" setting="enablePOVGuide" />

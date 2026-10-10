@@ -13,7 +13,7 @@
 	const maxNameLength = 12;
 </script>
 
-<div class="{styleClass}  mt-2 w-fit {settings.current.font}">
+<div class="{styleClass} absolute right-0 left-0 m-auto mt-2 w-fit {settings.current.font}">
 	{#if ksnWs.timer.leader}
 		{@const leader = getPlayer(ksnWs.timer.leader)}
 		{#if leader.name}

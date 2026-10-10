@@ -35,7 +35,7 @@ export const defaultSettings: Settings = {
 	enablePRs: true,
 	enableAvatars: true,
 	enableTags: false,
-	enableFlags: true,
+	enableFlags: false,
 	enableGradient: true,
 	enableTeamColors: true,
 	enablePOVGuide: false,

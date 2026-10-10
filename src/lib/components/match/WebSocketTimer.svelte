@@ -34,10 +34,10 @@
 	{#key ksnWs.timer.players.size}
 		{@const playerTimer = player ? ksnWs.timer.getPlayerTimer(player) : undefined}
 		{console.log(playerTimer)}
-		<div class="text-palewhite flex h-full flex-col justify-start text-center">
+		<div class="text-palewhite flex h-fit flex-col justify-start text-center">
 			<div class="text-xl opacity-80 {settings.current.font}">run timer</div>
 			<div
-				class="{settings.current.monoFont} text-5xl transition-colors duration-1000
+				class="{settings.current.monoFont} text-4xl transition-colors duration-1000
                                         {!playerTimer || !playerTimer.isRunning
 					? 'opacity-40'
 					: ''}"

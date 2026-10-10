@@ -54,24 +54,28 @@
 	{/if}
 	<ul class="flex justify-center gap-10 text-2xl">
 		{#each { length: tournament.leaderboards.length }, i (i)}
-			<li
-				class="{selectedLeaderboard == i ? 'bg-ctp-lavender-950/40' : ''} rounded-xl p-2 pr-4 pl-4"
-			>
-				<button onclick={() => (selectedLeaderboard = i)}>
+			<button onclick={() => (selectedLeaderboard = i)}>
+				<li
+					class="{selectedLeaderboard == i
+						? 'bg-ctp-lavender-950/40'
+						: ''} rounded-xl p-2 pr-4 pl-4"
+				>
 					<div>
 						round {i + 1}
 					</div>
 					<div class="italic opacity-80">
 						{tournament.leaderboards[i].map}
 					</div>
-				</button>
-			</li>
+				</li>
+			</button>
 		{/each}
-		<li
-			class="{selectedLeaderboard == -1 ? 'bg-ctp-lavender-950/40' : ''} rounded-xl p-2 pr-4 pl-4"
-		>
-			<button onclick={() => (selectedLeaderboard = -1)}>total</button>
-		</li>
+		<button onclick={() => (selectedLeaderboard = -1)}>
+			<li
+				class="{selectedLeaderboard == -1 ? 'bg-ctp-lavender-950/40' : ''} rounded-xl p-2 pr-4 pl-4"
+			>
+				total
+			</li>
+		</button>
 	</ul>
 	{#if selectedLeaderboard >= 0}
 		<ul
@@ -97,14 +101,19 @@
 		</ul>
 	{:else if selectedLeaderboard == -1}
 		<ul
-			class="grid grid-cols-[repeat(6,max-content)] items-center justify-center gap-x-6 gap-y-4 text-4xl"
+			class="grid {settings.current.enableFlags
+				? 'grid-cols-[repeat(6,max-content)]'
+				: 'grid-cols-[repeat(5,max-content)]'}
+                                items-center justify-center gap-x-6 gap-y-4 text-4xl"
 		>
 			<!--position-->
 			<li></li>
 			<!--avatar-->
 			<li></li>
-			<!--flag-->
-			<li></li>
+			{#if settings.current.enableFlags}
+				<!--flag-->
+				<li></li>
+			{/if}
 			{@render Header('Player')}
 			{@render Header(`Average Placement`)}
 
@@ -138,10 +147,12 @@
 			draggable="false"
 		/>
 	</li>
-	<!-- flag -->
-	<li>
-		<Flag code={player.flag} class="rounded-xl text-[6rem]" />
-	</li>
+	{#if settings.current.enableFlags}
+		<!-- flag -->
+		<li>
+			<Flag code={player.flag} class="rounded-xl text-[6rem]" />
+		</li>
+	{/if}
 	<!-- name -->
 	<li>
 		{player.name}
@@ -177,10 +188,12 @@
 			draggable="false"
 		/>
 	</li>
-	<!-- flag -->
-	<li>
-		<Flag code={player.flag} class="rounded-xl text-[6rem]" />
-	</li>
+	{#if settings.current.enableFlags}
+		<!-- flag -->
+		<li>
+			<Flag code={player.flag} class="rounded-xl text-[6rem]" />
+		</li>
+	{/if}
 	<!-- name -->
 	<li>
 		{player.name}

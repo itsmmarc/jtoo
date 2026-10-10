@@ -64,9 +64,7 @@
 
 					<!-- flag -->
 					{#if settings.current.enableFlags && player.flag}
-						{#key player.flag}
-							<Flag code={player.flag} class="flex h-fit w-fit rounded-xl text-[8rem]" />
-						{/key}
+						<Flag code={player.flag} class="flex h-fit w-fit rounded-xl text-[8rem]" />
 					{/if}
 				</div>
 

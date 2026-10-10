@@ -145,9 +145,7 @@
 	<div class="relative z-10 flex h-full gap-4 {playerNum === 1 ? 'flex-row-reverse' : ''}">
 		<!-- flag -->
 		{#if settings.current.enableFlags && flag}
-			{#key flag}
-				<Flag code={flag} class="flex h-fit w-fit rounded-xl text-[6rem]" />
-			{/key}
+			<Flag code={flag} class="flex h-fit w-fit rounded-xl text-[6rem]" />
 		{/if}
 		{#if settings.current.enableAvatars && avatarURL}
 			{#key avatarURL}

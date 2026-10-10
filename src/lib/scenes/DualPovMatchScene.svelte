@@ -20,7 +20,7 @@
 	{#if settings.current.ksnWebSocketToken !== '' && overlay.current.players[0] && overlay.current.players[1]}
 		<WebSocketTimer
 			numPlayers={2}
-			class="absolute top-9 right-0 left-0 w-[55%] justify-self-center"
+			class="absolute top-11 right-0 left-0 w-[55%] justify-self-center"
 		/>
 	{/if}
 	{#if settings.current.enableGradient}
@@ -170,9 +170,7 @@
 	<div class="relative z-10 flex h-full gap-4 {playerNum === 1 ? 'flex-row-reverse' : ''}">
 		<!-- flag -->
 		{#if settings.current.enableFlags && flag}
-			{#key flag}
-				<Flag code={flag} class="flex h-fit w-fit rounded-xl text-[6rem]" />
-			{/key}
+			<Flag code={flag} class="flex h-fit w-fit rounded-xl text-[6rem]" />
 		{/if}
 		{#if settings.current.enableAvatars && avatarURL}
 			{#key avatarURL}
@@ -198,7 +196,7 @@
 				{/if}
 				<!-- name -->
 				{#key name}
-					<span in:fade class="text-4xl font-bold">{name}</span>
+					<span in:fade class="text-3xl font-bold">{name}</span>
 				{/key}
 			</div>
 			<!-- score -->
