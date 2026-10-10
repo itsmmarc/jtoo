@@ -644,6 +644,12 @@ export class KSNWebSocket {
 		tournament.leaderboards.push(new Round(id, map));
 		tournament.leaderboards = [...tournament.leaderboards];
 		overlay.current.leaderboard = id;
+
+		let stage = `round ${tournament.leaderboards.length}`;
+		if (!items.current.stages.includes(stage)) {
+			items.current.stages = [...items.current.stages, stage];
+		}
+		overlay.current.stage = stage;
 	}
 	updateLeaderboard() {
 		console.log('updating leaderboard');
