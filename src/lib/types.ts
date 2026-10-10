@@ -218,6 +218,7 @@ export type Settings = {
 	useShortMapNames: boolean;
 	overlayScene: OverlayScene;
 	ksnWebSocketToken: string;
+	jfRelayWebSocketToken: string;
 	logWsMessages: boolean;
 	obsWsIp: string;
 	obsWsPort: number | undefined;
