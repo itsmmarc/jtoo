@@ -74,7 +74,6 @@
 				{#each leaderboardEntries as entry, i (i)}
 					{#if i < maxPlayers && entry}
 						{@render Row(entry, i)}
-						<hr class="hr m-1!" />
 					{/if}
 				{/each}
 			</div>
@@ -89,7 +88,7 @@
 
 {#snippet Row(entry: LeaderboardEntry, i: number)}
 	{@const player = getPlayer(entry.steamId3)}
-	{#if player.name}
+	{#if player && (entry.prCs || entry.currentCheckpointsCs.size > 0)}
 		{@const name =
 			player.name.length > maxNameLength
 				? player.name.substring(0, maxNameLength) + '...'
@@ -121,5 +120,6 @@
 		<div class="w-full min-w-20 text-end">
 			{gap}
 		</div>
+		<hr class="hr m-1!" />
 	{/if}
 {/snippet}
