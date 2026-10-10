@@ -85,8 +85,10 @@
 			<li></li>
 			<!--avatar-->
 			<li></li>
-			<!--flag-->
-			<li></li>
+			{#if settings.current.enableFlags}
+				<!--flag-->
+				<li></li>
+			{/if}
 			{@render Header('Player')}
 			{@render Header(`Gap`)}
 			{@render Header('PR')}
