@@ -40,9 +40,14 @@
 		ksnWs = new KSNWebSocketController('ksnWs');
 
 		jfRelayWs = new JFRelayWebSocket();
+
 		if (settings.current.jfRelayWebSocketToken)
 			jfRelayWs.connect(settings.current.jfRelayWebSocketToken);
 		setContext('jfRelayWs', jfRelayWs);
+
+		if (settings.current.obsWsPw) {
+			obsConnect(settings.current.obsWsIp, settings.current.obsWsPort, settings.current.obsWsPw);
+		}
 
 		$effect(() => {
 			if (settings.current.overlayScene) {
@@ -160,7 +165,7 @@
 					<button
 						class="button button-unselected hover:button-selected"
 						onclick={() => {
-							if (settings.current.obsWsPort) {
+							if (settings.current.obsWsPw) {
 								obsConnect(
 									settings.current.obsWsIp,
 									settings.current.obsWsPort,
