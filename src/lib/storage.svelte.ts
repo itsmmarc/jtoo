@@ -9,9 +9,10 @@ import {
 	Tournament,
 	type TempusID
 } from './types.svelte';
-import { addPlayersFromSteamID3, getPlayer } from './util';
+import { addPlayersFromSteamID3, getMap, getPlayer } from './util';
 import { Tempus2 } from './api/tempus2/api-tempus2';
 import { Steam } from './api/steam/api-steam';
+import { TempusPlaza } from './api/tempusplaza/api-tempusplaza';
 
 export const defaultStages: Array<string> = [
 	'',
@@ -84,7 +85,7 @@ export function fullReset() {
 }
 
 // TODO - seperate soldier and demo players
-const bootcampSoldierPlayers: string[] = [
+const bootcampPlayers: string[] = [
 	'[U:1:153381898]',
 	'[U:1:449416302]',
 	'[U:1:1161800600]',
@@ -138,17 +139,72 @@ const bootcampSoldierPlayers: string[] = [
 	'[U:1:177346410]'
 ];
 
+const bootcampDemoMaps = ['jump_halcyon_b3', 'jump_matty_b7', 'jump_rush'];
+const bootcampSoldierMaps = ['jump_academy2_easy_event', 'jump_bunker_final', 'jump_doom_final'];
+
 export async function addBootcampSoldierTournament() {
-	await addPlayersFromSteamID3(bootcampSoldierPlayers);
+	await addPlayersFromSteamID3(bootcampPlayers);
 	let tournament = new Tournament();
-	tournament.players = bootcampSoldierPlayers.map(
-		(p) => Steam.convertSteamId(p, 'SteamID3') as number
-	);
+	tournament.players = bootcampPlayers.map((p) => Steam.convertSteamId(p, 'SteamID3') as number);
 	tournament.players = [...tournament.players].sort((a, b) =>
 		getPlayer(a).name.localeCompare(getPlayer(b).name, undefined, { sensitivity: 'base' })
 	);
+
+	tournament.maps = [...bootcampSoldierMaps];
+
+	for (const map of bootcampSoldierMaps) {
+		if (getMap(map)) continue;
+
+		let mapObj = await Tempus2.fetchMapByName(map);
+		if (mapObj) {
+			items.current.maps.push(mapObj);
+			continue;
+		}
+
+		mapObj = new TFMap();
+		mapObj.fileName = map;
+		mapObj.shortName = TFMap.fileNameToShortName(map);
+		mapObj.intendedClass = { soldier: true, demoman: false };
+		items.current.maps.push(mapObj);
+	}
+
+	getMap('jump_academy2_easy_event').imageURL =
+		'https://preview.redd.it/map-update-jump-academy2-rc8-v0-jwxgc72vgv491.jpg?width=2048&format=pjpg&auto=webp&s=e59ae980806f33f0789d7fd15e64816c6c5a6024';
+
 	tournament.format = 'MassRace';
 	tournament.info = { name: 'Bootcamp Soldiers', class: 'soldier' };
+	items.current.players = [...items.current.players].sort((a, b) =>
+		a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+	);
+	items.current.tournaments = [...items.current.tournaments, tournament];
+}
+export async function addBootcampDemoTournament() {
+	let tournament = new Tournament();
+	tournament.players = bootcampPlayers.map((p) => Steam.convertSteamId(p, 'SteamID3') as number);
+	tournament.players = [...tournament.players].sort((a, b) =>
+		getPlayer(a).name.localeCompare(getPlayer(b).name, undefined, { sensitivity: 'base' })
+	);
+
+	tournament.maps = [...bootcampDemoMaps];
+
+	for (const map of bootcampDemoMaps) {
+		if (getMap(map)) continue;
+
+		let mapObj = await Tempus2.fetchMapByName(map);
+		if (mapObj) {
+			items.current.maps.push(mapObj);
+			continue;
+		}
+
+		mapObj = new TFMap();
+		mapObj.fileName = map;
+		mapObj.shortName = TFMap.fileNameToShortName(map);
+		mapObj.intendedClass = { soldier: true, demoman: false };
+		items.current.maps.push(mapObj);
+	}
+
+	tournament.format = 'MassRace';
+	tournament.info = { name: 'Bootcamp Demomen', class: 'demoman' };
 	items.current.players = [...items.current.players].sort((a, b) =>
 		a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
 	);

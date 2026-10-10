@@ -20,7 +20,8 @@
 		items,
 		defaultStages,
 		defaultSettings,
-		addBootcampSoldierTournament
+		addBootcampSoldierTournament,
+		addBootcampDemoTournament
 	} from '$lib/storage.svelte';
 	import {
 		BrokenOverlayScenes,
@@ -62,6 +63,9 @@
 		});
 		if (!items.current.tournaments.filter((t) => t.info.name == 'Bootcamp Soldiers')[0]) {
 			addBootcampSoldierTournament();
+		}
+		if (!items.current.tournaments.filter((t) => t.info.name == 'Bootcamp Demomen')[0]) {
+			addBootcampDemoTournament();
 		}
 	});
 </script>
