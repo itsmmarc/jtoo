@@ -145,7 +145,7 @@ export namespace Steam {
 		player.steamID = ps.steamid;
 		player.steamID3 = Steam.convertSteamId(ps.steamid, 'SteamID3') as number;
 		player.avatarURL = ps.avatarfull;
-		player.flag = ps.loccountrycode;
+		player.flag = ps.loccountrycode ? ps.loccountrycode.toLowerCase() : '';
 
 		return player;
 	}
@@ -181,6 +181,6 @@ export namespace Steam {
 		primaryclanid: number;
 		timecreated: number;
 		personastateflags: number;
-		loccountrycode: string;
+		loccountrycode?: string;
 	}
 }
